@@ -6,13 +6,14 @@ interface TemplateState {
     graphgame: {
         objects: {
             [key: number]: GameObject
-        }
+        },
+        finalized: boolean
     }
 }
 
 const ensureState = (state: TemplateState) => {
-    if (!state.hasOwnProperty("graphgame")) state.graphgame = { objects: {} };
-    if (!state.graphgame.hasOwnProperty("objects")) state.graphgame.objects = {};
+    if (!state.hasOwnProperty("graphgame")) state.graphgame = { objects: {}, finalized: false };
+    if(state.graphgame.finalized) throw new Error("Do not run any other templates after finalizing!");
 };
 
 
@@ -149,3 +150,28 @@ export const setValAction: TemplateObject = {
         }`;
     }
 };
+
+export const finalize: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        const output: string[] = [];
+
+        for (const id of Object.keys(state.graphgame.objects)) {
+            const object: GameObject = state.graphgame.objects[id];
+
+            //Draw the object.
+            output.push(`inline function graphGameDraw${id}(x, y) {
+                if(${object.shape.get()} == 0) {
+                    state = sqrt((x/${object.width.get()})^2+(y/${object.height.get()})^2);
+                } else {
+                    state = 0;
+                }
+            }
+            graph { 1 } = { graphGameDraw${id}(x, y) };`);
+        }
+
+        return output.join("\n");
+    }
+}
