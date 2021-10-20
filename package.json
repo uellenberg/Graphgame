@@ -1,0 +1,34 @@
+{
+  "name": "graphgame",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uellenberg/LogiMat.git"
+  },
+  "author": "Jonah Uellenberg",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/uellenberg/LogiMat/issues"
+  },
+  "homepage": "https://github.com/uellenberg/LogiMat",
+  "engines": {
+    "node": ">=0.16"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "logimat": "^1.0.10"
+  },
+  "devDependencies": {
+    "typescript": "^4.4.4"
+  }
+}
