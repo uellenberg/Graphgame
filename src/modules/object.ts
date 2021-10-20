@@ -164,7 +164,7 @@ export const finalize: TemplateObject = {
             //Draw the object.
             output.push(`inline function graphGameDraw${id}(x, y) {
                 if(${object.shape.get()} == 0) {
-                    state = sqrt(((x-${object.x.get()})/${object.width.get()})^2+((y-${object.y.get()})/${object.height.get()})^2);
+                    state = ((x-${object.x.get()})/${object.width.get()})^2+((y-${object.y.get()})/${object.height.get()})^2;
                 } else {
                     state = 0;
                 }
