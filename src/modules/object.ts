@@ -18,7 +18,6 @@ const ensureState = (state: TemplateState) => {
     if(state.graphgame.finalized) throw new Error("Do not run any other templates after finalizing!");
 };
 
-
 //Context checks
 
 const outerCheck = (context: TemplateContext) : void => {
