@@ -111,7 +111,6 @@ export const setMut: TemplateObject = {
 */
 export const getVal: TemplateObject = {
     function: (args, state: TemplateState, context) => {
-        console.log("get", args);
         ensureState(state);
         expressionCheck(context);
 
