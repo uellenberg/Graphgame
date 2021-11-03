@@ -164,7 +164,6 @@ export const setValAction: TemplateObject = {
     }
 };
 
-//TODO: fix this so that it doesn't break updates
 export const noRegisterSetValAction: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
@@ -180,15 +179,46 @@ export const noRegisterSetValAction: TemplateObject = {
 
         const semimut = getSemiMut(state, id, name);
         if(!semimut.isMut()) throw new Error("A variable must be marked as mutable before it can be used in an action!");
+        
+        //this_action => 1
+        //nextName (update) => semimutName == 1 ? body : oldName.
+        //semimutName (update) => 0
+        
+        //When this action is triggered, it sets a value to one. During the update,
+        //the next value for this semimut is checked for 1, and is set to the body
+        //given here, and the oldValue otherwise. Then, the value is reset back to
+        //0. This ensures continuity and only sets the body when the action is triggered.
 
+        //The name of the previous variable in the chain.
         const oldName = semimut.get();
         semimut.increment();
 
+        //The name of this variable.
         const semimutName = semimut.get();
+        semimut.increment();
+        
+        //The name of the variable holding this variable's state.
+        const nextName = semimut.get();
+        
+        state.graphgame.actions.push(nextName + "set");
+        state.graphgame.actions.push(semimutName + "set");
 
-        return `export const ${semimutName} = ${oldName};
+        if(!state.graphgame.finalActions.includes(semimut)) state.graphgame.finalActions.push(semimut);
+
+        return `export const ${semimutName} = 0;
+        export const ${nextName} = ${oldName};
         action ${actionName ? `${actionName} = ` : ""}${semimutName} {
-            ${body}
+            state = 1;
+        }
+        action ${nextName + "set"} = ${nextName} {
+            if(${semimutName} == 1) {
+                ${body}
+            } else {
+                state = ${oldName};
+            }
+        }
+        action ${semimutName + "set"} = ${semimutName} {
+            state = 0;
         }`;
     }
 };

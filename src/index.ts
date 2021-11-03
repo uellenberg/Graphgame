@@ -8,5 +8,5 @@ export const templates: TemplatesObject = {
     setVal,
     setValAction,
     finalize,
-    //noRegisterSetValAction
+    noRegisterSetValAction
 };
