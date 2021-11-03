@@ -7,12 +7,14 @@ interface TemplateState {
         objects: {
             [key: number]: GameObject
         },
+        actions: string[],
+        finalActions: SemiMutable[],
         finalized: boolean
     }
 }
 
 const ensureState = (state: TemplateState) => {
-    if (!state.hasOwnProperty("graphgame")) state.graphgame = { objects: {}, finalized: false };
+    if (!state.hasOwnProperty("graphgame")) state.graphgame = { objects: {}, actions: [], finalActions: [], finalized: false };
     if(state.graphgame.finalized) throw new Error("Do not run any other templates after finalizing!");
 };
 
@@ -97,6 +99,7 @@ export const setMut: TemplateObject = {
 
 export const getVal: TemplateObject = {
     function: (args, state: TemplateState, context) => {
+        console.log("get", args);
         ensureState(state);
         expressionCheck(context);
 
@@ -106,7 +109,8 @@ export const getVal: TemplateObject = {
         objectCheck(state, id);
         objectVarCheck(state, id, name);
 
-        return getSemiMut(state, id, name).get();
+        //We need to use the offset because gets are run after a set, which increments.
+        return getSemiMut(state, id, name).get(-2);
     }
 };
 
@@ -131,6 +135,38 @@ export const setVal: TemplateObject = {
 
 export const setValAction: TemplateObject = {
     function: (args, state: TemplateState, context) => {
+        console.log("set", args);
+        ensureState(state);
+        outerCheck(context);
+
+        const id = getNum(args, state, 0, "An object ID is required!");
+        const name = getString(args, state, 1, "A variable name is required!");
+        const body = getString(args, state, 2, "An action body is required!");
+
+        objectCheck(state, id);
+        objectVarCheck(state, id, name);
+
+        const semimut = getSemiMut(state, id, name);
+        if(!semimut.isMut()) throw new Error("A variable must be marked as mutable before it can be used in an action!");
+
+        const oldName = semimut.get();
+        semimut.increment();
+
+        const semimutName = semimut.get();
+        state.graphgame.actions.push(semimutName + "set");
+
+        if(!state.graphgame.finalActions.includes(semimut)) state.graphgame.finalActions.push(semimut);
+
+        return `export const ${semimutName} = ${oldName};
+        action ${semimutName + "set"} = ${semimutName} {
+            ${body}
+        }`;
+    }
+};
+
+//TODO: fix this so that it doesn't break updates
+export const noRegisterSetValAction: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
         ensureState(state);
         outerCheck(context);
 
@@ -145,7 +181,13 @@ export const setValAction: TemplateObject = {
         const semimut = getSemiMut(state, id, name);
         if(!semimut.isMut()) throw new Error("A variable must be marked as mutable before it can be used in an action!");
 
-        return `action ${actionName ? `${actionName} = ` : ""}${semimut.get()} {
+        const oldName = semimut.get();
+        semimut.increment();
+
+        const semimutName = semimut.get();
+
+        return `export const ${semimutName} = ${oldName};
+        action ${actionName ? `${actionName} = ` : ""}${semimutName} {
             ${body}
         }`;
     }
@@ -171,6 +213,18 @@ export const finalize: TemplateObject = {
             }
             graph { 1 } = { graphGameDraw${id}(x, y) };`);
         }
+
+        for(const semimut of state.graphgame.finalActions) {
+            const noIncrement = semimut.name(true);
+            const name = semimut.name();
+
+            output.push(`action ${noIncrement + "update"} = ${noIncrement} {
+                state = ${name};
+            }`);
+            state.graphgame.actions.push(noIncrement + "update");
+        }
+
+        output.push("actions m_ain = " + state.graphgame.actions.join(", ") + ";");
 
         return output.join("\n");
     }

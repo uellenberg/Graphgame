@@ -3,6 +3,7 @@ export class SemiMutable {
     private readonly id: number;
     private val: number;
     private mutable: boolean = false;
+    private incrementID: number = 0;
 
     /**
      * Creates a SemiMutable, which stores an immutable value until it is made mutable.
@@ -42,18 +43,26 @@ export class SemiMutable {
     }
 
     /**
-     * Gets the value.
+     * Gets the value. If supplied, an offset is added to the increment.
      */
-    public get(): string {
-        if(this.mutable) return this.name();
+    public get(offset: number = 0): string {
+        if(this.mutable) return this.name(false, offset);
         return this.val.toString();
     }
 
     /**
-     * Gets the variable name.
+     * Gets the variable name. If supplied, an offset is added to the increment.
      */
-    public name(): string {
+    public name(noIncrement: boolean = false, offset: number = 0): string {
         if(!this.mutable) throw new Error("mut() must be called before the name can be accessed.");
-        return "g_raphgameobject" + this.id + this.varName;
+        return "g_raphgameobject" + this.id + this.varName + (noIncrement ? "" : Math.max(0, this.incrementID+offset) || "");
+    }
+
+    /**
+     * Increment the value's identifier.
+     */
+    public increment(): void {
+        if(!this.mutable) throw new Error("A variable must be marked as mutable before it can be used in an action!");
+        this.incrementID++;
     }
 }
