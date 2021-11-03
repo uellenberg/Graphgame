@@ -3,7 +3,7 @@ import {TemplateState} from "./types/TemplateState";
 import {SemiMutable} from "./SemiMutable";
 
 export const ensureState = (state: TemplateState) => {
-    if (!state.hasOwnProperty("graphgame")) state.graphgame = { objects: {}, actions: [], finalActions: [], finalized: false };
+    if (!state.hasOwnProperty("graphgame")) state.graphgame = { objects: {}, behaviors: {}, actions: [], finalActions: [], finalized: false };
     if(state.graphgame.finalized) throw new Error("Do not run any other templates after finalizing!");
 };
 
