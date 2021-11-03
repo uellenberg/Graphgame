@@ -18,7 +18,7 @@ export const createBehavior: TemplateObject = {
 
         if(state.graphgame.objects.hasOwnProperty(name)) throw new Error("A behavior with the name \"" + name + "\" already exists!");
 
-        state.graphgame.behaviors[id] = new Behavior(name);
+        state.graphgame.behaviors[name] = new Behavior(name);
 
         return "";
     }
