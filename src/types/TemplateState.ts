@@ -10,8 +10,10 @@ export interface TemplateState {
         behaviors: {
             [key: number]: Behavior
         },
-        actions: string[],
-        finalActions: SemiMutable[],
+        actions: {
+            [key: string]: string
+        },
+        finalActions: string[],
         finalized: boolean
     }
 }

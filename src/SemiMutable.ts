@@ -46,7 +46,7 @@ export class SemiMutable {
      * Gets the value. If supplied, an offset is added to the increment.
      */
     public get(offset: number = 0): string {
-        if(this.mutable) return this.name(false, offset);
+        if(this.mutable) return this.name(false, offset) + (this.incrementID > 0 ? "()" : "");
         return this.val.toString();
     }
 

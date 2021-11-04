@@ -1,8 +1,16 @@
-import {TemplateArgs, TemplateContext, TemplateObject} from "logimat";
+import {TemplateObject} from "logimat";
 import {GameObject} from "../GameObject";
-import {SemiMutable} from "../SemiMutable";
 import {TemplateState} from "../types/TemplateState";
-import {ensureState, outerCheck, expressionCheck, objectCheck, objectVarCheck, getSemiMut, getNum, getString} from "../util";
+import {
+    ensureState,
+    expressionCheck,
+    getNum,
+    getSemiMut,
+    getString,
+    objectCheck,
+    objectVarCheck,
+    outerCheck
+} from "../util";
 
 /**
  Creates a new object.
@@ -108,16 +116,16 @@ export const setValAction: TemplateObject = {
         const semimut = getSemiMut(state, id, name);
         if(!semimut.isMut()) throw new Error("A variable must be marked as mutable before it can be used in an action!");
 
-        const oldName = semimut.get();
+        const semimutVar = semimut.name(true);
+
+        const oldSemimut = semimut.get();
         semimut.increment();
+        const semimutName = semimut.name();
 
-        const semimutName = semimut.get();
-        state.graphgame.actions.push(semimutName + "set");
+        state.graphgame.actions[semimutVar] = semimut.get();
 
-        if(!state.graphgame.finalActions.includes(semimut)) state.graphgame.finalActions.push(semimut);
-
-        return `export const ${semimutName} = ${oldName};
-        action ${semimutName + "set"} = ${semimutName} {
+        return `inline function ${semimutName}() {
+            const ${name} = ${oldSemimut};
             ${body}
         }`;
     }
@@ -152,36 +160,31 @@ export const noRegisterSetValAction: TemplateObject = {
         //given here, and the oldValue otherwise. Then, the value is reset back to
         //0. This ensures continuity and only sets the body when the action is triggered.
 
-        //The name of the previous variable in the chain.
-        const oldName = semimut.get();
+        const semimutVar = semimut.name(true);
+
+        const oldSemimut = semimut.get();
         semimut.increment();
-
-        //The name of this variable.
-        const semimutName = semimut.get();
+        const indicatorName = semimut.name();
         semimut.increment();
-        
-        //The name of the variable holding this variable's state.
-        const nextName = semimut.get();
-        
-        state.graphgame.actions.push(nextName + "set");
-        state.graphgame.actions.push(semimutName + "set");
+        const semimutName = semimut.name();
 
-        if(!state.graphgame.finalActions.includes(semimut)) state.graphgame.finalActions.push(semimut);
+        state.graphgame.actions[semimutVar] = semimut.get();
 
-        return `export const ${semimutName} = 0;
-        export const ${nextName} = ${oldName};
-        action ${actionName ? `${actionName} = ` : ""}${semimutName} {
+        state.graphgame.finalActions.push(indicatorName + "set");
+
+        return `export const ${indicatorName} = 0;
+        action ${(actionName ? actionName + " = " : "") + indicatorName} {
             state = 1;
         }
-        action ${nextName + "set"} = ${nextName} {
-            if(${semimutName} == 1) {
+        action ${indicatorName + "set" + " = " + indicatorName} {
+            state = 0;
+        }
+        inline function ${semimutName}() {
+            if(${indicatorName} == 1) {
                 ${body}
             } else {
-                state = ${oldName};
+                state = ${oldSemimut};
             }
-        }
-        action ${semimutName + "set"} = ${semimutName} {
-            state = 0;
         }`;
     }
 };
@@ -211,17 +214,16 @@ export const finalize: TemplateObject = {
             graph { 1 } = { graphGameDraw${id}(x, y) };`);
         }
 
-        for(const semimut of state.graphgame.finalActions) {
-            const noIncrement = semimut.name(true);
-            const name = semimut.name();
+        for(const name in state.graphgame.actions) {
+            const val = state.graphgame.actions[name];
 
-            output.push(`action ${noIncrement + "update"} = ${noIncrement} {
-                state = ${name};
+            output.push(`action ${name + "update"} = ${name} {
+                state = ${val};
             }`);
-            state.graphgame.actions.push(noIncrement + "update");
+            state.graphgame.finalActions.push(name + "update");
         }
 
-        output.push("actions m_ain = " + state.graphgame.actions.join(", ") + ";");
+        output.push("actions m_ain = " + state.graphgame.finalActions.join(", ") + ";");
 
         return output.join("\n");
     }
