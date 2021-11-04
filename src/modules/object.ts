@@ -181,6 +181,7 @@ export const noRegisterSetValAction: TemplateObject = {
         }
         inline function ${semimutName}() {
             if(${indicatorName} == 1) {
+                const ${name} = ${oldSemimut};
                 ${body}
             } else {
                 state = ${oldSemimut};
