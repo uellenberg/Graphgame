@@ -65,7 +65,7 @@ export const getBehaviorVal: TemplateObject = {
 };
 
 /**
- Set the value of a behavior's variable (during compilation). This must be used before a variable is marked as mutable.
+7 Set the value of a behavior's variable (during compilation). This must be used before a variable is marked as mutable.
  Usage: setBehaviorVal!(name: string, variableName: string, val: number);
 */
 export const setBehaviorVal: TemplateObject = {
@@ -103,6 +103,7 @@ export const setBehaviorValAction: TemplateObject = {
         state.graphgame.behaviors[name].add((id: number) => `setValAction!(${id}, ${name + varName}, ${body});`);
 
         return "";
+    }
 };
 
 /**

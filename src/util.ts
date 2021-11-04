@@ -34,7 +34,7 @@ export const getSemiMut = (state: TemplateState, id: number, name: string) : Sem
 //Behavior checks
 
 export const behaviorCheck = (state: TemplateState, name: string) : void => {
-    if(!state.graphgame.behaviors.hasOwnProperty(id)) throw new Error("An object with the ID \"" + id + "\" does not exist!");
+    if(!state.graphgame.behaviors.hasOwnProperty(name)) throw new Error("A behavior with the name \"" + name + "\" does not exist!");
 };
 
 //Arg checks

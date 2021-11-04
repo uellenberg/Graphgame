@@ -10,7 +10,8 @@ import {
     getString,
     objectCheck,
     objectVarCheck,
-    outerCheck
+    outerCheck,
+    behaviorCheck
 } from "../util";
 
 /**
