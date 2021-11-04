@@ -8,7 +8,7 @@ export interface TemplateState {
             [key: number]: GameObject
         },
         behaviors: {
-            [key: number]: Behavior
+            [key: string]: Behavior
         },
         actions: {
             [key: string]: string

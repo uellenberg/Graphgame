@@ -1,5 +1,6 @@
 import {TemplateObject} from "logimat";
 import {GameObject} from "../GameObject";
+import {SemiMutable} from "../SemiMutable";
 import {TemplateState} from "../types/TemplateState";
 import {
     ensureState,
@@ -75,7 +76,7 @@ export const getVal: TemplateObject = {
 
 /**
  Set the value of an object's variable (during compilation). This must be used before a variable is marked as mutable.
- Usage: setMut!(objectId: number, variableName: string, val: number);
+ Usage: setVal!(objectId: number, variableName: string, val: number);
 */
 export const setVal: TemplateObject = {
     function: (args, state: TemplateState, context) => {
@@ -89,8 +90,12 @@ export const setVal: TemplateObject = {
         objectCheck(state, id);
         objectVarCheck(state, id, name);
 
-        //The error message is included in here.
-        getSemiMut(state, id, name).set(val);
+        if(!state.graphgame.objects[id].hasOwnProperty(name)) {
+            state.graphgame.objects[id][name] = new SemiMutable(name, id, val);
+        } else {
+            //The error message is included in here.
+            getSemiMut(state, id, name).set(val);
+        }
 
         return "";
     }
@@ -186,6 +191,25 @@ export const noRegisterSetValAction: TemplateObject = {
                 state = ${oldSemimut};
             }
         }`;
+    }
+};
+
+/**
+ * Add a behavior to an object.
+ * Usage: useBehavior!(objectId: number, behaviorName: string);
+ */
+export const useBehavior: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        const id = getNum(args, state, 0, "An object ID is required!");
+        const name = getString(args, state, 1, "A behavior name is required!");
+
+        objectCheck(state, id);
+        behaviorCheck(state, name);
+
+        return state.graphgame.behaviors[name].compile(id);
     }
 };
 
