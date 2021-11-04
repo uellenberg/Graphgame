@@ -69,8 +69,7 @@ export const getVal: TemplateObject = {
         objectCheck(state, id);
         objectVarCheck(state, id, name);
 
-        //We need to use the offset because gets are run after a set, which increments.
-        return getSemiMut(state, id, name).get(-2);
+        return getSemiMut(state, id, name).get();
     }
 };
 
