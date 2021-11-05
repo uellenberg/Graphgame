@@ -15,9 +15,9 @@ import {
 } from "../util";
 
 /**
- Creates a new object.
- Usage: createObject!(id: number);
-*/
+ * Creates a new object.
+ * Usage: createObject!(id: number);
+ */
 export const createObject: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
@@ -34,9 +34,9 @@ export const createObject: TemplateObject = {
 };
 
 /**
- Marks an object's variable as mutable (changable after compilation).
- Usage: setMut!(objectId: number, variableName: string);
-*/
+ * Marks an object's variable as mutable (changable after compilation).
+ * Usage: setMut!(objectId: number, variableName: string);
+ */
 export const setMut: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
@@ -59,9 +59,9 @@ export const setMut: TemplateObject = {
 };
 
 /**
- Get the value of an object's variable.
- Usage: getVal!(objectId: number, variableName: string);
-*/
+ * Get the value of an object's variable.
+ * Usage: getVal!(objectId: number, variableName: string)
+ */
 export const getVal: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
@@ -78,9 +78,9 @@ export const getVal: TemplateObject = {
 };
 
 /**
- Set the value of an object's variable (during compilation). This must be used before a variable is marked as mutable.
- Usage: setVal!(objectId: number, variableName: string, val: number);
-*/
+ * Set the value of an object's variable (during compilation). This must be used before a variable is marked as mutable.
+ * Usage: setVal!(objectId: number, variableName: string, val: number);
+ */
 export const setVal: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
@@ -104,9 +104,9 @@ export const setVal: TemplateObject = {
 };
 
 /**
- Set the value of an object's variable on update (during runtime). This must be used after a variable is marked as mutable.
- Usage: setValAction!(objectId: number, variableName: string, body: ActionBody);
-*/
+ * Set the value of an object's variable on update (during runtime). This must be used after a variable is marked as mutable.
+ * Usage: setValAction!(objectId: number, variableName: string, body: ActionBody);
+ */
 export const setValAction: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
@@ -138,9 +138,9 @@ export const setValAction: TemplateObject = {
 };
 
 /**
- Create an action that sets the value of an object's variable (during runtime). This must be ran manually. This must be used after a variable is marked as mutable.
- Usage: noRegisterSetValAction!(objectId: number, variableName: string, body: ActionBody, actionName: string);
-*/
+ * Create an action that sets the value of an object's variable (during runtime). This must be ran manually. This must be used after a variable is marked as mutable.
+ * Usage: noRegisterSetValAction!(objectId: number, variableName: string, body: ActionBody, actionName: string);
+ */
 export const noRegisterSetValAction: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
@@ -218,9 +218,9 @@ export const useBehavior: TemplateObject = {
 };
 
 /**
- Finalize the game. This must be the last template called.
- Usage: finalize!();
-*/
+ * Finalize the game. This must be the last template called.
+ * Usage: finalize!();
+ */
 export const finalize: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);

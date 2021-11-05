@@ -6,9 +6,9 @@ import {ensureState, outerCheck, expressionCheck, behaviorCheck, objectVarCheck,
 import {Behavior} from "../Behavior";
 
 /**
- Creates a new behavior.
- Usage: createBehavior!(name: string);
-*/
+ * Creates a new behavior.
+ * Usage: createBehavior!(name: string);
+ */
 export const createBehavior: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
@@ -25,9 +25,9 @@ export const createBehavior: TemplateObject = {
 };
 
 /**
- Marks a behavior's variable as mutable (changable after compilation).
- Usage: setBehaviorMut!(name: string, variableName: string);
-*/
+ * Marks a behavior's variable as mutable (changable after compilation).
+ * Usage: setBehaviorMut!(name: string, variableName: string);
+ */
 export const setBehaviorMut: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
@@ -45,9 +45,9 @@ export const setBehaviorMut: TemplateObject = {
 };
 
 /**
- Get the value of a behavior's variable.
- Usage: getBehaviorVal!(name: string, variableName: string);
-*/
+ * Get the value of a behavior's variable.
+ * Usage: getBehaviorVal!(name: string, variableName: string)
+ */
 export const getBehaviorVal: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
@@ -63,9 +63,9 @@ export const getBehaviorVal: TemplateObject = {
 };
 
 /**
-7 Set the value of a behavior's variable (during compilation). This must be used before a variable is marked as mutable.
- Usage: setBehaviorVal!(name: string, variableName: string, val: number);
-*/
+ * Set the value of a behavior's variable (during compilation). This must be used before a variable is marked as mutable.
+ * Usage: setBehaviorVal!(name: string, variableName: string, val: number);
+ */
 export const setBehaviorVal: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
@@ -84,9 +84,9 @@ export const setBehaviorVal: TemplateObject = {
 };
 
 /**
- Set the value of a behavior's variable on update (during runtime). This must be used after a variable is marked as mutable.
- Usage: setBehaviorValAction!(name: string, variableName: string, body: ActionBody);
-*/
+ * Set the value of a behavior's variable on update (during runtime). This must be used after a variable is marked as mutable.
+ * Usage: setBehaviorValAction!(name: string, variableName: string, body: ActionBody);
+ */
 export const setBehaviorValAction: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
@@ -105,9 +105,9 @@ export const setBehaviorValAction: TemplateObject = {
 };
 
 /**
- Create an action that sets the value of a behavior's variable (during runtime). This must be ran manually. This must be used after a variable is marked as mutable.
- Usage: noRegisterSetBehaviorValAction!(name: string, variableName: string, body: ActionBody, actionName: string);
-*/
+ * Create an action that sets the value of a behavior's variable (during runtime). This must be ran manually. This must be used after a variable is marked as mutable.
+ * Usage: noRegisterSetBehaviorValAction!(name: string, variableName: string, body: ActionBody, actionName: string);
+ */
 export const noRegisterSetBehaviorValAction: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
@@ -126,6 +126,10 @@ export const noRegisterSetBehaviorValAction: TemplateObject = {
     }
 };
 
+/**
+ * Finalize the behavior. This must be the last template called on the behavior.
+ * Usage: finalizeBehavior!(name: string);
+ */
 export const finalizeBehavior: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
