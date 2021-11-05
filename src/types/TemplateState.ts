@@ -14,6 +14,7 @@ export interface TemplateState {
             [key: string]: string
         },
         finalActions: string[],
-        finalized: boolean
+        finalized: boolean,
+        lastObjectBehaviorId: number
     }
 }

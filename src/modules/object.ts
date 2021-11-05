@@ -49,6 +49,8 @@ export const setMut: TemplateObject = {
         objectVarCheck(state, id, name);
 
         const semimut = getSemiMut(state, id, name);
+        if(semimut.isMut()) return "";
+
         const value = semimut.get();
         semimut.mut();
 
@@ -89,7 +91,6 @@ export const setVal: TemplateObject = {
         const val = getNum(args, state, 2, "A value is required!");
 
         objectCheck(state, id);
-        objectVarCheck(state, id, name);
 
         if(!state.graphgame.objects[id].hasOwnProperty(name)) {
             state.graphgame.objects[id][name] = new SemiMutable(name, id, val);
@@ -209,6 +210,8 @@ export const useBehavior: TemplateObject = {
 
         objectCheck(state, id);
         behaviorCheck(state, name);
+
+        state.graphgame.lastObjectBehaviorId = id;
 
         return state.graphgame.behaviors[name].compile(id);
     }

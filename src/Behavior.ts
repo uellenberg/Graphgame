@@ -1,6 +1,6 @@
 export class Behavior {
     private readonly name: string;
-    private parts: ((id: number) => string)[];
+    private parts: ((id: number) => string)[] = [];
     private finalized: boolean = false;
 
     public constructor(name: string) {

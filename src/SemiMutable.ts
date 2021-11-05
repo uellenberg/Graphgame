@@ -23,7 +23,6 @@ export class SemiMutable {
      * Makes a SemiMutable mutable.
      */
     public mut(): void {
-        if(this.mutable) throw new Error("Only set a variable as mutable once!");
         this.mutable = true;
     }
 

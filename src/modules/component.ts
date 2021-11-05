@@ -38,7 +38,7 @@ export const setBehaviorMut: TemplateObject = {
 
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].add((id: number) => `setMut!(${id}, ${name + varName});`);
+        state.graphgame.behaviors[name].add((id: number) => `setMut!(${id}, "${varName.startsWith("base.") ? varName.substring(5) : name + varName}");`);
 
         return "";
     }
@@ -58,9 +58,7 @@ export const getBehaviorVal: TemplateObject = {
 
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].add((id: number) => `getVal!(${id}, ${name + varName});`);
-
-        return "";
+        return `getVal!(${state.graphgame.lastObjectBehaviorId}, "${varName.startsWith("base.") ? varName.substring(5) : name + varName}")`;
     }
 };
 
@@ -79,7 +77,7 @@ export const setBehaviorVal: TemplateObject = {
 
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].add((id: number) => `setVal!(${id}, ${name + varName}, ${val});`);
+        state.graphgame.behaviors[name].add((id: number) => `setVal!(${id}, "${varName.startsWith("base.") ? varName.substring(5) : name + varName}", ${val});`);
 
         return "";
     }
@@ -100,7 +98,7 @@ export const setBehaviorValAction: TemplateObject = {
 
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].add((id: number) => `setValAction!(${id}, ${name + varName}, ${body});`);
+        state.graphgame.behaviors[name].add((id: number) => `setValAction!(${id}, "${varName.startsWith("base.") ? varName.substring(5) : name + varName}", {${body}});`);
 
         return "";
     }
@@ -122,7 +120,7 @@ export const noRegisterSetBehaviorValAction: TemplateObject = {
 
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].add((id: number) => `noRegisterSetValAction!(${id}, ${name + varName}, ${body}${actionName ? ", " + actionName : ""});`);
+        state.graphgame.behaviors[name].add((id: number) => `noRegisterSetValAction!(${id}, "${varName.startsWith("base.") ? varName.substring(5) : name + varName}", {${body}}${actionName ? ", \"" + actionName + "\"" : ""});`);
 
         return "";
     }
