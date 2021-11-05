@@ -1,6 +1,6 @@
-import {GameObject} from "../GameObject";
-import {Behavior} from "../Behavior";
-import {SemiMutable} from "../SemiMutable";
+import {GameObject} from "./GameObject";
+import {Behavior} from "./Behavior";
+import {SemiMutable} from "./SemiMutable";
 
 export interface TemplateState {
     graphgame: {

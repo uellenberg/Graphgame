@@ -1,6 +1,6 @@
 import {TemplateObject} from "logimat";
-import {GameObject} from "../GameObject";
-import {SemiMutable} from "../SemiMutable";
+import {GameObject} from "../types/GameObject";
+import {SemiMutable} from "../types/SemiMutable";
 import {TemplateState} from "../types/TemplateState";
 import {
     ensureState,

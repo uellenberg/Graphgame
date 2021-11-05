@@ -1,6 +1,6 @@
 import {TemplateArgs, TemplateContext, TemplateObject} from "logimat";
 import {TemplateState} from "./types/TemplateState";
-import {SemiMutable} from "./SemiMutable";
+import {SemiMutable} from "./types/SemiMutable";
 
 export const ensureState = (state: TemplateState) => {
     if (!state.hasOwnProperty("graphgame")) state.graphgame = { objects: {}, behaviors: {}, actions: {}, finalActions: [], finalized: false, lastObjectBehaviorId: null };
