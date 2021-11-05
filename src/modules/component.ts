@@ -98,7 +98,7 @@ export const setBehaviorValAction: TemplateObject = {
 
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].add((id: number) => `setValAction!(${id}, "${varName.startsWith("base.") ? varName.substring(5) : name + varName}", {${body}});`);
+        state.graphgame.behaviors[name].add((id: number) => `setValAction!(${id}, "${varName.startsWith("base.") ? varName.substring(5) : name + varName}", {${varName.startsWith("base.") ? "" : `const ${varName} = ${name + varName};`}${body}});`);
 
         return "";
     }
@@ -120,7 +120,7 @@ export const noRegisterSetBehaviorValAction: TemplateObject = {
 
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].add((id: number) => `noRegisterSetValAction!(${id}, "${varName.startsWith("base.") ? varName.substring(5) : name + varName}", {${body}}${actionName ? ", \"" + actionName + "\"" : ""});`);
+        state.graphgame.behaviors[name].add((id: number) => `noRegisterSetValAction!(${id}, "${varName.startsWith("base.") ? varName.substring(5) : name + varName}", {${varName.startsWith("base.") ? "" : `const ${varName} = ${name + varName};`}${body}}${actionName ? ", \"" + actionName + "\"" : ""});`);
 
         return "";
     }
@@ -159,7 +159,7 @@ export const finalizeBehavior: TemplateObject = {
         const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
         
         behaviorCheck(state, name);
-        
+
         state.graphgame.behaviors[name].finalize();
         
         return "";
