@@ -1,6 +1,7 @@
 import {GameObject} from "./GameObject";
 import {Behavior} from "./Behavior";
 import {SemiMutable} from "./SemiMutable";
+import {TemplateArgs} from "logimat";
 
 export interface TemplateState {
     graphgame: {
@@ -15,6 +16,7 @@ export interface TemplateState {
         },
         finalActions: string[],
         finalized: boolean,
-        lastObjectBehaviorId: number
+        lastObjectBehaviorId: number,
+        lastObjectBehaviorArgs: TemplateArgs
     }
 }

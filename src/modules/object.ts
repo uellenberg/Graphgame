@@ -212,6 +212,7 @@ export const useBehavior: TemplateObject = {
         behaviorCheck(state, name);
 
         state.graphgame.lastObjectBehaviorId = id;
+        state.graphgame.lastObjectBehaviorArgs = args.slice(2);
 
         return state.graphgame.behaviors[name].compile(id);
     }

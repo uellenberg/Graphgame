@@ -127,6 +127,27 @@ export const noRegisterSetBehaviorValAction: TemplateObject = {
 };
 
 /**
+ * Gets an argument that was passed to the behavior when it was added to the GameObject.
+ * Usage getBehaviorArgs!(arg: number);
+ */
+export const getBehaviorArgs: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        expressionCheck(context);
+
+        const idx = getNum(args, state, 0, "An argument index is required!");
+
+        if(state.graphgame.lastObjectBehaviorArgs.length <= idx) throw new Error("This behavior requires at least " + (idx+1) + " arguments!");
+
+        let val = state.graphgame.lastObjectBehaviorArgs[0];
+        if(typeof(val) === "string") val = `"${val}"`;
+        else val = val.toString();
+
+        return val;
+    }
+};
+
+/**
  * Finalize the behavior. This must be the last template called on the behavior.
  * Usage: finalizeBehavior!(name: string);
  */

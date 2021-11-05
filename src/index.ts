@@ -1,6 +1,15 @@
 import {TemplatesObject} from "logimat";
 import {createObject, finalize, getVal, noRegisterSetValAction, setMut, setVal, setValAction, useBehavior} from "./modules/object";
-import {createBehavior, setBehaviorMut, getBehaviorVal, setBehaviorVal, setBehaviorValAction, noRegisterSetBehaviorValAction, finalizeBehavior} from "./modules/component";
+import {
+    createBehavior,
+    setBehaviorMut,
+    getBehaviorVal,
+    setBehaviorVal,
+    setBehaviorValAction,
+    noRegisterSetBehaviorValAction,
+    finalizeBehavior,
+    getBehaviorArgs
+} from "./modules/component";
 
 export const templates: TemplatesObject = {
     //Object
@@ -19,5 +28,6 @@ export const templates: TemplatesObject = {
     setBehaviorVal,
     setBehaviorValAction,
     noRegisterSetBehaviorValAction,
-    finalizeBehavior
+    finalizeBehavior,
+    getBehaviorArgs
 };
