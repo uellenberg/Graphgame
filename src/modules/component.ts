@@ -84,6 +84,35 @@ export const setBehaviorVal: TemplateObject = {
 };
 
 /**
+ * Set the value of a behavior's variable (during compilation) using an argument that was passed to the behavior when it was added to the GameObject. This must be used before a variable is marked as mutable.
+ * Usage: setBehaviorValArgs!(name: string, variableName: string, arg: number);
+ */
+export const setBehaviorValArgs: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
+        const varName = getString(args, state, 1, "A variable name is required!");
+        const idx = getNum(args, state, 2, "An argument index is required!");
+
+        behaviorCheck(state, name);
+
+        state.graphgame.behaviors[name].add((id: number) => {
+            if(state.graphgame.lastObjectBehaviorArgs.length <= idx) throw new Error("This behavior requires at least " + (idx+1) + " arguments!");
+
+            let val = state.graphgame.lastObjectBehaviorArgs[idx];
+            if(typeof(val) === "string") val = `"${val}"`;
+            else val = val.toString();
+
+            return `setVal!(${id}, "${varName.startsWith("base.") ? varName.substring(5) : name + varName}", ${val});`;
+        });
+
+        return "";
+    }
+};
+
+/**
  * Set the value of a behavior's variable on update (during runtime). This must be used after a variable is marked as mutable.
  * Usage: setBehaviorValAction!(name: string, variableName: string, body: ActionBody);
  */
@@ -139,7 +168,7 @@ export const getBehaviorArgs: TemplateObject = {
 
         if(state.graphgame.lastObjectBehaviorArgs.length <= idx) throw new Error("This behavior requires at least " + (idx+1) + " arguments!");
 
-        let val = state.graphgame.lastObjectBehaviorArgs[0];
+        let val = state.graphgame.lastObjectBehaviorArgs[idx];
         if(typeof(val) === "string") val = `"${val}"`;
         else val = val.toString();
 

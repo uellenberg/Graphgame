@@ -8,7 +8,8 @@ import {
     setBehaviorValAction,
     noRegisterSetBehaviorValAction,
     finalizeBehavior,
-    getBehaviorArgs
+    getBehaviorArgs,
+    setBehaviorValArgs
 } from "./modules/component";
 
 export const templates: TemplatesObject = {
@@ -29,5 +30,6 @@ export const templates: TemplatesObject = {
     setBehaviorValAction,
     noRegisterSetBehaviorValAction,
     finalizeBehavior,
-    getBehaviorArgs
+    getBehaviorArgs,
+    setBehaviorValArgs
 };
