@@ -73,7 +73,7 @@ export const getVal: TemplateObject = {
         objectCheck(state, id);
         objectVarCheck(state, id, name);
 
-        return getSemiMut(state, id, name).get();
+        return getSemiMut(state, id, name).get(-1);
     }
 };
 
