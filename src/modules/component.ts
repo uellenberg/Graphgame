@@ -95,13 +95,19 @@ export const setBehaviorValArgs: TemplateObject = {
         const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
         const varName = getString(args, state, 1, "A variable name is required!");
         const idx = getNum(args, state, 2, "An argument index is required!");
+        const defaultVal = getNum(args, state, 3);
 
         behaviorCheck(state, name);
 
         state.graphgame.behaviors[name].add((id: number) => {
-            if(state.graphgame.lastObjectBehaviorArgs.length <= idx) throw new Error("This behavior requires at least " + (idx+1) + " arguments!");
+            let val;
+            if(state.graphgame.lastObjectBehaviorArgs.length <= idx) {
+                if(defaultVal == null) throw new Error("This behavior requires at least " + (idx+1) + " arguments!");
+                else val = defaultVal;
+            } else {
+                val = state.graphgame.lastObjectBehaviorArgs[idx];
+            }
 
-            let val = state.graphgame.lastObjectBehaviorArgs[idx];
             if(typeof(val) === "string") val = `"${val}"`;
             else val = val.toString();
 
