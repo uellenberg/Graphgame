@@ -2,7 +2,17 @@ import {TemplateArgs, TemplateContext, TemplateObject} from "logimat";
 import {GameObject} from "../types/GameObject";
 import {SemiMutable} from "../types/SemiMutable";
 import {TemplateState} from "../types/TemplateState";
-import {ensureState, outerCheck, expressionCheck, behaviorCheck, objectVarCheck, getSemiMut, getNum, getString} from "../util";
+import {
+    ensureState,
+    outerCheck,
+    expressionCheck,
+    behaviorCheck,
+    objectVarCheck,
+    getSemiMut,
+    getNum,
+    getString,
+    getFullVariableName, getShortVariableName
+} from "../util";
 import {Behavior} from "../types/Behavior";
 
 /**
@@ -38,7 +48,7 @@ export const setBehaviorMut: TemplateObject = {
 
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].add((id: number) => `setMut!(${id}, "${varName.startsWith("base.") ? varName.substring(5) : name + varName}");`);
+        state.graphgame.behaviors[name].add((id: number) => `setMut!(${id}, "${getFullVariableName(varName, name)}");`);
 
         return "";
     }
@@ -58,7 +68,7 @@ export const getBehaviorVal: TemplateObject = {
 
         behaviorCheck(state, name);
 
-        return `getVal!(${state.graphgame.lastObjectBehaviorId}, "${varName.startsWith("base.") ? varName.substring(5) : name + varName}")`;
+        return `getVal!(${state.graphgame.lastObjectBehaviorId}, "${getFullVariableName(varName, name)}")`;
     }
 };
 
@@ -77,7 +87,7 @@ export const setBehaviorVal: TemplateObject = {
 
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].add((id: number) => `setVal!(${id}, "${varName.startsWith("base.") ? varName.substring(5) : name + varName}", ${val});`);
+        state.graphgame.behaviors[name].add((id: number) => `setVal!(${id}, "${getFullVariableName(varName, name)}", ${val});`);
 
         return "";
     }
@@ -111,7 +121,7 @@ export const setBehaviorValArgs: TemplateObject = {
             if(typeof(val) === "string") val = `"${val}"`;
             else val = val.toString();
 
-            return `setVal!(${id}, "${varName.startsWith("base.") ? varName.substring(5) : name + varName}", ${val});`;
+            return `setVal!(${id}, "${getFullVariableName(varName, name)}", ${val});`;
         });
 
         return "";
@@ -133,7 +143,7 @@ export const setBehaviorValAction: TemplateObject = {
 
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].addPost((id: number) => `setValAction!(${id}, "${varName.startsWith("base.") ? varName.substring(5) : name + varName}", {${varName.startsWith("base.") ? "" : `const ${varName} = ${name + varName};`}${body}});`);
+        state.graphgame.behaviors[name].addPost((id: number) => `setValAction!(${id}, "${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};${body}});`);
 
         return "";
     }
@@ -155,7 +165,7 @@ export const noRegisterSetBehaviorValAction: TemplateObject = {
 
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].addPost((id: number) => `noRegisterSetValAction!(${id}, "${varName.startsWith("base.") ? varName.substring(5) : name + varName}", {${varName.startsWith("base.") ? "" : `const ${varName} = ${name + varName};`}${body}}${actionName ? ", \"" + actionName + "\"" : ""});`);
+        state.graphgame.behaviors[name].addPost((id: number) => `noRegisterSetValAction!(${id}, "${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};${body}}${actionName ? ", \"" + actionName + "\"" : ""});`);
 
         return "";
     }
