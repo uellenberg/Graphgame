@@ -3,6 +3,7 @@ import {GameObject} from "../types/GameObject";
 import {SemiMutable} from "../types/SemiMutable";
 import {TemplateState} from "../types/TemplateState";
 import {
+    behaviorCheck,
     ensureState,
     expressionCheck,
     getNum,
@@ -10,8 +11,7 @@ import {
     getString,
     objectCheck,
     objectVarCheck,
-    outerCheck,
-    behaviorCheck
+    outerCheck
 } from "../util";
 
 /**
@@ -29,7 +29,7 @@ export const createObject: TemplateObject = {
 
         state.graphgame.objects[id] = new GameObject(id);
 
-        return "";
+        return `useBehavior!(${id}, "transform");`;
     }
 };
 
@@ -242,51 +242,3 @@ export const useBehaviorPost: TemplateObject = {
         return "";
     }
 };
-
-/**
- * Finalize the game. This must be the last template called.
- * Usage: finalize!();
- */
-export const finalize: TemplateObject = {
-    function: (args, state: TemplateState, context) => {
-        ensureState(state);
-        outerCheck(context);
-
-        const output: string[] = [];
-
-        if(args.length < 1) {
-            for(const action of state.graphgame.postActions) {
-                output.push(action(state));
-            }
-
-            return output.join("\n") + "\nfinalize!(1);";
-        }
-
-        for (const id of Object.keys(state.graphgame.objects)) {
-            const object: GameObject = state.graphgame.objects[id];
-
-            //Draw the object.
-            output.push(`inline function graphGameDraw${id}(x, y) {
-                if(${object.shape.get()} == 0) {
-                    state = ((x-${object.x.get()})/${object.width.get()})^2+((y-${object.y.get()})/${object.height.get()})^2;
-                } else {
-                    state = 0;
-                }
-            }
-            graph { 1 } = { graphGameDraw${id}(x, y) };`);
-        }
-
-        for(const name in state.graphgame.actions) {
-            const val = state.graphgame.actions[name];
-
-            output.push(`action ${name + "update"} = ${name} {
-                state = ${val};
-            }`);
-            state.graphgame.finalActions.push(name + "update");
-        }
-
-        output.push("actions m_ain = " + state.graphgame.finalActions.join(", ") + ";");
-
-        return output.join("\n");
-    }
-}

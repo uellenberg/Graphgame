@@ -172,6 +172,31 @@ export const noRegisterSetBehaviorValAction: TemplateObject = {
 };
 
 /**
+ * Set the value of a behavior's variable on update (during runtime). This must be used after a variable is marked as mutable.
+ * Usage: setBehaviorValAction!(name: string, variableName: string, body: ActionBody);
+ */
+export const behaviorGraph: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
+        const body = getString(args, state, 1, "An action body is required!");
+
+        behaviorCheck(state, name);
+
+        state.graphgame.behaviors[name].addPost((id: number, idx: number) => {
+            return `inline function g_raphgamepost${idx}(x, y) {
+                ${body}
+            }
+            graph { 1 } = { g_raphgamepost${idx}(x, y) };`;
+        });
+
+        return "";
+    }
+};
+
+/**
  * Gets an argument that was passed to the behavior when it was added to the GameObject.
  * Usage getBehaviorArgs!(arg: number);
  */

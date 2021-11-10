@@ -1,7 +1,7 @@
 export class Behavior {
     private readonly name: string;
-    private parts: ((id: number) => string)[] = [];
-    private postParts: ((id: number) => string)[] = [];
+    private parts: ((id: number, idx: number) => string)[] = [];
+    private postParts: ((id: number, idx: number) => string)[] = [];
     private finalized: boolean = false;
 
     public constructor(name: string) {
@@ -11,14 +11,14 @@ export class Behavior {
     /**
      * Add a new part to the behavior.
      */
-    public add(val: (id: number) => string) : void {
+    public add(val: (id: number, idx: number) => string) : void {
         this.parts.push(val);
     }
 
     /**
      * Add a new post part to the behavior.
      */
-    public addPost(val: (id: number) => string) : void {
+    public addPost(val: (id: number, idx: number) => string) : void {
         this.postParts.push(val);
     }
 
@@ -34,7 +34,7 @@ export class Behavior {
      */
     public compile(id: number) : string {
         if(!this.finalized) throw new Error("A behavior must be finalized before it can be used!");
-        return this.parts.map(part => part(id)).join("\n");
+        return this.parts.map((part, idx) => part(id, idx)).join("\n");
     }
 
     /**
@@ -42,6 +42,6 @@ export class Behavior {
      */
     public compilePost(id: number) : string {
         if(!this.finalized) throw new Error("A behavior must be finalized before it can be used!");
-        return this.postParts.map(part => part(id)).join("\n");
+        return this.postParts.map((part, idx) => part(id, idx)).join("\n");
     }
 }
