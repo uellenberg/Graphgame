@@ -133,7 +133,7 @@ export const setBehaviorValAction: TemplateObject = {
 
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].add((id: number) => `setValAction!(${id}, "${varName.startsWith("base.") ? varName.substring(5) : name + varName}", {${varName.startsWith("base.") ? "" : `const ${varName} = ${name + varName};`}${body}});`);
+        state.graphgame.behaviors[name].addPost((id: number) => `setValAction!(${id}, "${varName.startsWith("base.") ? varName.substring(5) : name + varName}", {${varName.startsWith("base.") ? "" : `const ${varName} = ${name + varName};`}${body}});`);
 
         return "";
     }
@@ -155,7 +155,7 @@ export const noRegisterSetBehaviorValAction: TemplateObject = {
 
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].add((id: number) => `noRegisterSetValAction!(${id}, "${varName.startsWith("base.") ? varName.substring(5) : name + varName}", {${varName.startsWith("base.") ? "" : `const ${varName} = ${name + varName};`}${body}}${actionName ? ", \"" + actionName + "\"" : ""});`);
+        state.graphgame.behaviors[name].addPost((id: number) => `noRegisterSetValAction!(${id}, "${varName.startsWith("base.") ? varName.substring(5) : name + varName}", {${varName.startsWith("base.") ? "" : `const ${varName} = ${name + varName};`}${body}}${actionName ? ", \"" + actionName + "\"" : ""});`);
 
         return "";
     }

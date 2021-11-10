@@ -17,6 +17,7 @@ export interface TemplateState {
         finalActions: string[],
         finalized: boolean,
         lastObjectBehaviorId: number,
-        lastObjectBehaviorArgs: TemplateArgs
+        lastObjectBehaviorArgs: TemplateArgs,
+        postActions: ((state: TemplateState) => string)[]
     }
 }

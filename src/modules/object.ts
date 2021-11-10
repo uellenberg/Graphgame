@@ -214,7 +214,32 @@ export const useBehavior: TemplateObject = {
         state.graphgame.lastObjectBehaviorId = id;
         state.graphgame.lastObjectBehaviorArgs = args.slice(2);
 
+        state.graphgame.postActions.push((state) => {
+            return `useBehaviorPost!(${id}, \"${name}\", ${args.slice(2).join(", ")});\n` + state.graphgame.behaviors[name].compilePost(id);
+        });
+
         return state.graphgame.behaviors[name].compile(id);
+    }
+};
+
+/**
+ * Internal use only.
+ */
+export const useBehaviorPost: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        const id = getNum(args, state, 0, "An object ID is required!");
+        const name = getString(args, state, 1, "A behavior name is required!");
+
+        objectCheck(state, id);
+        behaviorCheck(state, name);
+
+        state.graphgame.lastObjectBehaviorId = id;
+        state.graphgame.lastObjectBehaviorArgs = args.slice(2);
+
+        return "";
     }
 };
 
@@ -228,6 +253,14 @@ export const finalize: TemplateObject = {
         outerCheck(context);
 
         const output: string[] = [];
+
+        if(args.length < 1) {
+            for(const action of state.graphgame.postActions) {
+                output.push(action(state));
+            }
+
+            return output.join("\n") + "\nfinalize!(1);";
+        }
 
         for (const id of Object.keys(state.graphgame.objects)) {
             const object: GameObject = state.graphgame.objects[id];
