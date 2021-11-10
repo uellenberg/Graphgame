@@ -215,7 +215,7 @@ export const useBehavior: TemplateObject = {
         state.graphgame.lastObjectBehaviorArgs = args.slice(2);
 
         state.graphgame.postActions.push((state) => {
-            return `useBehaviorPost!(${id}, \"${name}\", ${args.slice(2).join(", ")});\n` + state.graphgame.behaviors[name].compilePost(id);
+            return `useBehaviorPost!(${id}, \"${name}\"${args.length > 2 ? ", " + args.slice(2).join(", ") : ""});\n` + state.graphgame.behaviors[name].compilePost(id);
         });
 
         return state.graphgame.behaviors[name].compile(id);
