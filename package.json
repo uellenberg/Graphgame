@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/uellenberg/LogiMat.git"
+    "url": "https://github.com/uellenberg/Graphgame.git"
   },
   "author": "Jonah Uellenberg",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/uellenberg/LogiMat/issues"
+    "url": "https://github.com/uellenberg/Graphgame/issues"
   },
-  "homepage": "https://github.com/uellenberg/LogiMat",
+  "homepage": "https://github.com/uellenberg/Graphgame",
   "engines": {
     "node": ">=0.16"
   },
@@ -26,7 +26,7 @@
     "LICENSE"
   ],
   "dependencies": {
-    "logimat": "^1.0.10"
+    "logimat": "^1.0.12"
   },
   "devDependencies": {
     "typescript": "^4.4.4"
