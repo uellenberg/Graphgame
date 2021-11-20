@@ -189,13 +189,13 @@ export const behaviorGraph: TemplateObject = {
         behaviorCheck(state, name);
 
         state.graphgame.behaviors[name].addPost((id: number, idx: number) => {
-            return `inline function g_raphgamepost${idx}1(x, y) {
+            return `inline function g_raphgamepost${name}a${id}a${idx}a1(x, y) {
                 ${body2 ? body1 : "state = 1;"}
             }
-            inline function g_raphgamepost${idx}2(x, y) {
+            inline function g_raphgamepost${name}a${id}a${idx}a2(x, y) {
                 ${body2 ? body2 : body1}
             }
-            graph { g_raphgamepost${idx}1(x, y) } ${operator || "="} { g_raphgamepost${idx}2(x, y) };`;
+            graph { g_raphgamepost${name}a${id}a${idx}a1(x, y) } ${operator || "="} { g_raphgamepost${name}a${id}a${idx}a2(x, y) };`;
         });
 
         return "";
