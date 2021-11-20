@@ -172,8 +172,9 @@ export const noRegisterSetBehaviorValAction: TemplateObject = {
 };
 
 /**
- * Set the value of a behavior's variable on update (during runtime). This must be used after a variable is marked as mutable.
- * Usage: setBehaviorValAction!(name: string, variableName: string, body: ActionBody);
+ * Create a graph of this object.
+ * If only one body is defined, the graph will use 1=body1, and body1=body2 otherwise.
+ * Usage: behaviorGraph!(name: string, body1: ActionBody, body2?: ActionBody);
  */
 export const behaviorGraph: TemplateObject = {
     function: (args, state: TemplateState, context) => {
@@ -181,15 +182,19 @@ export const behaviorGraph: TemplateObject = {
         outerCheck(context);
 
         const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
-        const body = getString(args, state, 1, "An action body is required!");
+        const body1 = getString(args, state, 1, "An action body is required!");
+        const body2 = getString(args, state, 2);
 
         behaviorCheck(state, name);
 
         state.graphgame.behaviors[name].addPost((id: number, idx: number) => {
-            return `inline function g_raphgamepost${idx}(x, y) {
-                ${body}
+            return `inline function g_raphgamepost${idx}1(x, y) {
+                ${body2 ? body1 : "state = 1;"}
             }
-            graph { 1 } = { g_raphgamepost${idx}(x, y) };`;
+            inline function g_raphgamepost${idx}2(x, y) {
+                ${body2 ? body2 : body1}
+            }
+            graph { g_raphgamepost${idx}1(x, y) } = { g_raphgamepost${idx}2(x, y) };`;
         });
 
         return "";
