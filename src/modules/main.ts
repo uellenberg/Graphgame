@@ -44,7 +44,7 @@ export const finalize: TemplateObject = {
             state.graphgame.finalActions.push(name + "update");
         }
 
-        output.push("actions m_ain = " + state.graphgame.finalActions.join(", ") + ";");
+        if(state.graphgame.finalActions.length > 0) output.push("actions m_ain = " + state.graphgame.finalActions.join(", ") + ";");
 
         return output.join("\n");
     }
