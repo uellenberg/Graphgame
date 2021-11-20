@@ -174,7 +174,7 @@ export const noRegisterSetBehaviorValAction: TemplateObject = {
 /**
  * Create a graph of this object.
  * If only one body is defined, the graph will use 1=body1, and body1=body2 otherwise.
- * Usage: behaviorGraph!(name: string, body1: ActionBody, body2?: ActionBody);
+ * Usage: behaviorGraph!(name: string, body1: ActionBody, operator?: string, body2?: ActionBody);
  */
 export const behaviorGraph: TemplateObject = {
     function: (args, state: TemplateState, context) => {
@@ -183,7 +183,8 @@ export const behaviorGraph: TemplateObject = {
 
         const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
         const body1 = getString(args, state, 1, "An action body is required!");
-        const body2 = getString(args, state, 2);
+        const operator = getString(args, state, 2);
+        const body2 = getString(args, state, 3);
 
         behaviorCheck(state, name);
 
@@ -194,7 +195,7 @@ export const behaviorGraph: TemplateObject = {
             inline function g_raphgamepost${idx}2(x, y) {
                 ${body2 ? body2 : body1}
             }
-            graph { g_raphgamepost${idx}1(x, y) } = { g_raphgamepost${idx}2(x, y) };`;
+            graph { g_raphgamepost${idx}1(x, y) } ${operator || "="} { g_raphgamepost${idx}2(x, y) };`;
         });
 
         return "";
