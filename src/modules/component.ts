@@ -44,7 +44,7 @@ export const setBehaviorMut: TemplateObject = {
         outerCheck(context);
 
         const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
-        const varName = getString(args, state, 1, "A variable name is required!");
+        const varName = getString(args, state, 1, "A variable name is required!").trim().toLowerCase();
 
         behaviorCheck(state, name);
 
@@ -64,7 +64,7 @@ export const getBehaviorVal: TemplateObject = {
         expressionCheck(context);
 
         const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
-        const varName = getString(args, state, 1, "A variable name is required!");
+        const varName = getString(args, state, 1, "A variable name is required!").trim().toLowerCase();
 
         behaviorCheck(state, name);
 
@@ -82,7 +82,7 @@ export const setBehaviorVal: TemplateObject = {
         outerCheck(context);
 
         const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
-        const varName = getString(args, state, 1, "A variable name is required!");
+        const varName = getString(args, state, 1, "A variable name is required!").trim().toLowerCase();
         const val = getNum(args, state, 2, "A value is required!");
 
         behaviorCheck(state, name);
@@ -103,7 +103,7 @@ export const setBehaviorValArgs: TemplateObject = {
         outerCheck(context);
 
         const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
-        const varName = getString(args, state, 1, "A variable name is required!");
+        const varName = getString(args, state, 1, "A variable name is required!").trim().toLowerCase();
         const idx = getNum(args, state, 2, "An argument index is required!");
         const defaultVal = getNum(args, state, 3);
 
@@ -138,7 +138,7 @@ export const setBehaviorValAction: TemplateObject = {
         outerCheck(context);
 
         const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
-        const varName = getString(args, state, 1, "A variable name is required!");
+        const varName = getString(args, state, 1, "A variable name is required!").trim().toLowerCase();
         const body = getString(args, state, 2, "An action body is required!");
 
         behaviorCheck(state, name);
@@ -159,9 +159,9 @@ export const noRegisterSetBehaviorValAction: TemplateObject = {
         outerCheck(context);
 
         const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
-        const varName = getString(args, state, 1, "A variable name is required!");
+        const varName = getString(args, state, 1, "A variable name is required!").trim().toLowerCase();
         const body = getString(args, state, 2, "An action body is required!");
-        const actionName = getString(args, state, 3);
+        const actionName = getString(args, state, 3)?.trim().toLowerCase();
 
         behaviorCheck(state, name);
 

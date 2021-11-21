@@ -43,7 +43,7 @@ export const setMut: TemplateObject = {
         outerCheck(context);
 
         const id = getNum(args, state, 0, "An object ID is required!");
-        const name = getString(args, state, 1, "A variable name is required!");
+        const name = getString(args, state, 1, "A variable name is required!").trim().toLowerCase().replace(/\./g, "");
 
         objectCheck(state, id);
         objectVarCheck(state, id, name);
@@ -68,7 +68,7 @@ export const getVal: TemplateObject = {
         expressionCheck(context);
 
         const id = getNum(args, state, 0, "An object ID is required!");
-        const name = getString(args, state, 1, "A variable name is required!").replace(/\./g, "");
+        const name = getString(args, state, 1, "A variable name is required!").trim().toLowerCase().replace(/\./g, "");
 
         objectCheck(state, id);
         objectVarCheck(state, id, name);
@@ -87,7 +87,7 @@ export const setVal: TemplateObject = {
         outerCheck(context);
 
         const id = getNum(args, state, 0, "An object ID is required!");
-        const name = getString(args, state, 1, "A variable name is required!");
+        const name = getString(args, state, 1, "A variable name is required!").trim().toLowerCase().replace(/\./g, "");
         const val = getNum(args, state, 2, "A value is required!");
 
         objectCheck(state, id);
@@ -113,7 +113,7 @@ export const setValAction: TemplateObject = {
         outerCheck(context);
 
         const id = getNum(args, state, 0, "An object ID is required!");
-        const name = getString(args, state, 1, "A variable name is required!");
+        const name = getString(args, state, 1, "A variable name is required!").trim().toLowerCase().replace(/\./g, "");
         const body = getString(args, state, 2, "An action body is required!");
 
         objectCheck(state, id);
@@ -147,9 +147,9 @@ export const noRegisterSetValAction: TemplateObject = {
         outerCheck(context);
 
         const id = getNum(args, state, 0, "An object ID is required!");
-        const name = getString(args, state, 1, "A variable name is required!");
+        const name = getString(args, state, 1, "A variable name is required!").trim().toLowerCase().replace(/\./g, "");
         const body = getString(args, state, 2, "An action body is required!");
-        const actionName = getString(args, state, 3);
+        const actionName = getString(args, state, 3)?.trim().toLowerCase();
 
         objectCheck(state, id);
         objectVarCheck(state, id, name);
@@ -231,7 +231,7 @@ export const useBehaviorPost: TemplateObject = {
         outerCheck(context);
 
         const id = getNum(args, state, 0, "An object ID is required!");
-        const name = getString(args, state, 1, "A behavior name is required!");
+        const name = getString(args, state, 1, "A behavior name is required!").trim().toLowerCase();
 
         objectCheck(state, id);
         behaviorCheck(state, name);
