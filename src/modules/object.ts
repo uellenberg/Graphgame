@@ -68,7 +68,7 @@ export const getVal: TemplateObject = {
         expressionCheck(context);
 
         const id = getNum(args, state, 0, "An object ID is required!");
-        const name = getString(args, state, 1, "A variable name is required!");
+        const name = getString(args, state, 1, "A variable name is required!").replace(/\./g, "");
 
         objectCheck(state, id);
         objectVarCheck(state, id, name);

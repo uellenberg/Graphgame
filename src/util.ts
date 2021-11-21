@@ -57,6 +57,6 @@ export const getString = (args: TemplateArgs, state: TemplateState, idx: number,
 
 //Dot access helper
 
-export const getFullVariableName = (varName: string, behaviorName: string) => (varName.startsWith("base.") ? varName.substring(5) : behaviorName + varName).replace(".", "");
+export const getFullVariableName = (varName: string, behaviorName: string) => (varName.startsWith("base.") ? varName.substring(5) : behaviorName + varName).replace(/\./g, "");
 
 export const getShortVariableName = (varName: string) => varName.split(".").pop();
