@@ -1,6 +1,6 @@
 import {TemplateObject} from "logimat";
 import {TemplateState} from "../types/TemplateState";
-import {ensureState, outerCheck} from "../util";
+import {ensureState, getString, outerCheck} from "../util";
 import transform from "../init/transform";
 import circle from "../init/circle";
 
@@ -13,6 +13,22 @@ export const initialize: TemplateObject = {
         outerCheck(context);
 
         return transform + circle;
+    }
+};
+
+/**
+ * Registers an action and runs it on update.
+ * Usage: registerAction!(actionName: string);
+ */
+export const registerAction: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        const actionName = getString(args, state, 0, "An action name is required!");
+
+        state.graphgame.finalActions.push(actionName);
+        return "";
     }
 };
 

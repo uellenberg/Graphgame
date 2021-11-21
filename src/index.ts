@@ -20,11 +20,12 @@ import {
     getBehaviorArgs,
     setBehaviorValArgs, behaviorGraph
 } from "./modules/component";
-import {finalize, initialize} from "./modules/main";
+import {finalize, initialize, registerAction} from "./modules/main";
 
 export const templates: TemplatesObject = {
     //Main
     initialize,
+    registerAction,
     finalize,
     //Object
     createObject,
