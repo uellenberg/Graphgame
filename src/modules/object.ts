@@ -206,7 +206,7 @@ export const useBehavior: TemplateObject = {
         outerCheck(context);
 
         const id = getNum(args, state, 0, "An object ID is required!");
-        const name = getString(args, state, 1, "A behavior name is required!");
+        const name = getString(args, state, 1, "A behavior name is required!").trim().toLowerCase();
 
         objectCheck(state, id);
         behaviorCheck(state, name);
