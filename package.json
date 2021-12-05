@@ -26,7 +26,7 @@
     "LICENSE"
   ],
   "dependencies": {
-    "logimat": "^1.0.12"
+    "logimat": "^1.0.13"
   },
   "devDependencies": {
     "typescript": "^4.4.4"
