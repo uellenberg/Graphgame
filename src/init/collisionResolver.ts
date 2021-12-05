@@ -1,6 +1,9 @@
 export default `
 createBehavior!("collision_resolver");
 
+setMut!("collision_resolver", "base.transform.x");
+setMut!("collision_resolver", "base.transform.y");
+
 setValAction!("collision_resolver", "base.transform.x", {
     state = x;
     

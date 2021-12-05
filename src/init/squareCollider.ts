@@ -67,7 +67,7 @@ setValAction!("square_collider", "base.transform.collision_y", {
             const scaley1 = getValSelect!("transform.scaley");
             const cornery1 = getValSelect!("transform.y") - scaley1/2;
             
-            if(true) {
+            if((cornerx => cornerx1 && cornerx <= cornerx1 + scalex1) || (cornerx + scalex => cornerx1 && cornerx + scalex <= cornerx1 + scalex1)) {
                 const int1 = (cornery1 + scaley1) - cornery;
                 const int2 = (cornery + scaley) - cornery1;
             
