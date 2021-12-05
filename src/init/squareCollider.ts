@@ -1,10 +1,7 @@
 export default `
 createBehavior!("square_collider");
 
-setMut!("square_collider", "base.transform.collision_x");
-setMut!("square_collider", "base.transform.collision_y");
-
-setValAction!("square_collider", "base.transform.collision_x", {
+setVal!("square_collider", "base.transform.collision_x", {
     state = 0;
 
     const scalex = getVal!("square_collider", "base.transform.scalex");
@@ -48,7 +45,7 @@ setValAction!("square_collider", "base.transform.collision_x", {
     });
 });
 
-setValAction!("square_collider", "base.transform.collision_y", {
+setVal!("square_collider", "base.transform.collision_y", {
     state = 0;
 
     const scalex = getVal!("square_collider", "base.transform.scalex");

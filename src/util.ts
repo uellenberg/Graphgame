@@ -52,15 +52,23 @@ export const getNum = (args: TemplateArgs, state: TemplateState, idx: number, er
 };
 
 export const getString = (args: TemplateArgs, state: TemplateState, idx: number, error: string = null) : string => {
-    if(args.length < idx+1 || typeof(args[idx]) !== "string" || !args[idx]) {
+    if(args.length < idx+1 || typeof(args[idx]) !== "string" || args[idx] == null) {
         if(error) throw new Error(error);
         else return null;
     }
     return <string>args[idx];
 };
 
+export const getAnyAsString = (args: TemplateArgs, state: TemplateState, idx: number, error: string = null) : string => {
+    if(args.length < idx+1 || args[idx] == null) {
+        if(error) throw new Error(error);
+        else return null;
+    }
+    return args[idx].toString();
+};
+
 //Dot access helper
 
-export const getFullVariableName = (varName: string, behaviorName: string) => (varName.startsWith("base.") ? varName.substring(5) : behaviorName + varName).replace(/[\._]/g, "");
+export const getFullVariableName = (varName: string, behaviorName: string) => (varName.startsWith("base.") ? varName.substring(5) : behaviorName + varName).replace(/[._]/g, "");
 
 export const getShortVariableName = (varName: string) => varName.split(".").pop().replace(/_/g, "");

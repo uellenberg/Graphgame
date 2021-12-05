@@ -11,7 +11,7 @@ import {
     getSemiMut,
     getNum,
     getString,
-    getFullVariableName, getShortVariableName, objectCheck
+    getFullVariableName, getShortVariableName, objectCheck, getAnyAsString
 } from "../util";
 import {Behavior} from "../types/Behavior";
 
@@ -73,7 +73,10 @@ export const getVal: TemplateObject = {
         behaviorCheck(state, name);
         objectVarCheck(state, state.graphgame.lastObjectBehaviorId, fullName);
 
-        return getSemiMut(state, state.graphgame.lastObjectBehaviorId, fullName).get(-1);
+        const value = getSemiMut(state, state.graphgame.lastObjectBehaviorId, fullName);
+        if(typeof(value) === "string") return value;
+
+        return value.get(-1);
     }
 };
 
@@ -88,12 +91,14 @@ export const setVal: TemplateObject = {
 
         const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
         const varName = getString(args, state, 1, "A variable name is required!").trim().toLowerCase();
-        const val = getNum(args, state, 2, "A value is required!");
+        const val = getAnyAsString(args, state, 2, "A value is required!");
+
+        const parsed = parseInt(val);
 
         behaviorCheck(state, name);
 
         state.graphgame.behaviors[name].add((id: number) => `selectID!(${id});
-        setValSelect!("${getFullVariableName(varName, name)}", ${val});
+        setValSelect!("${getFullVariableName(varName, name)}", ${isNaN(parsed) ? `{${val}}` : parsed});
         selectID!();`);
 
         return "";

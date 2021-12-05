@@ -2,7 +2,7 @@ import {TemplateObject} from "logimat";
 import {TemplateState} from "../types/TemplateState";
 import {
     ensureState,
-    expressionCheck,
+    expressionCheck, getAnyAsString,
     getNum,
     getSemiMut,
     getString,
@@ -139,7 +139,10 @@ export const getValSelect: TemplateObject = {
         objectCheck(state, id);
         objectVarCheck(state, id, name);
 
-        return getSemiMut(state, id, name).get(-1);
+        const value = getSemiMut(state, id, name);
+        if(typeof(value) === "string") return value;
+
+        return value.get(-1);
     }
 };
 
@@ -154,15 +157,34 @@ export const setValSelect: TemplateObject = {
 
         const id = state.graphgame.currentObjectId;
         const name = getString(args, state, 0, "A variable name is required!").trim().toLowerCase().replace(/\./g, "");
-        const val = getNum(args, state, 1, "A value is required!");
+        const val = getAnyAsString(args, state, 1, "A value is required!");
+
+        const parsed = parseInt(val);
 
         objectCheck(state, id);
 
-        if(!state.graphgame.objects[id].hasOwnProperty(name)) {
-            state.graphgame.objects[id][name] = new SemiMutable(name, id, val);
+        if(!isNaN(parsed)) {
+            if(!state.graphgame.objects[id].hasOwnProperty(name)) {
+                console.log(name)
+                state.graphgame.objects[id][name] = new SemiMutable(name, id, parsed);
+            } else {
+                //The error message is included in here.
+                getSemiMut(state, id, name).set(parsed);
+            }
         } else {
-            //The error message is included in here.
-            getSemiMut(state, id, name).set(val);
+            if(state.graphgame.objects[id].hasOwnProperty(name)) {
+                throw new Error("The variable \"" + name + "\" already exists! Consider using actions or a different variable name.");
+            }
+
+            state.graphgame.objects[id][name] = `g_raphgameobject${id}${name}`;
+            console.log(`g_raphgameobject${id}${name}`)
+
+            return `
+            inline function g_raphgameobject${id}${name}_get() {
+                ${val}
+            }
+            
+            inline const g_raphgameobject${id}${name} = g_raphgameobject${id}${name}_get();`;
         }
 
         return "";
@@ -195,6 +217,7 @@ export const setValActionSelect: TemplateObject = {
         const semimutName = semimut.name();
 
         state.graphgame.actions[semimutVar] = semimut.get();
+        console.log("  ---------- INCREMENTED " + oldSemimut + "  -> " + semimut.get());
 
         return `inline function ${semimutName}() {
             const ${name} = ${oldSemimut};
