@@ -23,12 +23,12 @@ setValAction!("square_collider", "base.transform.collision_x", {
             const scaley1 = getValSelect!("transform.scaley");
             const cornery1 = getValSelect!("transform.y") - scaley1/2;
             
-            if((cornery > cornery1 && cornery < cornery1 + scaley1) || (cornery + scaley > cornery1 && cornery + scaley < cornery1 + scaley1)) {
+            if((cornery => cornery1 && cornery <= cornery1 + scaley1) || (cornery + scaley => cornery1 && cornery + scaley <= cornery1 + scaley1)) {
                 const int1 = (cornerx1 + scalex1) - cornerx;
                 const int2 = (cornerx + scalex) - cornerx1;
             
-                const int1valid = int1 > 0 && int1 <= scalex1 && cornerx > cornerx1 && cornerx < cornerx1 + scalex1;
-                const int2valid = int2 > 0 && int2 <= scalex1 && cornerx < cornerx1;
+                const int1valid = int1 > 0 && int1 <= scalex1 && cornerx => cornerx1 && cornerx <= cornerx1 + scalex1;
+                const int2valid = int2 > 0 && int2 <= scalex1 && cornerx <= cornerx1;
             
                 if(int1valid) {
                     if(int2valid && int2 < int1) {
@@ -38,9 +38,9 @@ setValAction!("square_collider", "base.transform.collision_x", {
                     }
                 } else if(int2valid) {
                     if(int1valid && int1 < int2) {
-                    state = int1;
+                        state = int1;
                     } else {
-                    state = -int2;
+                        state = -int2;
                     }
                 }
             }
@@ -67,12 +67,12 @@ setValAction!("square_collider", "base.transform.collision_y", {
             const scaley1 = getValSelect!("transform.scaley");
             const cornery1 = getValSelect!("transform.y") - scaley1/2;
             
-            if((cornerx > cornerx1 && cornerx < cornerx1 + scalex1) || (cornerx + scalex > cornerx1 && cornerx + scalex < cornerx1 + scalex1)) {
+            if(true) {
                 const int1 = (cornery1 + scaley1) - cornery;
                 const int2 = (cornery + scaley) - cornery1;
             
-                const int1valid = int1 > 0 && int1 <= scaley1 && cornery > cornery1 && cornery < cornery1 + scaley1;
-                const int2valid = int2 > 0 && int2 <= scaley1 && cornery < cornery1;
+                const int1valid = int1 > 0 && int1 <= scaley1 && cornery => cornery1 && cornery <= cornery1 + scaley1;
+                const int2valid = int2 > 0 && int2 <= scaley1 && cornery <= cornery1;
             
                 if(int1valid) {
                     if(int2valid && int2 < int1) {
@@ -82,9 +82,9 @@ setValAction!("square_collider", "base.transform.collision_y", {
                     }
                 } else if(int2valid) {
                     if(int1valid && int1 < int2) {
-                    state = int1;
+                        state = int1;
                     } else {
-                    state = -int2;
+                        state = -int2;
                     }
                 }
             }
