@@ -1,9 +1,9 @@
-import {TemplateArgs, TemplateContext, TemplateObject} from "logimat";
+import {TemplateArgs, TemplateContext} from "logimat";
 import {TemplateState} from "./types/TemplateState";
 import {SemiMutable} from "./types/SemiMutable";
 
 export const ensureState = (state: TemplateState) => {
-    if (!state.hasOwnProperty("graphgame")) state.graphgame = { objects: {}, behaviors: {}, actions: {}, finalActions: [], finalized: false, lastObjectBehaviorId: null, lastObjectBehaviorArgs: null, postActions: [] };
+    if (!state.hasOwnProperty("graphgame")) state.graphgame = { objects: {}, behaviors: {}, actions: {}, finalActions: [], finalized: false, lastObjectBehaviorId: null, lastObjectBehaviorArgs: null, postActions: [], selects: [], currentObjectId: null, postInit: false };
     if(state.graphgame.finalized) throw new Error("Do not run any other templates after finalizing!");
 };
 
@@ -16,6 +16,10 @@ export const outerCheck = (context: TemplateContext) : void => {
 export const expressionCheck = (context: TemplateContext) : void => {
     if(context !== TemplateContext.Expression) throw new Error("This can only be ran from within an expression.");
 };
+
+export const outerInnerCheck = (context: TemplateContext) : void => {
+    if(context === TemplateContext.Expression) throw new Error("This cannot be ran from within an expression.");
+}
 
 //GameObject checks
 

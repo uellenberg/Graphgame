@@ -33,8 +33,7 @@ export const registerAction: TemplateObject = {
 };
 
 /**
- * Finalize the game. This must be the last template called.
- * Usage: finalize!();
+ * For internal use only.
  */
 export const finalize: TemplateObject = {
     function: (args, state: TemplateState, context) => {
@@ -43,13 +42,41 @@ export const finalize: TemplateObject = {
 
         const output: string[] = [];
 
-        if (args.length < 1) {
-            for (const action of state.graphgame.postActions) {
-                output.push(action(state));
-            }
-
-            return output.join("\n") + "\nfinalize!(1);";
+        for (const action of state.graphgame.selects) {
+            output.push(action(state));
         }
+
+        return output.join("\n") + "\nfinalize1!();";
+    }
+};
+
+/**
+ * For internal use only.
+ */
+export const finalize1: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        const output: string[] = [];
+
+        for (const action of state.graphgame.postActions) {
+            output.push(action(state));
+        }
+
+        return output.join("\n") + "\nfinalize2!();";
+    }
+};
+
+/**
+ * For internal use only.
+ */
+export const finalize2: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        const output: string[] = [];
 
         for (const name in state.graphgame.actions) {
             const val = state.graphgame.actions[name];

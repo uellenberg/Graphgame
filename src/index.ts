@@ -1,50 +1,60 @@
-import {TemplatesObject} from "logimat";
+import {finalize, finalize1, finalize2, initialize, registerAction} from "./modules/main";
 import {
-    createObject,
+    behaviorGraph,
+    createBehavior, finalizeBehavior, getBehaviorArgs,
     getVal,
-    noRegisterSetValAction,
+    noRegisterSetValAction, objectID,
     setMut,
     setVal,
     setValAction,
-    useBehavior,
-    useBehaviorPost
-} from "./modules/object";
-import {
-    createBehavior,
-    setBehaviorMut,
-    getBehaviorVal,
-    setBehaviorVal,
-    setBehaviorValAction,
-    noRegisterSetBehaviorValAction,
-    finalizeBehavior,
-    getBehaviorArgs,
-    setBehaviorValArgs, behaviorGraph
+    setValArgs
 } from "./modules/component";
-import {finalize, initialize, registerAction} from "./modules/main";
+import {createObject, setObjectVal, useBehavior, useBehaviorPost} from "./modules/object";
+import {
+    getValSelect, noRegisterSetValActionSelect,
+    selectAll,
+    selectBehavior, selectedID,
+    selectID,
+    setMutSelect,
+    setValActionSelect,
+    setValSelect
+} from "./modules/select";
+import {TemplatesObject} from "logimat";
 
 export const templates: TemplatesObject = {
     //Main
     initialize,
     registerAction,
     finalize,
-    //Object
-    createObject,
+    finalize1,
+    finalize2,
+    //Component
+    createBehavior,
     setMut,
     getVal,
     setVal,
+    setValArgs,
     setValAction,
     noRegisterSetValAction,
+    behaviorGraph,
+    getBehaviorArgs,
+    finalizeBehavior,
+    objectID,
+    //Object
+    createObject,
     useBehavior,
     useBehaviorPost,
-    //Behavior
-    createBehavior,
-    setBehaviorMut,
-    getBehaviorVal,
-    setBehaviorVal,
-    setBehaviorValAction,
-    noRegisterSetBehaviorValAction,
-    finalizeBehavior,
-    getBehaviorArgs,
-    setBehaviorValArgs,
-    behaviorGraph
+    setObjectVal,
+    //Select
+    selectID,
+    selectedID,
+    selectAll,
+    selectBehavior,
+    setMutSelect,
+    getValSelect,
+    setValSelect,
+    setValActionSelect,
+    noRegisterSetValActionSelect
 };
+
+export const postTemplates: string = "finalize!();";

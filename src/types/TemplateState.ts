@@ -18,6 +18,9 @@ export interface TemplateState {
         finalized: boolean,
         lastObjectBehaviorId: number,
         lastObjectBehaviorArgs: TemplateArgs,
-        postActions: ((state: TemplateState) => string)[]
+        postActions: ((state: TemplateState) => string)[],
+        selects: ((state: TemplateState) => string)[],
+        currentObjectId: number,
+        postInit: boolean
     }
 }

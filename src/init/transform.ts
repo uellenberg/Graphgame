@@ -1,9 +1,9 @@
 export default `
 createBehavior!("transform");
 
-setBehaviorVal!("transform", "x", 0);
-setBehaviorVal!("transform", "y", 0);
-setBehaviorVal!("transform", "scale", 1);
+setVal!("transform", "x", 0);
+setVal!("transform", "y", 0);
+setVal!("transform", "scale", 1);
 
 finalizeBehavior!("transform");
 `;
