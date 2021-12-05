@@ -4,6 +4,7 @@ import {ensureState, getString, outerCheck} from "../util";
 import transform from "../init/transform";
 import circle from "../init/circle";
 import square from "../init/square";
+import squareCollider from "../init/squareCollider";
 
 /**
  * Initialize the game. This must be the first template called.
@@ -13,7 +14,7 @@ export const initialize: TemplateObject = {
         ensureState(state);
         outerCheck(context);
 
-        return transform + circle + square;
+        return transform + circle + square + squareCollider;
     }
 };
 
