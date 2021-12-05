@@ -3,6 +3,7 @@ import {TemplateState} from "../types/TemplateState";
 import {ensureState, getString, outerCheck} from "../util";
 import transform from "../init/transform";
 import circle from "../init/circle";
+import square from "../init/square";
 
 /**
  * Initialize the game. This must be the first template called.
@@ -12,7 +13,7 @@ export const initialize: TemplateObject = {
         ensureState(state);
         outerCheck(context);
 
-        return transform + circle;
+        return transform + circle + square;
     }
 };
 
