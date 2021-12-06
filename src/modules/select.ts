@@ -165,7 +165,6 @@ export const setValSelect: TemplateObject = {
 
         if(!isNaN(parsed)) {
             if(!state.graphgame.objects[id].hasOwnProperty(name)) {
-                console.log(name)
                 state.graphgame.objects[id][name] = new SemiMutable(name, id, parsed);
             } else {
                 //The error message is included in here.
@@ -177,7 +176,6 @@ export const setValSelect: TemplateObject = {
             }
 
             state.graphgame.objects[id][name] = `g_raphgameobject${id}${name}`;
-            console.log(`g_raphgameobject${id}${name}`)
 
             return `
             inline function g_raphgameobject${id}${name}_get() {
@@ -217,7 +215,6 @@ export const setValActionSelect: TemplateObject = {
         const semimutName = semimut.name();
 
         state.graphgame.actions[semimutVar] = semimut.get();
-        console.log("  ---------- INCREMENTED " + oldSemimut + "  -> " + semimut.get());
 
         return `inline function ${semimutName}() {
             const ${name} = ${oldSemimut};
