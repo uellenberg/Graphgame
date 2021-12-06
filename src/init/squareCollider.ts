@@ -1,4 +1,30 @@
 export default `
+export function g_raphgame_square_collider_helper(c_ornery, c_ornery1, s_caley, s_caley1, c_ornerx, c_ornerx1, s_calex, s_calex1) {
+    state = 0;
+    
+    if((c_ornery => c_ornery1 && c_ornery <= c_ornery1 + s_caley1) || (c_ornery + s_caley => c_ornery1 && c_ornery + s_caley <= c_ornery1 + s_caley1)) {
+        const int1 = (c_ornerx1 + s_calex1) - c_ornerx;
+        const int2 = (c_ornerx + s_calex) - c_ornerx1;
+            
+        const int1valid = int1 > 0 && int1 <= s_calex1 && c_ornerx => c_ornerx1 && c_ornerx <= c_ornerx1 + s_calex1;
+        const int2valid = int2 > 0 && int2 <= s_calex1 && c_ornerx <= c_ornerx1;
+            
+        if(int1valid) {
+            if(int2valid && int2 < int1) {
+                state = -int2;
+            } else {
+                state = int1;
+            }
+        } else if(int2valid) {
+            if(int1valid && int1 < int2) {
+                state = int1;
+            } else {
+                state = -int2;
+            }
+        }
+    }
+}
+
 createBehavior!("square_collider");
 
 setVal!("square_collider", "base.transform.collision_x", {
@@ -20,27 +46,7 @@ setVal!("square_collider", "base.transform.collision_x", {
             const scaley1 = getValSelect!("transform.scaley");
             const cornery1 = getValSelect!("transform.y") - scaley1/2;
             
-            if((cornery => cornery1 && cornery <= cornery1 + scaley1) || (cornery + scaley => cornery1 && cornery + scaley <= cornery1 + scaley1)) {
-                const int1 = (cornerx1 + scalex1) - cornerx;
-                const int2 = (cornerx + scalex) - cornerx1;
-            
-                const int1valid = int1 > 0 && int1 <= scalex1 && cornerx => cornerx1 && cornerx <= cornerx1 + scalex1;
-                const int2valid = int2 > 0 && int2 <= scalex1 && cornerx <= cornerx1;
-            
-                if(int1valid) {
-                    if(int2valid && int2 < int1) {
-                        state = -int2;
-                    } else {
-                        state = int1;
-                    }
-                } else if(int2valid) {
-                    if(int1valid && int1 < int2) {
-                        state = int1;
-                    } else {
-                        state = -int2;
-                    }
-                }
-            }
+            state = g_raphgame_square_collider_helper(cornery, cornery1, scaley, scaley1, cornerx, cornerx1, scalex, scalex1);
         }
     });
 });
@@ -64,27 +70,7 @@ setVal!("square_collider", "base.transform.collision_y", {
             const scaley1 = getValSelect!("transform.scaley");
             const cornery1 = getValSelect!("transform.y") - scaley1/2;
             
-            if((cornerx => cornerx1 && cornerx <= cornerx1 + scalex1) || (cornerx + scalex => cornerx1 && cornerx + scalex <= cornerx1 + scalex1)) {
-                const int1 = (cornery1 + scaley1) - cornery;
-                const int2 = (cornery + scaley) - cornery1;
-            
-                const int1valid = int1 > 0 && int1 <= scaley1 && cornery => cornery1 && cornery <= cornery1 + scaley1;
-                const int2valid = int2 > 0 && int2 <= scaley1 && cornery <= cornery1;
-            
-                if(int1valid) {
-                    if(int2valid && int2 < int1) {
-                        state = -int2;
-                    } else {
-                        state = int1;
-                    }
-                } else if(int2valid) {
-                    if(int1valid && int1 < int2) {
-                        state = int1;
-                    } else {
-                        state = -int2;
-                    }
-                }
-            }
+            state = g_raphgame_square_collider_helper(cornerx, cornerx1, scalex, scalex1, cornery, cornery1, scaley, scaley1);
         }
     });
 });
