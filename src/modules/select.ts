@@ -144,7 +144,6 @@ export const getValSelect: TemplateObject = {
         const value = getSemiMut(state, id, name);
         if(typeof(value) === "string") return value;
 
-        console.log("get " + value.get());
         return value.get();
     }
 };
@@ -199,8 +198,6 @@ export const setValActionSelect: TemplateObject = {
         const oldSemimut = semimut.get();
         semimut.increment();
         const semimutName = semimut.name();
-
-        console.log("bumped " + semimut.get());
 
         state.graphgame.actions[semimutVar] = semimut.get();
 

@@ -76,7 +76,6 @@ export const getVal: TemplateObject = {
         const value = getSemiMut(state, state.graphgame.lastObjectBehaviorId, fullName);
         if(typeof(value) === "string") return value;
 
-        console.log("behavior get " + name + " " + value.get());
         return value.get();
     }
 };
@@ -158,9 +157,9 @@ export const setValAction: TemplateObject = {
         behaviorCheck(state, name);
 
 
-        state.graphgame.behaviors[name].addPost((id: number) => {console.log("behavior " + name); return `selectID!(${id});
+        state.graphgame.behaviors[name].addPost((id: number) => `selectID!(${id});
         setValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};${body}}, ${priority});
-        selectID!();`}, priority);
+        selectID!();`, priority);
 
         return "";
     }
@@ -258,8 +257,7 @@ export const finalizeBehavior: TemplateObject = {
         behaviorCheck(state, name);
 
         state.graphgame.behaviors[name].finalize();
-        console.log("finalized " + name)
-        
+
         return "";
     }
 };
