@@ -16,7 +16,7 @@ behaviorGraph!("square", {
     const yscale = getVal!("square", "base.transform.scale_y")*sin(rot);
 
     state = g_raphgame_square_helper(x, y, rot, xpos, ypos, xscale, yscale);
-});
+}, null, null, 300);
 
 finalizeBehavior!("square");
 `;

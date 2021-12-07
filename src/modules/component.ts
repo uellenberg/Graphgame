@@ -92,21 +92,13 @@ export const setVal: TemplateObject = {
 
         const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
         const varName = getString(args, state, 1, "A variable name is required!").trim().toLowerCase();
-        const val = getAnyAsString(args, state, 2, "A value is required!");
-
-        const parsed = parseInt(val);
+        const val = getNum(args, state, 2, "A value is required!");
 
         behaviorCheck(state, name);
 
-        const func = (id: number) => `selectID!(${id});
-        setValSelect!("${getFullVariableName(varName, name)}", ${isNaN(parsed) ? `{${val}}` : parsed});
-        selectID!();`;
-
-        if(isNaN(parsed)) {
-            state.graphgame.behaviors[name].addPost(func);
-        } else {
-            state.graphgame.behaviors[name].add(func);
-        }
+        state.graphgame.behaviors[name].add((id: number) => `selectID!(${id});
+        setValSelect!("${getFullVariableName(varName, name)}", ${val});
+        selectID!();`);
 
         return "";
     }
@@ -161,13 +153,14 @@ export const setValAction: TemplateObject = {
         const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
         const varName = getString(args, state, 1, "A variable name is required!").trim().toLowerCase();
         const body = getString(args, state, 2, "An action body is required!");
+        const priority = getNum(args, state, 3) || 0;
 
         behaviorCheck(state, name);
 
 
         state.graphgame.behaviors[name].addPost((id: number) => {console.log("behavior " + name); return `selectID!(${id});
-        setValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};${body}});
-        selectID!();`});
+        setValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};${body}}, ${priority});
+        selectID!();`}, priority);
 
         return "";
     }
@@ -192,7 +185,7 @@ export const noRegisterSetValAction: TemplateObject = {
 
         state.graphgame.behaviors[name].addPost((id: number) => `selectID!(${id});
         noRegisterSetValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};${body}}${actionName ? ", \"" + actionName + "\"" : ""});
-        selectID!();`);
+        selectID!();`, 0);
 
         return "";
     }
@@ -212,6 +205,7 @@ export const behaviorGraph: TemplateObject = {
         const body1 = getString(args, state, 1, "An action body is required!");
         const operator = getString(args, state, 2);
         const body2 = getString(args, state, 3);
+        const priority = getNum(args, state, 4) || 0;
 
         behaviorCheck(state, name);
 
@@ -223,7 +217,7 @@ export const behaviorGraph: TemplateObject = {
                 ${body2 ? body2 : body1}
             }
             graph { g_raphgamepost${name}a${id}a${idx}a1(x, y) } ${operator || "="} { g_raphgamepost${name}a${id}a${idx}a2(x, y) };`;
-        });
+        }, priority);
 
         return "";
     }
