@@ -61,6 +61,8 @@ export const finalize1: TemplateObject = {
         ensureState(state);
         outerCheck(context);
 
+        state.graphgame.postInit = true;
+
         const output: string[] = [];
 
         for (const action of state.graphgame.postActions) {

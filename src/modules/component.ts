@@ -76,7 +76,8 @@ export const getVal: TemplateObject = {
         const value = getSemiMut(state, state.graphgame.lastObjectBehaviorId, fullName);
         if(typeof(value) === "string") return value;
 
-        return value.get(-1);
+        console.log("behavior get " + name + " " + value.get());
+        return value.get();
     }
 };
 
@@ -97,9 +98,15 @@ export const setVal: TemplateObject = {
 
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].add((id: number) => `selectID!(${id});
+        const func = (id: number) => `selectID!(${id});
         setValSelect!("${getFullVariableName(varName, name)}", ${isNaN(parsed) ? `{${val}}` : parsed});
-        selectID!();`);
+        selectID!();`;
+
+        if(isNaN(parsed)) {
+            state.graphgame.behaviors[name].addPost(func);
+        } else {
+            state.graphgame.behaviors[name].add(func);
+        }
 
         return "";
     }
@@ -157,9 +164,10 @@ export const setValAction: TemplateObject = {
 
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].addPost((id: number) => `selectID!(${id});
+
+        state.graphgame.behaviors[name].addPost((id: number) => {console.log("behavior " + name); return `selectID!(${id});
         setValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};${body}});
-        selectID!();`);
+        selectID!();`});
 
         return "";
     }
@@ -256,6 +264,7 @@ export const finalizeBehavior: TemplateObject = {
         behaviorCheck(state, name);
 
         state.graphgame.behaviors[name].finalize();
+        console.log("finalized " + name)
         
         return "";
     }
@@ -269,8 +278,6 @@ export const objectID: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
         expressionCheck(context);
-
-        if(state.graphgame.postInit) throw new Error("objectID!() can only be used outside of selects. Consider setting a local variable outside of the select.");
 
         return state.graphgame.lastObjectBehaviorId.toString();
     }

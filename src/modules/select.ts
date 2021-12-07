@@ -51,7 +51,7 @@ export const selectAll: TemplateObject = {
 
         const body = getString(args, state, 0, "A body is required!");
 
-        return (state: TemplateState) => {
+        const func = (state: TemplateState) => {
             state.graphgame.postInit = true;
 
             const output: string[] = [];
@@ -65,6 +65,9 @@ export const selectAll: TemplateObject = {
 
             return output.join("\n");
         };
+
+        if(state.graphgame.postInit) return func(state);
+        return func;
     }
 };
 
@@ -80,7 +83,7 @@ export const selectBehavior: TemplateObject = {
         const behavior = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
         const body = getString(args, state, 1, "A body is required!");
 
-        return (state: TemplateState) => {
+        const func = (state: TemplateState) => {
             state.graphgame.postInit = true;
 
             const output: string[] = [];
@@ -96,6 +99,9 @@ export const selectBehavior: TemplateObject = {
 
             return output.join("\n");
         };
+
+        if(state.graphgame.postInit) return func(state);
+        return func;
     }
 };
 
@@ -142,7 +148,8 @@ export const getValSelect: TemplateObject = {
         const value = getSemiMut(state, id, name);
         if(typeof(value) === "string") return value;
 
-        return value.get(-1);
+        console.log("get " + value.get());
+        return value.get();
     }
 };
 
@@ -213,6 +220,8 @@ export const setValActionSelect: TemplateObject = {
         const oldSemimut = semimut.get();
         semimut.increment();
         const semimutName = semimut.name();
+
+        console.log("bumped " + semimut.get());
 
         state.graphgame.actions[semimutVar] = semimut.get();
 
