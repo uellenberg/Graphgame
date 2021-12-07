@@ -1,5 +1,6 @@
 import {finalize, finalize1, finalize2, initialize, registerAction} from "./modules/main";
 import {
+    behaviorCustom,
     behaviorGraph,
     createBehavior, finalizeBehavior, getBehaviorArgs,
     getVal,
@@ -37,6 +38,7 @@ export const templates: TemplatesObject = {
     setValAction,
     noRegisterSetValAction,
     behaviorGraph,
+    behaviorCustom,
     getBehaviorArgs,
     finalizeBehavior,
     objectID,

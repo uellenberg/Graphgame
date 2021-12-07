@@ -209,13 +209,42 @@ export const behaviorGraph: TemplateObject = {
         behaviorCheck(state, name);
 
         state.graphgame.behaviors[name].addPost((id: number, idx: number) => {
-            return `inline function g_raphgamepost${name}a${id}a${idx}a1(x, y) {
+            return `selectID!(${id});
+            
+            inline function g_raphgamepost${name}a${id}a${idx}a1(x, y) {
                 ${body2 ? body1 : "state = 1;"}
             }
             inline function g_raphgamepost${name}a${id}a${idx}a2(x, y) {
                 ${body2 ? body2 : body1}
             }
-            graph { g_raphgamepost${name}a${id}a${idx}a1(x, y) } ${operator || "="} { g_raphgamepost${name}a${id}a${idx}a2(x, y) };`;
+            graph { g_raphgamepost${name}a${id}a${idx}a1(x, y) } ${operator || "="} { g_raphgamepost${name}a${id}a${idx}a2(x, y) };
+            
+            selectID!();`;
+        }, priority);
+
+        return "";
+    }
+};
+
+/**
+ * Create custom declarations on the behavior. This is ideal for graphs, polygons, points, etc, but should not be used for named declarations.
+ * Usage: behaviorCustom!(name: string, body: ActionBody);
+ */
+export const behaviorCustom: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
+        const body = getString(args, state, 1, "A body is required!");
+        const priority = getNum(args, state, 2) || 0;
+
+        behaviorCheck(state, name);
+
+        state.graphgame.behaviors[name].addPost(id => {
+            return `selectID!(${id});
+            ${body}
+            selectID!();`;
         }, priority);
 
         return "";
