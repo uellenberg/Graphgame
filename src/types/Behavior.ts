@@ -41,8 +41,13 @@ export class Behavior {
     /**
      * Compiles the post behavior for a specific object.
      */
-    public compilePost(id: number) : string {
+    public compilePost(id: number, actions: Record<number, string[]>, prefix: string) : void {
         if(!this.finalized) throw new Error("A behavior must be finalized before it can be used!");
-        return Object.keys(this.postParts).sort().map(idx => this.postParts[idx].map((part, idx) => part(id, idx)).join("\n")).join("\n");
+
+        for(const key in this.postParts) {
+            if(!actions.hasOwnProperty(key)) actions[key] = [];
+            actions[key].push(prefix);
+            actions[key].push(...this.postParts[key].map((part, idx) => part(id, idx)));
+        }
     }
 }

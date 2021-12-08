@@ -8,6 +8,11 @@ export class GameObject {
      */
     public behaviors: string[] = [];
 
+    /**
+     * A record of every behavior-specific post action that needs to be output when this object compiles.
+     */
+    public behaviorPostActions: Record<number, string[]> = [];
+
     public constructor(id: number) {
         this.id = id;
     }

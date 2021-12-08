@@ -48,14 +48,12 @@ export const useBehavior: TemplateObject = {
         objectCheck(state, id);
         behaviorCheck(state, name);
 
-        state.graphgame.lastObjectBehaviorId = id;
-        state.graphgame.lastObjectBehaviorArgs = args.slice(2);
-
-        state.graphgame.postActions.push((state) => {
-            return `useBehaviorPost!(${id}, \"${name}\"${args.length > 2 ? ", " + args.slice(2).join(", ") : ""});\n` + state.graphgame.behaviors[name].compilePost(id);
-        });
+        state.graphgame.behaviors[name].compilePost(id, state.graphgame.objects[id].behaviorPostActions, `useBehaviorPost!(${id}, \"${name}\"${args.length > 2 ? ", " + args.slice(2).join(", ") : ""});`);
 
         state.graphgame.objects[id].behaviors.push(name);
+
+        state.graphgame.lastObjectBehaviorId = id;
+        state.graphgame.lastObjectBehaviorArgs = args.slice(2);
 
         return state.graphgame.behaviors[name].compile(id);
     }

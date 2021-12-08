@@ -156,9 +156,8 @@ export const setValAction: TemplateObject = {
 
         behaviorCheck(state, name);
 
-
         state.graphgame.behaviors[name].addPost((id: number) => `selectID!(${id});
-        setValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};${body}}, ${priority});
+        setValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};${body}});
         selectID!();`, priority);
 
         return "";

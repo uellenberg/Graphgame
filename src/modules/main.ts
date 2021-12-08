@@ -65,6 +65,12 @@ export const finalize1: TemplateObject = {
 
         const output: string[] = [];
 
+        for(const objectID in state.graphgame.objects) {
+            for(const priority of Object.keys(state.graphgame.objects[objectID].behaviorPostActions).sort()) {
+                output.push(...state.graphgame.objects[objectID].behaviorPostActions[priority]);
+            }
+        }
+
         for (const action of state.graphgame.postActions) {
             output.push(action(state));
         }
