@@ -10,7 +10,7 @@ behaviorCustom!("square", {
     
         state = (x, y) + x_scale*[(-1/2, 0), (1/2, 0), (1/2, 0), (-1/2, 0)] + y_scale*[(0, -1/2), (0, -1/2), (0, 1/2), (0, 1/2)];
     });
-}, 300);
+}, -100);
 
 finalizeBehavior!("square");
 `;
