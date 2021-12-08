@@ -90,7 +90,7 @@ export const setObjectVal: TemplateObject = {
         outerCheck(context);
 
         const id = getNum(args, state, 0, "An object ID is required!");
-        const name = getString(args, state, 1, "A variable name is required!").trim().toLowerCase().replace(/\./g, "");
+        const name = getString(args, state, 1, "A variable name is required!").trim().toLowerCase().replace(/[._]/g, "");
         const val = getNum(args, state, 2, "A value is required!");
 
         objectCheck(state, id);

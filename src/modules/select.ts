@@ -111,7 +111,7 @@ export const setMutSelect: TemplateObject = {
         outerCheck(context);
 
         const id = state.graphgame.currentObjectId;
-        const name = getString(args, state, 0, "A variable name is required!").trim().toLowerCase().replace(/\./g, "");
+        const name = getString(args, state, 0, "A variable name is required!").trim().toLowerCase().replace(/[._]/g, "");
 
         objectCheck(state, id);
         objectVarCheck(state, id, name);
@@ -136,7 +136,7 @@ export const getValSelect: TemplateObject = {
         expressionCheck(context);
 
         const id = state.graphgame.currentObjectId;
-        const name = getString(args, state, 0, "A variable name is required!").trim().toLowerCase().replace(/\./g, "");
+        const name = getString(args, state, 0, "A variable name is required!").trim().toLowerCase().replace(/[._]/g, "");
 
         objectCheck(state, id);
         objectVarCheck(state, id, name);
@@ -158,7 +158,7 @@ export const setValSelect: TemplateObject = {
         outerCheck(context);
 
         const id = state.graphgame.currentObjectId;
-        const name = getString(args, state, 0, "A variable name is required!").trim().toLowerCase().replace(/\./g, "");
+        const name = getString(args, state, 0, "A variable name is required!").trim().toLowerCase().replace(/[._]/g, "");
         const val = getNum(args, state, 1, "A value is required!");
 
         objectCheck(state, id);
@@ -184,7 +184,7 @@ export const setValActionSelect: TemplateObject = {
         outerCheck(context);
 
         const id = state.graphgame.currentObjectId;
-        const name = getString(args, state, 0, "A variable name is required!").trim().toLowerCase().replace(/\./g, "");
+        const name = getString(args, state, 0, "A variable name is required!").trim().toLowerCase().replace(/[._]/g, "");
         const body = getString(args, state, 1, "An action body is required!");
 
         objectCheck(state, id);
@@ -218,7 +218,7 @@ export const noRegisterSetValActionSelect: TemplateObject = {
         outerCheck(context);
 
         const id = state.graphgame.currentObjectId;
-        const name = getString(args, state, 0, "A variable name is required!").trim().toLowerCase().replace(/\./g, "");
+        const name = getString(args, state, 0, "A variable name is required!").trim().toLowerCase().replace(/[._]/g, "");
         const body = getString(args, state, 1, "An action body is required!");
         const actionName = getString(args, state, 2)?.trim().toLowerCase();
 
