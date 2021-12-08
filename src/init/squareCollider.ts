@@ -27,12 +27,6 @@ export function g_raphgame_square_collider_helper(c_ornery, c_ornery1, s_caley, 
 
 createBehavior!("square_collider");
 
-setVal!("square_collider", "base.transform.collision_x", 0);
-setVal!("square_collider", "base.transform.collision_y", 0);
-
-setMut!("square_collider", "base.transform.collision_x");
-setMut!("square_collider", "base.transform.collision_y");
-
 setValAction!("square_collider", "base.transform.collision_x", {
     state = 0;
 
