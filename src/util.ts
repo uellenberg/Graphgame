@@ -51,6 +51,14 @@ export const getNum = (args: TemplateArgs, state: TemplateState, idx: number, er
     return <number>args[idx];
 };
 
+export const getBoolean = (args: TemplateArgs, state: TemplateState, idx: number, error: string = null) : boolean => {
+    if(args.length < idx+1 || typeof(args[idx]) !== "boolean") {
+        if(error) throw new Error(error);
+        else return false;
+    }
+    return <boolean>args[idx];
+};
+
 export const getString = (args: TemplateArgs, state: TemplateState, idx: number, error: string = null) : string => {
     if(args.length < idx+1 || typeof(args[idx]) !== "string" || args[idx] == null) {
         if(error) throw new Error(error);

@@ -11,7 +11,7 @@ import {
     getSemiMut,
     getNum,
     getString,
-    getFullVariableName, getShortVariableName, objectCheck, getAnyAsString
+    getFullVariableName, getShortVariableName, objectCheck, getAnyAsString, getBoolean
 } from "../util";
 import {Behavior} from "../types/Behavior";
 
@@ -50,6 +50,28 @@ export const setMut: TemplateObject = {
 
         state.graphgame.behaviors[name].add((id: number) => `selectID!(${id});
         setMutSelect!("${getFullVariableName(varName, name)}");
+        selectID!();`);
+
+        return "";
+    }
+};
+
+/**
+ * Marks a behavior's variable as mutable (changable after compilation), but inlines it instead of exporting it.
+ * Usage: setInline!(name: string, variableName: string);
+ */
+export const setInline: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
+        const varName = getString(args, state, 1, "A variable name is required!").trim().toLowerCase();
+
+        behaviorCheck(state, name);
+
+        state.graphgame.behaviors[name].add((id: number) => `selectID!(${id});
+        setInlineSelect!("${getFullVariableName(varName, name)}");
         selectID!();`);
 
         return "";
@@ -153,11 +175,12 @@ export const setValAction: TemplateObject = {
         const varName = getString(args, state, 1, "A variable name is required!").trim().toLowerCase();
         const body = getString(args, state, 2, "An action body is required!");
         const priority = getNum(args, state, 3) || 0;
+        const inlined = getBoolean(args, state, 4);
 
         behaviorCheck(state, name);
 
         state.graphgame.behaviors[name].addPost((id: number) => `selectID!(${id});
-        setValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};${body}});
+        setValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};${body}}, ${inlined ? "true" : "false"});
         selectID!();`, priority);
 
         return "";

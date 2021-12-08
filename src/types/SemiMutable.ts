@@ -3,6 +3,7 @@ export class SemiMutable {
     private readonly id: number;
     private val: number;
     private mutable: boolean = false;
+    private inlined: boolean = false;
     private incrementID: number = 0;
 
     /**
@@ -23,6 +24,7 @@ export class SemiMutable {
      * Makes a SemiMutable mutable.
      */
     public mut(): void {
+        if(this.inlined && !this.mutable) throw new Error("An inlined variable cannot be marked as mutable!");
         this.mutable = true;
     }
 
@@ -31,6 +33,22 @@ export class SemiMutable {
      */
     public isMut(): boolean {
         return this.mutable;
+    }
+
+    /**
+     * Makes a SemiMutable inlined.
+     */
+    public inline(): void {
+        if(!this.inlined && this.mutable) throw new Error("A mutable variable cannot be marked as inlined!");
+        this.mutable = true;
+        this.inlined = true;
+    }
+
+    /**
+     * Returns if this is inlined.
+     */
+    public isInline(): boolean {
+        return this.inlined;
     }
 
     /**

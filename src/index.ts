@@ -4,7 +4,7 @@ import {
     behaviorGraph,
     createBehavior, finalizeBehavior, getBehaviorArgs,
     getVal,
-    noRegisterSetValAction, objectID,
+    noRegisterSetValAction, objectID, setInline,
     setMut,
     setVal,
     setValAction,
@@ -15,7 +15,7 @@ import {
     getValSelect, noRegisterSetValActionSelect,
     selectAll,
     selectBehavior, selectedID,
-    selectID,
+    selectID, setInlineSelect,
     setMutSelect,
     setValActionSelect,
     setValSelect
@@ -32,6 +32,7 @@ export const templates: TemplatesObject = {
     //Component
     createBehavior,
     setMut,
+    setInline,
     getVal,
     setVal,
     setValArgs,
@@ -53,6 +54,7 @@ export const templates: TemplatesObject = {
     selectAll,
     selectBehavior,
     setMutSelect,
+    setInlineSelect,
     getValSelect,
     setValSelect,
     setValActionSelect,

@@ -127,6 +127,31 @@ export const setMutSelect: TemplateObject = {
 };
 
 /**
+ * Marks the current object's variable as mutable, but inlines it instead of exporting it.
+ * Usage: setInlineSelect!(variableName: string);
+ */
+export const setInlineSelect: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        const id = state.graphgame.currentObjectId;
+        const name = getString(args, state, 0, "A variable name is required!").trim().toLowerCase().replace(/[._]/g, "");
+
+        objectCheck(state, id);
+        objectVarCheck(state, id, name);
+
+        const semimut = getSemiMut(state, id, name);
+        if(semimut.isMut()) return "";
+
+        const value = semimut.get();
+        semimut.inline();
+
+        return "inline const " + semimut.name() + " = " + value + ";";
+    }
+};
+
+/**
  * Get the value of the current object's variable.
  * Usage: getValSelect!(variableName: string)
  */
@@ -199,7 +224,7 @@ export const setValActionSelect: TemplateObject = {
         semimut.increment();
         const semimutName = semimut.name();
 
-        state.graphgame.actions[semimutVar] = semimut.get();
+        if(!semimut.isInline()) state.graphgame.actions[semimutVar] = semimut.get();
 
         return `inline function ${semimutName}() {
             const ${name} = ${oldSemimut};
