@@ -22,6 +22,7 @@ export interface TemplateState {
         selects: ((state: TemplateState) => string)[],
         currentObjectId: number,
         postInit: boolean,
-        prefabs: ((id: number, args: TemplateArgs) => string)[]
+        prefabs: ((id: number, args: TemplateArgs) => string)[],
+        toIncrement: SemiMutable
     }
 }

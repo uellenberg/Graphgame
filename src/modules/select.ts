@@ -226,10 +226,28 @@ export const setValActionSelect: TemplateObject = {
 
         if(!semimut.isInline()) state.graphgame.actions[semimutVar] = semimut.get();
 
+        semimut.decrement();
+        state.graphgame.toIncrement = semimut;
+
         return `inline function ${semimutName}() {
             const ${name} = ${oldSemimut};
             ${body}
-        }`;
+        }
+        reIncrement();`;
+    }
+};
+
+/**
+ * For internal use only.
+ */
+export const reIncrement: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        state.graphgame.toIncrement.increment();
+
+        return "";
     }
 };
 

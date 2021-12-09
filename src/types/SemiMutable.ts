@@ -82,4 +82,12 @@ export class SemiMutable {
         if(!this.mutable) throw new Error("A variable must be marked as mutable before it can be used in an action!");
         this.incrementID++;
     }
+
+    /**
+     * Decrement the value's identifier.
+     */
+    public decrement(): void {
+        if(!this.mutable) throw new Error("A variable must be marked as mutable before it can be used in an action!");
+        this.incrementID--;
+    }
 }

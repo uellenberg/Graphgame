@@ -12,7 +12,7 @@ import {
 } from "./modules/component";
 import {createObject, setObjectVal, useBehavior, useBehaviorPost} from "./modules/object";
 import {
-    getValSelect, noRegisterSetValActionSelect,
+    getValSelect, noRegisterSetValActionSelect, reIncrement,
     selectAll,
     selectBehavior, selectedID,
     selectID, setInlineSelect,
@@ -60,6 +60,7 @@ export const templates: TemplatesObject = {
     setValSelect,
     setValActionSelect,
     noRegisterSetValActionSelect,
+    reIncrement,
     //Prefab
     createPrefab,
     useBehaviorPrefab,
