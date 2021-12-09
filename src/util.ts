@@ -3,7 +3,7 @@ import {TemplateState} from "./types/TemplateState";
 import {SemiMutable} from "./types/SemiMutable";
 
 export const ensureState = (state: TemplateState) => {
-    if (!state.hasOwnProperty("graphgame")) state.graphgame = { objects: {}, behaviors: {}, actions: {}, finalActions: [], finalized: false, lastObjectBehaviorId: null, lastObjectBehaviorArgs: null, postActions: [], selects: [], currentObjectId: null, postInit: false };
+    if (!state.hasOwnProperty("graphgame")) state.graphgame = { objects: {}, behaviors: {}, actions: {}, finalActions: [], finalized: false, lastObjectBehaviorId: null, lastObjectBehaviorArgs: null, postActions: [], selects: [], currentObjectId: null, postInit: false, prefabs: [] };
     if(state.graphgame.finalized) throw new Error("Do not run any other templates after finalizing!");
 };
 
@@ -41,6 +41,12 @@ export const behaviorCheck = (state: TemplateState, name: string) : void => {
     if(!state.graphgame.behaviors.hasOwnProperty(name)) throw new Error("A behavior with the name \"" + name + "\" does not exist!");
 };
 
+//Prefab checks
+
+export const prefabCheck = (state: TemplateState, name: string) : void => {
+    if(!state.graphgame.prefabs.hasOwnProperty(name)) throw new Error("A prefab with the name \"" + name + "\" does not exist!");
+};
+
 //Arg checks
 
 export const getNum = (args: TemplateArgs, state: TemplateState, idx: number, error: string = null) : number => {
@@ -73,6 +79,14 @@ export const getAnyAsString = (args: TemplateArgs, state: TemplateState, idx: nu
         else return null;
     }
     return args[idx].toString();
+};
+
+export const getNumOrString = (args: TemplateArgs, state: TemplateState, idx: number, error: string = null) : string | number => {
+    if(args.length < idx+1 || args[idx] == null || (typeof(args[idx]) != "string" && typeof(args[idx]) != "number")) {
+        if(error) throw new Error(error);
+        else return null;
+    }
+    return <string | number>args[idx];
 };
 
 //Dot access helper

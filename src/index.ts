@@ -21,6 +21,7 @@ import {
     setValSelect
 } from "./modules/select";
 import {TemplatesObject} from "logimat";
+import {createPrefab, setPrefabVal, useBehaviorPrefab, usePrefab} from "./modules/prefab";
 
 export const templates: TemplatesObject = {
     //Main
@@ -58,7 +59,12 @@ export const templates: TemplatesObject = {
     getValSelect,
     setValSelect,
     setValActionSelect,
-    noRegisterSetValActionSelect
+    noRegisterSetValActionSelect,
+    //Prefab
+    createPrefab,
+    useBehaviorPrefab,
+    setPrefabVal,
+    usePrefab
 };
 
 export const postTemplates: string = "finalize!();";

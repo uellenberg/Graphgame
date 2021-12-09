@@ -21,6 +21,7 @@ export interface TemplateState {
         postActions: ((state: TemplateState) => string)[],
         selects: ((state: TemplateState) => string)[],
         currentObjectId: number,
-        postInit: boolean
+        postInit: boolean,
+        prefabs: ((id: number, args: TemplateArgs) => string)[]
     }
 }
