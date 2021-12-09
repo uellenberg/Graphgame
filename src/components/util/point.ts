@@ -6,7 +6,7 @@ setMut!("point", "base.transform.y");
 
 behaviorCustom!("point", {
     point (getVal!("point", "base.transform.x"), getVal!("point", "base.transform.y"));
-}, -101);
+}, -110);
 
 finalizeBehavior!("point");
 `;
