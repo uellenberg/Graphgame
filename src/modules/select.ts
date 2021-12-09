@@ -234,7 +234,7 @@ export const setValActionSelect: TemplateObject = {
             const ${name} = ${oldSemimut};
             ${body}
         }
-        reIncrement();`;
+        reIncrement!();`;
     }
 };
 
