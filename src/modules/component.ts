@@ -144,7 +144,7 @@ export const setValArgs: TemplateObject = {
         state.graphgame.behaviors[name].add((id: number) => {
             let val;
             if(state.graphgame.lastObjectBehaviorArgs.length <= idx) {
-                if(defaultVal == null) throw new Error("This behavior requires at least " + (idx+1) + " arguments!");
+                if(defaultVal == null) throw new Error("The behavior \"" + name + "\" requires at least " + (idx+1) + " arguments!");
                 else val = defaultVal;
             } else {
                 val = state.graphgame.lastObjectBehaviorArgs[idx];
