@@ -54,7 +54,7 @@ export const selectAll: TemplateObject = {
         const func = (state: TemplateState) => {
             const output: string[] = [];
 
-            for (let id of Object.keys(state.graphgame.objects)) {
+            for (let id of Object.keys(state.graphgame.objects).sort()) {
                 output.push("selectID!(" + id + ");");
                 output.push(body);
             }
@@ -84,7 +84,7 @@ export const selectBehavior: TemplateObject = {
         const func = (state: TemplateState) => {
             const output: string[] = [];
 
-            for (let id of Object.keys(state.graphgame.objects)) {
+            for (let id of Object.keys(state.graphgame.objects).sort()) {
                 if(!state.graphgame.objects[id].behaviors.includes(behavior)) continue;
 
                 output.push("selectID!(" + id + ");");

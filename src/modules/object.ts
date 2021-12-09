@@ -26,6 +26,7 @@ export const createObject: TemplateObject = {
         const id = getNum(args, state, 0, "An object ID is required!");
 
         if(state.graphgame.objects.hasOwnProperty(id)) throw new Error("An object with the ID \"" + id + "\" already exists!");
+        if(id < 0) throw new Error("Objects cannot have an ID less than zero.");
 
         state.graphgame.objects[id] = new GameObject(id);
 

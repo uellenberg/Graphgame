@@ -93,4 +93,4 @@ export const getNumOrString = (args: TemplateArgs, state: TemplateState, idx: nu
 
 export const getFullVariableName = (varName: string, behaviorName: string) => (varName.startsWith("base.") ? varName.substring(5) : behaviorName + varName).replace(/[._]/g, "");
 
-export const getShortVariableName = (varName: string) => varName.split(".").pop().replace(/_/g, "");
+export const getShortVariableName = (varName: string) => varName.split(".").pop();

@@ -108,6 +108,7 @@ export const usePrefab: TemplateObject = {
 
         prefabCheck(state, name);
         if(state.graphgame.objects.hasOwnProperty(id)) throw new Error("An object with the ID \"" + id + "\" already exists!");
+        if(id < 0) throw new Error("Objects cannot have an ID less than zero.");
 
         state.graphgame.objects[id] = new GameObject(id);
 
