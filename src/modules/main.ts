@@ -1,11 +1,11 @@
 import {TemplateObject} from "logimat";
 import {TemplateState} from "../types/TemplateState";
 import {ensureState, getString, outerCheck} from "../util";
-import transform from "../init/transform";
-import circle from "../init/circle";
-import square from "../init/square";
-import squareCollider from "../init/squareCollider";
-import collisionResolver from "../init/collisionResolver";
+import transform from "../components/main/transform";
+import circle from "../components/rendering/circle";
+import square from "../components/rendering/square";
+import squareCollider from "../components/collision/squareCollider";
+import collisionResolver from "../components/collision/collisionResolver";
 
 /**
  * Initialize the game. This must be the first template called.
