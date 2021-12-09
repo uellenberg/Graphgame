@@ -2,7 +2,7 @@ import {TemplateObject} from "logimat";
 import {TemplateState} from "../types/TemplateState";
 import {
     ensureState,
-    expressionCheck, getAnyAsString,
+    expressionCheck, getAnyAsString, getBoolean,
     getNum,
     getSemiMut,
     getString,
@@ -152,8 +152,8 @@ export const setInlineSelect: TemplateObject = {
 };
 
 /**
- * Get the value of the current object's variable.
- * Usage: getValSelect!(variableName: string)
+ * Get the value of the current object's variable. A boolean can be supplied to get the currently saved value instead of the current value.
+ * Usage: getValSelect!(variableName: string, saved?: boolean)
  */
 export const getValSelect: TemplateObject = {
     function: (args, state: TemplateState, context) => {
@@ -162,13 +162,14 @@ export const getValSelect: TemplateObject = {
 
         const id = state.graphgame.currentObjectId;
         const name = getString(args, state, 0, "A variable name is required!").trim().toLowerCase().replace(/[._]/g, "");
+        const saved = getBoolean(args, state, 1);
 
         objectCheck(state, id);
         objectVarCheck(state, id, name);
 
         const value = getSemiMut(state, id, name);
-        if(typeof(value) === "string") return value;
 
+        if(saved && value.isMut()) return value.name(true);
         return value.get();
     }
 };

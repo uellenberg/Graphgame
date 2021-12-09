@@ -79,8 +79,8 @@ export const setInline: TemplateObject = {
 };
 
 /**
- * Get the value of a behavior's variable.
- * Usage: getVal!(name: string, variableName: string)
+ * Get the value of a behavior's variable. A boolean can be supplied to get the currently saved value instead of the current value.
+ * Usage: getVal!(name: string, variableName: string, saved?: boolean)
  */
 export const getVal: TemplateObject = {
     function: (args, state: TemplateState, context) => {
@@ -89,6 +89,7 @@ export const getVal: TemplateObject = {
 
         const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
         const varName = getString(args, state, 1, "A variable name is required!").trim().toLowerCase();
+        const saved = getBoolean(args, state, 2);
 
         const fullName = getFullVariableName(varName, name);
 
@@ -96,8 +97,8 @@ export const getVal: TemplateObject = {
         objectVarCheck(state, state.graphgame.lastObjectBehaviorId, fullName);
 
         const value = getSemiMut(state, state.graphgame.lastObjectBehaviorId, fullName);
-        if(typeof(value) === "string") return value;
 
+        if(saved && value.isMut()) return value.name(true);
         return value.get();
     }
 };
