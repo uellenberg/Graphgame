@@ -66,11 +66,18 @@ export const finalize1: TemplateObject = {
 
         const output: string[] = [];
 
+        const priorityOutput: Record<number, string[]> = {};
+
         for(const objectID in state.graphgame.objects) {
-            //Sort in ascending order.
-            for(const priority of Object.keys(state.graphgame.objects[objectID].behaviorPostActions).map(priority => parseInt(priority)).sort((a, b) => a-b)) {
-                output.push(...state.graphgame.objects[objectID].behaviorPostActions[priority]);
+            for(const priority of Object.keys(state.graphgame.objects[objectID].behaviorPostActions)) {
+                if(!priorityOutput.hasOwnProperty(priority)) priorityOutput[priority] = [];
+                priorityOutput[priority].push(...state.graphgame.objects[objectID].behaviorPostActions[priority]);
             }
+        }
+
+        //Sort in ascending order.
+        for(const priority of Object.keys(priorityOutput).map(priority => parseInt(priority)).sort((a, b) => a-b)) {
+            output.push(...priorityOutput[priority]);
         }
 
         for (const action of state.graphgame.postActions) {
