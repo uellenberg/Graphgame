@@ -1,8 +1,8 @@
 export default `
 createBehavior!("window_follower");
 
-setMut!("window_follower", "base.transform.offset_x");
-setMut!("window_follower", "base.transform.offset_y");
+setInline!("window_follower", "base.transform.offset_x");
+setInline!("window_follower", "base.transform.offset_y");
 
 setValAction!("window_follower", "base.transform.offset_x", {
     state = 0;
