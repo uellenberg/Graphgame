@@ -176,12 +176,12 @@ export const setValAction: TemplateObject = {
         const varName = getString(args, state, 1, "A variable name is required!").trim().toLowerCase();
         const body = getString(args, state, 2, "An action body is required!");
         const priority = getNum(args, state, 3) || 0;
-        const inlined = getBoolean(args, state, 4);
+        const exported = getBoolean(args, state, 4);
 
         behaviorCheck(state, name);
 
         state.graphgame.behaviors[name].addPost((id: number) => `selectID!(${id});
-        setValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};${body}}, ${inlined ? "true" : "false"});
+        setValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};${body}}, ${exported ? "true" : "false"});
         selectID!();`, priority);
 
         return "";

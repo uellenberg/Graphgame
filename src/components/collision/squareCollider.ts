@@ -49,7 +49,7 @@ setValAction!("square_collider", "base.transform.collision_x", {
             state = g_raphgame_square_collider_helper(cornery, cornery1, scaley, scaley1, cornerx, cornerx1, scalex, scalex1);
         }
     });
-}, 100);
+}, -300, true);
 
 setValAction!("square_collider", "base.transform.collision_y", {
     state = 0;
@@ -73,7 +73,7 @@ setValAction!("square_collider", "base.transform.collision_y", {
             state = g_raphgame_square_collider_helper(cornerx, cornerx1, scalex, scalex1, cornery, cornery1, scaley, scaley1);
         }
     });
-}, 100);
+}, -300, true);
 
 finalizeBehavior!("square_collider");
 `;
