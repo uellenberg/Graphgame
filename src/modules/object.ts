@@ -8,7 +8,7 @@ import {
     expressionCheck,
     getNum,
     getSemiMut,
-    getString,
+    getString, handleObjectID,
     objectCheck,
     objectVarCheck,
     outerCheck
@@ -23,7 +23,7 @@ export const createObject: TemplateObject = {
         ensureState(state);
         outerCheck(context);
 
-        const id = getNum(args, state, 0, "An object ID is required!");
+        const id = handleObjectID(getNum(args, state, 0, "An object ID is required!"), state);
 
         if(state.graphgame.objects.hasOwnProperty(id)) throw new Error("An object with the ID \"" + id + "\" already exists!");
         if(id < 0) throw new Error("Objects cannot have an ID less than zero.");

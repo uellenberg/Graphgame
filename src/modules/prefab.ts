@@ -1,6 +1,15 @@
 import {TemplateArgs, TemplateObject} from "logimat";
 import {TemplateState} from "../types/TemplateState";
-import {prefabCheck, ensureState, getNum, getString, outerCheck, getAnyAsString, getNumOrString} from "../util";
+import {
+    prefabCheck,
+    ensureState,
+    getNum,
+    getString,
+    outerCheck,
+    getAnyAsString,
+    getNumOrString,
+    handleObjectID
+} from "../util";
 import {GameObject} from "../types/GameObject";
 
 /**
@@ -101,7 +110,7 @@ export const usePrefab: TemplateObject = {
         ensureState(state);
         outerCheck(context);
 
-        const id = getNum(args, state, 0, "An object ID is required!");
+        const id = handleObjectID(getNum(args, state, 0, "An object ID is required!"), state);
         const name = getString(args, state, 1, "A prefab name is required!");
 
         const prefabArgs = args.slice(2);

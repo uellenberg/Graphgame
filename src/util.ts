@@ -94,3 +94,14 @@ export const getNumOrString = (args: TemplateArgs, state: TemplateState, idx: nu
 export const getFullVariableName = (varName: string, behaviorName: string) => (varName.startsWith("base.") ? varName.substring(5) : behaviorName + varName).replace(/[._]/g, "");
 
 export const getShortVariableName = (varName: string) => varName.split(".").pop();
+
+//ID handlers
+
+export const handleObjectID = (id: number, state: TemplateState) : number => {
+    if(id === -1) {
+        //Get the highest key + 1, by sorting in descending order and getting the first element.
+        return Object.keys(state.graphgame.objects).map(key => parseInt(key)).sort((a, b) => b-a)[0] + 1;
+    }
+
+    return id;
+}
