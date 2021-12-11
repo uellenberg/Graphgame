@@ -1,4 +1,12 @@
 export default `
+export function g_raphgame_doa_helper(c_urval, n_ewval, i_nit) {
+    if(c_urval != i_nit) {
+        state = c_urval;
+    } else {
+        state = n_ewval;
+    }
+}
+
 //Behavior
 
 createBehavior!("doa");
@@ -36,30 +44,34 @@ setValAction!("doa", "selected", {
         
         //Go through each mount point to try to find one.
         selectBehavior!("mount_point", {
-            //Make sure that we haven't already chosen a mount point, and that this mount point is visible.
-            if(state == -1 && getValSelect!("mount_point.visible")) {
-                const id = selectedID!();
-        
-                //Make sure that another doa doesn't own this.
-                const owned = {
-                    state = 0;
+            state = g_raphgame_doa_helper(state, {
+                state = -1;
                 
-                    selectBehavior!("doa", {
-                        //If this object is us, we can safely ignore it.
-                        if(selectedID!() != objectID!()) {
-                            //If an object owns this one, set state to true.
-                            if(getValSelect!("doa.selected", true) == id) {
-                                state = 1;
-                            }
-                        }
-                }   );
-                };
+                //Make sure that we haven't already chosen a mount point, and that this mount point is visible.
+                if(getValSelect!("mount_point.visible")) {
+                    const id = selectedID!();
             
-                //If it isn't owned, we can take it.
-                if(!owned) {
-                    state = id;
+                    //Make sure that another doa doesn't own this.
+                    const owned = {
+                        state = 0;
+                    
+                        selectBehavior!("doa", {
+                            //If this object is us, we can safely ignore it.
+                            if(selectedID!() != objectID!()) {
+                                //If an object owns this one, set state to true.
+                                if(getValSelect!("doa.selected", true) == id) {
+                                    state = 1;
+                                }
+                            }
+                        });
+                    };
+                
+                    //If it isn't owned, we can take it.
+                    if(!owned) {
+                        state = id;
+                    }
                 }
-            }
+            }, -1);
         });
     }
 });
