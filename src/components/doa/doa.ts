@@ -11,6 +11,56 @@ helper!("doa", {
             state = n_ewval;
         }
     }
+    
+    export function g_raphgame_doa_helper1(i_d1, i_d2) {
+        state = 0;
+                        
+        selectBehavior!("doa", {
+            const owned =
+                //If this object is us, we can safely ignore it.
+                selectedID!() != i_d1 &&
+                //If an object owns this one, set state to true.
+                getValSelect!("doa.selected", true) == i_d2;
+        
+            state = state || owned;
+        });
+    }
+    
+    export function g_raphgame_doa_helper2(o_bjectid, s_elected) {
+        //If it isn't our turn, don't change anything.
+        const turn = {
+            state = -1;
+            selectBehavior!("window", {
+                state = getValSelect!("window.active_doa");
+            });
+        };
+        
+        if(turn != o_bjectid) {
+            state = s_elected;
+        } else {
+            state = -1;
+            
+            //Go through each mount point to try to find one.
+            selectBehavior!("mount_point", {
+                state = g_raphgame_doa_helper(state, {
+                    state = -1;
+                    
+                    //Make sure that we haven't already chosen a mount point, and that this mount point is visible.
+                    if(getValSelect!("mount_point.visible")) {
+                        const id = selectedID!();
+                
+                        //Make sure that another doa doesn't own this.
+                        const owned = g_raphgame_doa_helper1(o_bjectid, id);
+                        
+                        //If it isn't owned, we can take it.
+                        if(!owned) {
+                            state = id;
+                        }
+                    }
+                }, -1);
+            });
+        }
+    }
 });
 
 setValArgs!("doa", "layer", 0);
@@ -31,51 +81,7 @@ setVal!("doa", "base.transform.scale_y", 0);
 setMut!("doa", "base.transform.scale_y", 0);
 
 setValAction!("doa", "selected", {
-    //If it isn't our turn, don't change anything.
-    const turn = {
-        state = -1;
-        selectBehavior!("window", {
-            state = getValSelect!("window.active_doa");
-        });
-    };
-    
-    if(turn != objectID!()) {
-        state = selected;
-    } else {
-        state = -1;
-        
-        //Go through each mount point to try to find one.
-        selectBehavior!("mount_point", {
-            state = g_raphgame_doa_helper(state, {
-                state = -1;
-                
-                //Make sure that we haven't already chosen a mount point, and that this mount point is visible.
-                if(getValSelect!("mount_point.visible")) {
-                    const id = selectedID!();
-            
-                    //Make sure that another doa doesn't own this.
-                    const owned = {
-                        state = 0;
-                    
-                        selectBehavior!("doa", {
-                            //If this object is us, we can safely ignore it.
-                            if(selectedID!() != objectID!()) {
-                                //If an object owns this one, set state to true.
-                                if(getValSelect!("doa.selected", true) == id) {
-                                    state = 1;
-                                }
-                            }
-                        });
-                    };
-                
-                    //If it isn't owned, we can take it.
-                    if(!owned) {
-                        state = id;
-                    }
-                }
-            }, -1);
-        });
-    }
+    state = g_raphgame_doa_helper2(objectID!(), selected);
 });
 
 setValAction!("doa", "base.transform.x", {
