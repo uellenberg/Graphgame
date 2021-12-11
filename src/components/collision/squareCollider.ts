@@ -53,16 +53,21 @@ setValAction!("square_collider", "base.transform.collision_x", {
         const id = objectID!();
     
         selectBehavior!("square_collider", {
-            if(selectedID!() != id) {
-                const scalex1 = getValSelect!("transform.scalex");
-                const cornerx1 = getValSelect!("transform.x") - scalex1/2;
+            const collision_value = {
+                state = 0;
             
-                const scaley1 = getValSelect!("transform.scaley");
-                const cornery1 = getValSelect!("transform.y") - scaley1/2;
+                if(selectedID!() != id) {
+                    const scalex1 = getValSelect!("transform.scalex");
+                    const cornerx1 = getValSelect!("transform.x") - scalex1/2;
+                
+                    const scaley1 = getValSelect!("transform.scaley");
+                    const cornery1 = getValSelect!("transform.y") - scaley1/2;
+                
+                    state = g_raphgame_square_collider_helper(cornery, cornery1, scaley, scaley1, cornerx, cornerx1, scalex, scalex1);
+                }
+            };
             
-                const collision_value = g_raphgame_square_collider_helper(cornery, cornery1, scaley, scaley1, cornerx, cornerx1, scalex, scalex1);
-                state = g_raphgame_square_collider_helper1(state, collision_value, 0);
-            }
+            state = g_raphgame_square_collider_helper1(state, collision_value, 0);
         });
     }
 }, -300, true);
@@ -80,16 +85,21 @@ setValAction!("square_collider", "base.transform.collision_y", {
         const id = objectID!();
     
         selectBehavior!("square_collider", {
-            if(selectedID!() != id) {
-                const scalex1 = getValSelect!("transform.scalex");
-                const cornerx1 = getValSelect!("transform.x") - scalex1/2;
+            const collision_value = {
+                state = 0;
             
-                const scaley1 = getValSelect!("transform.scaley");
-                const cornery1 = getValSelect!("transform.y") - scaley1/2;
+                if(selectedID!() != id) {
+                    const scalex1 = getValSelect!("transform.scalex");
+                    const cornerx1 = getValSelect!("transform.x") - scalex1/2;
+                
+                    const scaley1 = getValSelect!("transform.scaley");
+                    const cornery1 = getValSelect!("transform.y") - scaley1/2;
+                
+                    state = g_raphgame_square_collider_helper(cornerx, cornerx1, scalex, scalex1, cornery, cornery1, scaley, scaley1);
+                }
+            };
             
-                const collision_value = g_raphgame_square_collider_helper(cornerx, cornerx1, scalex, scalex1, cornery, cornery1, scaley, scaley1);
-                state = g_raphgame_square_collider_helper1(state, collision_value, 0);
-            }
+            state = g_raphgame_square_collider_helper1(state, collision_value, 0);
         });
     }
 }, -300, true);
@@ -109,21 +119,24 @@ setValAction!("square_collider", "base.transform.collision_id", {
         const id = objectID!();
         
         selectBehavior!("square_collider", {
-            if(selectedID!() != id) {
-                const scalex1 = getValSelect!("transform.scalex");
-                const cornerx1 = getValSelect!("transform.x") - scalex1/2;
-                
-                const scaley1 = getValSelect!("transform.scaley");
-                const cornery1 = getValSelect!("transform.y") - scaley1/2;
-                
-                //If there is a collision, set the state.
-                state = g_raphgame_square_collider_helper1(state, {
-                    state = -1;
+            const collision_val = {
+                state = -1;
+            
+                if(selectedID!() != id) {
+                    const scalex1 = getValSelect!("transform.scalex");
+                    const cornerx1 = getValSelect!("transform.x") - scalex1/2;
+                    
+                    const scaley1 = getValSelect!("transform.scaley");
+                    const cornery1 = getValSelect!("transform.y") - scaley1/2;
+                    
                     if(g_raphgame_square_collider_helper(cornery, cornery1, scaley, scaley1, cornerx, cornerx1, scalex, scalex1) != 0) {
                         state = selectedID!();
                     }
-                }, -1);
-            }
+                }
+            };
+            
+            //If there is a collision, set the state.
+            state = g_raphgame_square_collider_helper1(state, collision_val, -1);
         });
     }
 }, -300, true);
