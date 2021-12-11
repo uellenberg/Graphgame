@@ -295,6 +295,22 @@ export const getBehaviorArgs: TemplateObject = {
     }
 };
 
+export const helper: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
+        const body = getString(args, state, 1, "An action body is required!");
+
+        behaviorCheck(state, name);
+
+        state.graphgame.behaviors[name].addHelper(body);
+
+        return "";
+    }
+};
+
 /**
  * Finalize the behavior. This must be the last template called on the behavior.
  * Usage: finalizeBehavior!(name: string);

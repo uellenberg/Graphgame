@@ -1,12 +1,14 @@
 export default `
-export function g_raphgame_collision_resolver_helper(a, b) {
-    state = 0;
-    if(abs(a) <= abs(b)) {
-        state = a;
-    }
-}
-
 createBehavior!("collision_resolver");
+
+helper!("collision_resolver", {
+    export function g_raphgame_collision_resolver_helper(a, b) {
+        state = 0;
+        if(abs(a) <= abs(b)) {
+            state = a;
+        }
+    }
+});
 
 setMut!("collision_resolver", "base.transform.x");
 setMut!("collision_resolver", "base.transform.y");

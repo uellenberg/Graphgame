@@ -1,39 +1,42 @@
 export default `
-export function g_raphgame_square_collider_helper(c_ornery, c_ornery1, s_caley, s_caley1, c_ornerx, c_ornerx1, s_calex, s_calex1) {
-    state = 0;
-    
-    if((c_ornery => c_ornery1 && c_ornery <= c_ornery1 + s_caley1) || (c_ornery + s_caley => c_ornery1 && c_ornery + s_caley <= c_ornery1 + s_caley1)) {
-        const int1 = (c_ornerx1 + s_calex1) - c_ornerx;
-        const int2 = (c_ornerx + s_calex) - c_ornerx1;
-            
-        const int1valid = int1 > 0 && int1 <= s_calex1 && c_ornerx => c_ornerx1 && c_ornerx <= c_ornerx1 + s_calex1;
-        const int2valid = int2 > 0 && int2 <= s_calex1 && c_ornerx <= c_ornerx1;
-            
-        if(int1valid) {
-            if(int2valid && int2 < int1) {
-                state = -int2;
-            } else {
-                state = int1;
-            }
-        } else if(int2valid) {
-            if(int1valid && int1 < int2) {
-                state = int1;
-            } else {
-                state = -int2;
+createBehavior!("square_collider");
+
+//Create helpers
+helper!("square_collider", {
+    export function g_raphgame_square_collider_helper(c_ornery, c_ornery1, s_caley, s_caley1, c_ornerx, c_ornerx1, s_calex, s_calex1) {
+        state = 0;
+        
+        if((c_ornery => c_ornery1 && c_ornery <= c_ornery1 + s_caley1) || (c_ornery + s_caley => c_ornery1 && c_ornery + s_caley <= c_ornery1 + s_caley1)) {
+            const int1 = (c_ornerx1 + s_calex1) - c_ornerx;
+            const int2 = (c_ornerx + s_calex) - c_ornerx1;
+                
+            const int1valid = int1 > 0 && int1 <= s_calex1 && c_ornerx => c_ornerx1 && c_ornerx <= c_ornerx1 + s_calex1;
+            const int2valid = int2 > 0 && int2 <= s_calex1 && c_ornerx <= c_ornerx1;
+                
+            if(int1valid) {
+                if(int2valid && int2 < int1) {
+                    state = -int2;
+                } else {
+                    state = int1;
+                }
+            } else if(int2valid) {
+                if(int1valid && int1 < int2) {
+                    state = int1;
+                } else {
+                    state = -int2;
+                }
             }
         }
     }
-}
-
-export function g_raphgame_square_collider_helper1(c_urval, n_ewval, i_nit) {
-    if(c_urval != i_nit) {
-        state = c_urval;
-    } else {
-        state = n_ewval;
+    
+    export function g_raphgame_square_collider_helper1(c_urval, n_ewval, i_nit) {
+        if(c_urval != i_nit) {
+            state = c_urval;
+        } else {
+            state = n_ewval;
+        }
     }
-}
-
-createBehavior!("square_collider");
+});
 
 setValArgs!("square_collider", "only_collided", 0, 0);
 

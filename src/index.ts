@@ -3,7 +3,7 @@ import {
     behaviorCustom,
     behaviorGraph,
     createBehavior, finalizeBehavior, getBehaviorArgs,
-    getVal,
+    getVal, helper,
     noRegisterSetValAction, objectID, setInline,
     setMut,
     setVal,
@@ -44,6 +44,7 @@ export const templates: TemplatesObject = {
     getBehaviorArgs,
     finalizeBehavior,
     objectID,
+    helper,
     //Object
     createObject,
     useBehavior,
