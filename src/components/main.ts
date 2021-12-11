@@ -8,5 +8,6 @@ import transform from "./main/transform";
 import circle from "./rendering/circle";
 import square from "./rendering/square";
 import point from "./util/point";
+import parent from "./main/parent";
 
-export default collisionResolver + squareCollider + doa + mountPoint + window + windowFollower + transform + circle + square + point;
+export default collisionResolver + squareCollider + doa + mountPoint + window + windowFollower + transform + circle + square + point + parent;
