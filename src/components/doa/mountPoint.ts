@@ -24,10 +24,10 @@ export function g_raphgame_mount_point_helper(o_ffsetx, o_ffsety, s_calex, s_cal
 createBehavior!("mount_point");
 
 setValArgs!("mount_point", "layer", 0);
-setValArgs!("mount_point", "base.transform.x", 1);
-setValArgs!("mount_point", "base.transform.y", 2);
-setValArgs!("mount_point", "base.transform.scale_x", 3);
-setValArgs!("mount_point", "base.transform.scale_y", 4);
+setValArgs!("mount_point", "base.transform.x", 1, 0);
+setValArgs!("mount_point", "base.transform.y", 2, 0);
+setValArgs!("mount_point", "base.transform.scale_x", 3, 1);
+setValArgs!("mount_point", "base.transform.scale_y", 4, 1);
 
 setVal!("mount_point", "visible", 0);
 setMut!("mount_point", "visible");
