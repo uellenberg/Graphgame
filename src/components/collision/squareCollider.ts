@@ -25,6 +25,14 @@ export function g_raphgame_square_collider_helper(c_ornery, c_ornery1, s_caley, 
     }
 }
 
+export function g_raphgame_square_collider_helper1(c_urval, n_ewval, i_nit) {
+    if(c_urval != i_nit) {
+        state = c_urval;
+    } else {
+        state = n_ewval;
+    }
+}
+
 createBehavior!("square_collider");
 
 setValArgs!("square_collider", "only_collided", 0, 0);
@@ -42,14 +50,15 @@ setValAction!("square_collider", "base.transform.collision_x", {
         const id = objectID!();
     
         selectBehavior!("square_collider", {
-            if(state == 0 && selectedID!() != id) {
+            if(selectedID!() != id) {
                 const scalex1 = getValSelect!("transform.scalex");
                 const cornerx1 = getValSelect!("transform.x") - scalex1/2;
             
                 const scaley1 = getValSelect!("transform.scaley");
                 const cornery1 = getValSelect!("transform.y") - scaley1/2;
             
-                state = g_raphgame_square_collider_helper(cornery, cornery1, scaley, scaley1, cornerx, cornerx1, scalex, scalex1);
+                const collision_value = g_raphgame_square_collider_helper(cornery, cornery1, scaley, scaley1, cornerx, cornerx1, scalex, scalex1);
+                state = g_raphgame_square_collider_helper1(state, collision_value, 0);
             }
         });
     }
@@ -68,14 +77,15 @@ setValAction!("square_collider", "base.transform.collision_y", {
         const id = objectID!();
     
         selectBehavior!("square_collider", {
-            if(state == 0 && selectedID!() != id) {
+            if(selectedID!() != id) {
                 const scalex1 = getValSelect!("transform.scalex");
                 const cornerx1 = getValSelect!("transform.x") - scalex1/2;
             
                 const scaley1 = getValSelect!("transform.scaley");
                 const cornery1 = getValSelect!("transform.y") - scaley1/2;
             
-                state = g_raphgame_square_collider_helper(cornerx, cornerx1, scalex, scalex1, cornery, cornery1, scaley, scaley1);
+                const collision_value = g_raphgame_square_collider_helper(cornerx, cornerx1, scalex, scalex1, cornery, cornery1, scaley, scaley1);
+                state = g_raphgame_square_collider_helper1(state, collision_value, 0);
             }
         });
     }
@@ -96,7 +106,7 @@ setValAction!("square_collider", "base.transform.collision_id", {
         const id = objectID!();
         
         selectBehavior!("square_collider", {
-            if(state == -1 && selectedID!() != id) {
+            if(selectedID!() != id) {
                 const scalex1 = getValSelect!("transform.scalex");
                 const cornerx1 = getValSelect!("transform.x") - scalex1/2;
                 
@@ -104,9 +114,12 @@ setValAction!("square_collider", "base.transform.collision_id", {
                 const cornery1 = getValSelect!("transform.y") - scaley1/2;
                 
                 //If there is a collision, set the state.
-                if(g_raphgame_square_collider_helper(cornery, cornery1, scaley, scaley1, cornerx, cornerx1, scalex, scalex1) != 0) {
-                    state = selectedID!();
-                }
+                state = g_raphgame_square_collider_helper1(state, {
+                    state = -1;
+                    if(g_raphgame_square_collider_helper(cornery, cornery1, scaley, scaley1, cornerx, cornerx1, scalex, scalex1) != 0) {
+                        state = selectedID!();
+                    }
+                }, -1);
             }
         });
     }
