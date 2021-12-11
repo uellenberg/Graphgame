@@ -27,81 +27,89 @@ export function g_raphgame_square_collider_helper(c_ornery, c_ornery1, s_caley, 
 
 createBehavior!("square_collider");
 
+setValArgs!("square_collider", "only_collided", 0, 0);
+
 setValAction!("square_collider", "base.transform.collision_x", {
     state = 0;
 
-    const scalex = getVal!("square_collider", "base.transform.scalex");
-    const cornerx = getVal!("square_collider", "base.transform.x") - scalex/2;
+    if(!getVal!("square_collider", "only_collided")) {
+        const scalex = getVal!("square_collider", "base.transform.scalex");
+        const cornerx = getVal!("square_collider", "base.transform.x") - scalex/2;
     
-    const scaley = getVal!("square_collider", "base.transform.scaley");
-    const cornery = getVal!("square_collider", "base.transform.y") - scaley/2;
+        const scaley = getVal!("square_collider", "base.transform.scaley");
+        const cornery = getVal!("square_collider", "base.transform.y") - scaley/2;
     
-    const id = objectID!();
+        const id = objectID!();
     
-    selectBehavior!("square_collider", {
-        if(state == 0 && selectedID!() != id) {
-            const scalex1 = getValSelect!("transform.scalex");
-            const cornerx1 = getValSelect!("transform.x") - scalex1/2;
+        selectBehavior!("square_collider", {
+            if(state == 0 && selectedID!() != id) {
+                const scalex1 = getValSelect!("transform.scalex");
+                const cornerx1 = getValSelect!("transform.x") - scalex1/2;
             
-            const scaley1 = getValSelect!("transform.scaley");
-            const cornery1 = getValSelect!("transform.y") - scaley1/2;
+                const scaley1 = getValSelect!("transform.scaley");
+                const cornery1 = getValSelect!("transform.y") - scaley1/2;
             
-            state = g_raphgame_square_collider_helper(cornery, cornery1, scaley, scaley1, cornerx, cornerx1, scalex, scalex1);
-        }
-    });
+                state = g_raphgame_square_collider_helper(cornery, cornery1, scaley, scaley1, cornerx, cornerx1, scalex, scalex1);
+            }
+        });
+    }
 }, -300, true);
 
 setValAction!("square_collider", "base.transform.collision_y", {
     state = 0;
-
-    const scalex = getVal!("square_collider", "base.transform.scalex");
-    const cornerx = getVal!("square_collider", "base.transform.x") - scalex/2;
     
-    const scaley = getVal!("square_collider", "base.transform.scaley");
-    const cornery = getVal!("square_collider", "base.transform.y") - scaley/2;
+    if(!getVal!("square_collider", "only_collided")) {
+        const scalex = getVal!("square_collider", "base.transform.scalex");
+        const cornerx = getVal!("square_collider", "base.transform.x") - scalex/2;
     
-    const id = objectID!();
+        const scaley = getVal!("square_collider", "base.transform.scaley");
+        const cornery = getVal!("square_collider", "base.transform.y") - scaley/2;
     
-    selectBehavior!("square_collider", {
-        if(state == 0 && selectedID!() != id) {
-            const scalex1 = getValSelect!("transform.scalex");
-            const cornerx1 = getValSelect!("transform.x") - scalex1/2;
+        const id = objectID!();
+    
+        selectBehavior!("square_collider", {
+            if(state == 0 && selectedID!() != id) {
+                const scalex1 = getValSelect!("transform.scalex");
+                const cornerx1 = getValSelect!("transform.x") - scalex1/2;
             
-            const scaley1 = getValSelect!("transform.scaley");
-            const cornery1 = getValSelect!("transform.y") - scaley1/2;
+                const scaley1 = getValSelect!("transform.scaley");
+                const cornery1 = getValSelect!("transform.y") - scaley1/2;
             
-            state = g_raphgame_square_collider_helper(cornerx, cornerx1, scalex, scalex1, cornery, cornery1, scaley, scaley1);
-        }
-    });
+                state = g_raphgame_square_collider_helper(cornerx, cornerx1, scalex, scalex1, cornery, cornery1, scaley, scaley1);
+            }
+        });
+    }
 }, -300, true);
 
 setValAction!("square_collider", "base.transform.collision_id", {
     //The specific collision coordinate doesn't matter here, as any collision will result in both x and y having non-zero values.
 
     state = -1;
-
-    const scalex = getVal!("square_collider", "base.transform.scalex");
-    const cornerx = getVal!("square_collider", "base.transform.x") - scalex/2;
     
-    const scaley = getVal!("square_collider", "base.transform.scaley");
-    const cornery = getVal!("square_collider", "base.transform.y") - scaley/2;
-    
-    const id = objectID!();
-    
-    selectBehavior!("square_collider", {
-        if(state == -1 && selectedID!() != id) {
-            const scalex1 = getValSelect!("transform.scalex");
-            const cornerx1 = getValSelect!("transform.x") - scalex1/2;
-            
-            const scaley1 = getValSelect!("transform.scaley");
-            const cornery1 = getValSelect!("transform.y") - scaley1/2;
-            
-            //If there is a collision, set the state.
-            if(g_raphgame_square_collider_helper(cornery, cornery1, scaley, scaley1, cornerx, cornerx1, scalex, scalex1) != 0) {
-                state = selectedID!();
+    if(!getVal!("square_collider", "only_collided")) {
+        const scalex = getVal!("square_collider", "base.transform.scalex");
+        const cornerx = getVal!("square_collider", "base.transform.x") - scalex/2;
+        
+        const scaley = getVal!("square_collider", "base.transform.scaley");
+        const cornery = getVal!("square_collider", "base.transform.y") - scaley/2;
+        
+        const id = objectID!();
+        
+        selectBehavior!("square_collider", {
+            if(state == -1 && selectedID!() != id) {
+                const scalex1 = getValSelect!("transform.scalex");
+                const cornerx1 = getValSelect!("transform.x") - scalex1/2;
+                
+                const scaley1 = getValSelect!("transform.scaley");
+                const cornery1 = getValSelect!("transform.y") - scaley1/2;
+                
+                //If there is a collision, set the state.
+                if(g_raphgame_square_collider_helper(cornery, cornery1, scaley, scaley1, cornerx, cornerx1, scalex, scalex1) != 0) {
+                    state = selectedID!();
+                }
             }
-        }
-    });
+        });
+    }
 }, -300, true);
 
 finalizeBehavior!("square_collider");
