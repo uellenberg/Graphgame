@@ -75,5 +75,34 @@ setValAction!("square_collider", "base.transform.collision_y", {
     });
 }, -300, true);
 
+setValAction!("square_collider", "base.transform.collision_id", {
+    //The specific collision coordinate doesn't matter here, as any collision will result in both x and y having non-zero values.
+
+    state = -1;
+
+    const scalex = getVal!("square_collider", "base.transform.scalex");
+    const cornerx = getVal!("square_collider", "base.transform.x") - scalex/2;
+    
+    const scaley = getVal!("square_collider", "base.transform.scaley");
+    const cornery = getVal!("square_collider", "base.transform.y") - scaley/2;
+    
+    const id = objectID!();
+    
+    selectBehavior!("square_collider", {
+        if(state == -1 && selectedID!() != id) {
+            const scalex1 = getValSelect!("transform.scalex");
+            const cornerx1 = getValSelect!("transform.x") - scalex1/2;
+            
+            const scaley1 = getValSelect!("transform.scaley");
+            const cornery1 = getValSelect!("transform.y") - scaley1/2;
+            
+            //If there is a collision, set the state.
+            if(g_raphgame_square_collider_helper(cornery, cornery1, scaley, scaley1, cornerx, cornerx1, scalex, scalex1) != 0) {
+                state = selectedID!();
+            }
+        }
+    });
+}, -300, true);
+
 finalizeBehavior!("square_collider");
 `;
