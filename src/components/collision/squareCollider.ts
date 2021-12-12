@@ -4,33 +4,27 @@ createBehavior!("square_collider");
 //Create helpers
 helper!("square_collider", {
     export function g_raphgame_square_collider_helper(c_ornery, c_ornery1, s_caley, s_caley1, c_ornerx, c_ornerx1, s_calex, s_calex1) {
-        const cornery = c_ornery - s_caley/2;
-        const cornery1 = c_ornery1 - s_caley1/2;
-        
-        const cornerx = c_ornerx - s_calex/2;
-        const cornerx1 = c_ornerx1 - s_calex1/2;
-    
         state = 0;
         
-        if((cornery => cornery1 && cornery <= cornery1 + s_caley1) || (cornery + s_caley => cornery1 && cornery + s_caley <= cornery1 + s_caley1)) {
-            const int1 = (cornerx1 + s_calex1) - cornerx;
-            const int2 = (cornerx + s_calex) - cornerx1;
-                
-            const int1valid = int1 > 0 && int1 <= s_calex1 && cornerx => cornerx1 && cornerx <= cornerx1 + s_calex1;
-            const int2valid = int2 > 0 && int2 <= s_calex1 && cornerx <= cornerx1;
-                
-            if(int1valid) {
-                if(int2valid && int2 < int1) {
-                    state = -int2;
-                } else {
-                    state = int1;
-                }
-            } else if(int2valid) {
-                if(int1valid && int1 < int2) {
-                    state = int1;
-                } else {
-                    state = -int2;
-                }
+        //1st is us, 2nd is the other collider.
+        
+        //Quickly determine if they collide.
+        //https://gamedev.stackexchange.com/a/587
+        if(abs(c_ornerx - c_ornerx1) * 2 < s_calex + s_calex1 &&
+           abs(c_ornery - c_ornery1) * 2 < s_caley + s_caley1
+        ) {
+            const left = c_ornerx - s_calex/2;
+            const right = c_ornerx + s_calex/2;
+            
+            const left1 = c_ornerx1 - s_calex1/2;
+            const right1 = c_ornerx1 + s_calex1/2;
+        
+            //If our midpoint is greater than the other one, subtract our left edge from its right edge.
+            //Otherwise, do the opposite.
+            if(c_ornerx > c_ornerx1) {
+                state = right1 - left;
+            } else {
+                state = left1 - right;
             }
         }
     }

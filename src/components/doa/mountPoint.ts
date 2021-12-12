@@ -5,20 +5,14 @@ createBehavior!("mount_point");
 
 //Helper function
 helper!("mount_point", {
-    export function g_raphgame_mount_point_helper(o_ffsetx, o_ffsety, s_calex, s_caley, y_1top, y_1bottom, x_1left, x_1right) {
+    export function g_raphgame_mount_point_helper(x_1, y_1, s_x1, s_y1, x_2, y_2, s_x2, s_y2) {
         state = 0;
         
-        //Find the position of the edges.
-        
-        const y_top = o_ffsety + (s_caley / 2);
-        const y_bottom = o_ffsety - (s_caley / 2);
-        
-        const x_right = o_ffsetx + (s_calex / 2);
-        const x_left = o_ffsetx - (s_calex / 2);
-        
-        //Check if it lies within all of the edges.
-        
-        if(x_1left < x_right && x_1right > x_left && y_1top > y_bottom && y_1bottom < y_top) {
+        //Quickly determine if they collide.
+        //https://gamedev.stackexchange.com/a/587
+        if(abs(x_1 - x_2) * 2 < s_x1 + s_x2 &&
+           abs(y_1 - y_2) * 2 < s_y1 + s_y2
+        ) {
             state = 1;
         }
     }
@@ -38,28 +32,28 @@ setValAction!("mount_point", "visible", {
     
     //Get all of the values for the window.
     
-    const offset_x = {
+    const x1 = {
         state = 0;
         selectBehavior!("window", {
             state = getValSelect!("transform.x");
         });
     };
     
-    const offset_y = {
+    const y1 = {
         state = 0;
         selectBehavior!("window", {
             state = getValSelect!("transform.y");
         });
     };
     
-    const scale_x = {
+    const sx1 = {
         state = 0;
         selectBehavior!("window", {
             state = getValSelect!("transform.scale_x");
         });
     };
     
-    const scale_y = {
+    const sy1 = {
         state = 0;
         selectBehavior!("window", {
             state = getValSelect!("transform.scale_y");
@@ -68,14 +62,13 @@ setValAction!("mount_point", "visible", {
     
     //Get the values for this mount point.
     
-    const y_top = getVal!("mount_point", "base.transform.y") + (getVal!("mount_point", "base.transform.scale_y") / 2);
-    const y_bottom = getVal!("mount_point", "base.transform.y") - (getVal!("mount_point", "base.transform.scale_y") / 2);
-    
-    const x_right = getVal!("mount_point", "base.transform.x") + (getVal!("mount_point", "base.transform.scale_x") / 2);
-    const x_left = getVal!("mount_point", "base.transform.x") - (getVal!("mount_point", "base.transform.scale_x") / 2);
+    const x2 = getVal!("mount_point", "base.transform.x");
+    const y2 = getVal!("mount_point", "base.transform.y");
+    const sx2 = getVal!("mount_point", "base.transform.scale_x");
+    const sy2 = getVal!("mount_point", "base.transform.scale_y");
     
     //Check if it is visible.
-    state = g_raphgame_mount_point_helper(offset_x, offset_y, scale_x, scale_y, y_top, y_bottom, x_left, x_right);
+    state = g_raphgame_mount_point_helper(x1, y1, sx1, sy1, x2, y2, sx2, sy2);
 });
 
 finalizeBehavior!("mount_point");
