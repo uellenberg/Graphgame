@@ -8,9 +8,11 @@ helper!("square_collider", {
         
         //1st is us, 2nd is the other collider.
         
+        //Make sure that all objects have a scale.
+        if(s_calex > 0 && s_calex1 > 0 && s_caley > 0 && s_caley1 > 0 &&
         //Quickly determine if they collide.
         //https://gamedev.stackexchange.com/a/587
-        if(abs(c_ornerx - c_ornerx1) * 2 < s_calex + s_calex1 &&
+           abs(c_ornerx - c_ornerx1) * 2 < s_calex + s_calex1 &&
            abs(c_ornery - c_ornery1) * 2 < s_caley + s_caley1
         ) {
             const left = c_ornerx - s_calex/2;
