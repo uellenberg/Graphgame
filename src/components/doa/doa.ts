@@ -4,61 +4,29 @@ export default `
 createBehavior!("doa");
 
 helper!("doa", {
-    export function g_raphgame_doa_helper(c_urval, n_ewval, i_nit) {
-        if(c_urval != i_nit) {
-            state = c_urval;
-        } else {
-            state = n_ewval;
-        }
-    }
+    export function g_raphgame_doa_helper(o_bjectid, i_dx) {
+        //Value, idx.
+        state = [0, 0];
     
-    export function g_raphgame_doa_helper1(i_d1, i_d2) {
-        state = 0;
-                        
-        selectBehavior!("doa", {
-            const owned =
-                //If this object is us, we can safely ignore it.
-                selectedID!() != i_d1 &&
-                //If an object owns this one, set state to true.
-                getValSelect!("doa.selected", true) == i_d2;
-        
-            state = state || owned;
+        //Go through each mount point to try to find one.
+        selectBehavior!("mount_point", {
+            state = g_raphgame_doa_helper1(state, i_dx, getValSelect!("mount_point.visible"), selectedID!());
         });
+        
+        state = state[1];
     }
     
-    export function g_raphgame_doa_helper2(o_bjectid, s_elected) {
-        //If it isn't our turn, don't change anything.
-        const turn = {
-            state = -1;
-            selectBehavior!("window", {
-                state = getValSelect!("window.active_doa");
-            });
-        };
+    export function g_raphgame_doa_helper1(c_urval, i_dx, v_isible, i_d) {
+        state = c_urval;
         
-        if(turn != o_bjectid) {
-            state = s_elected;
-        } else {
-            state = -1;
-            
-            //Go through each mount point to try to find one.
-            selectBehavior!("mount_point", {
-                state = g_raphgame_doa_helper(state, {
-                    state = -1;
-                    
-                    //Make sure that we haven't already chosen a mount point, and that this mount point is visible.
-                    if(getValSelect!("mount_point.visible")) {
-                        const id = selectedID!();
-                
-                        //Make sure that another doa doesn't own this.
-                        const owned = g_raphgame_doa_helper1(o_bjectid, id);
-                        
-                        //If it isn't owned, we can take it.
-                        if(!owned) {
-                            state = id;
-                        }
-                    }
-                }, -1);
-            });
+        //Make sure that we are visible.
+        if(v_isible) {
+            //Check if it's out index. If it is, return, otherwise increment the index.
+            if(c_urval[2] == i_dx) {
+                state = [i_d, c_urval[2]+1];
+            } else {
+                state = [c_urval[1], c_urval[2]+1];
+            }
         }
     }
 });
@@ -80,8 +48,34 @@ setMut!("doa", "base.transform.scale_x", 0);
 setVal!("doa", "base.transform.scale_y", 0);
 setMut!("doa", "base.transform.scale_y", 0);
 
+setVal!("doa", "idx", 0);
+setInline!("doa", "idx");
+
+//The index of this doa in the current layer.
+setValAction!("doa", "idx", {
+    //Start the value at 1.
+    //Increment the value while it is > 0, and the layer is the same.
+    //Once we reach our ID, make the value negative.
+    //Return the value + 1, multiplied by -1.
+    
+    state = 1;
+    selectBehavior!("doa", {
+        if(getValSelect!("doa.layer") == getVal!("doa", "layer")) {
+            if(state > 0) {
+                if(selectedID!() == objectID!()) {
+                    state = -state;
+                } else {
+                    state = state + 1;
+                }
+            }
+        }
+    });
+    
+    state = -(state + 1);
+});
+
 setValAction!("doa", "selected", {
-    state = g_raphgame_doa_helper2(objectID!(), selected);
+    state = g_raphgame_doa_helper(objectID!(), getVal!("doa", "idx"));
 });
 
 setValAction!("doa", "base.transform.x", {
