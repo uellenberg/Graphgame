@@ -53,25 +53,18 @@ setInline!("doa", "idx");
 
 //The index of this doa in the current layer.
 setValAction!("doa", "idx", {
-    //Start the value at 1.
-    //Increment the value while it is > 0, and the layer is the same.
-    //Once we reach our ID, make the value negative.
-    //Return the value + 1, multiplied by -1.
-    
-    state = 1;
+    //Increment by each value that is less than the id and is on the correct layer.
+
+    state = 0;
     selectBehavior!("doa", {
-        if(getValSelect!("doa.layer") == getVal!("doa", "layer")) {
-            if(state > 0) {
-                if(selectedID!() == objectID!()) {
-                    state = -state;
-                } else {
-                    state = state + 1;
-                }
+        state = state + {
+            if(selectedID!() < objectID!() && getValSelect!("doa.layer") == getVal!("doa", "layer")) {
+                state = 1;
+            } else {
+                state = 0;
             }
-        }
+        };
     });
-    
-    state = -(state + 1);
 });
 
 setValAction!("doa", "selected", {
