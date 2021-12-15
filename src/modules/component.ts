@@ -203,12 +203,13 @@ export const noRegisterSetValAction: TemplateObject = {
         const varName = getString(args, state, 1, "A variable name is required!").trim().toLowerCase();
         const body = getString(args, state, 2, "An action body is required!");
         const actionName = getString(args, state, 3)?.trim().toLowerCase();
+        const priority = getNum(args, state, 4) || 0;
 
         behaviorCheck(state, name);
 
         state.graphgame.behaviors[name].addPost((id: number) => `selectID!(${id});
         noRegisterSetValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};${body}}${actionName ? ", \"" + actionName + "\"" : ""});
-        selectID!();`, 0);
+        selectID!();`, priority);
 
         return "";
     }
