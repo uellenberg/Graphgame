@@ -5,6 +5,7 @@ export class SemiMutable {
     private mutable: boolean = false;
     private inlined: boolean = false;
     private incrementID: number = 0;
+    private variableIDs: number[] = [];
 
     /**
      * Creates a SemiMutable, which stores an immutable value until it is made mutable.
@@ -63,7 +64,7 @@ export class SemiMutable {
      * Gets the value. If supplied, an offset is added to the increment.
      */
     public get(offset: number = 0): string {
-        if(this.mutable) return this.name(false, offset) + (this.incrementID+offset > 0 ? "()" : "");
+        if(this.mutable) return this.name(false, offset) + (this.incrementID+offset > 0 && !this.variableIDs.includes(this.incrementID+offset) ? "()" : "");
         return this.val.toString();
     }
 
@@ -77,10 +78,13 @@ export class SemiMutable {
 
     /**
      * Increment the value's identifier.
+     * @param variable {boolean} - is a value indicating whether this increment should be treated as a variable and not a function.
      */
-    public increment(): void {
+    public increment(variable: boolean = false): void {
         if(!this.mutable) throw new Error("A variable must be marked as mutable before it can be used in an action!");
         this.incrementID++;
+
+        if(variable) this.variableIDs.push(this.incrementID);
     }
 
     /**

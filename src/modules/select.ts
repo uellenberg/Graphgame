@@ -215,6 +215,7 @@ export const setValActionSelect: TemplateObject = {
         const name = getString(args, state, 0, "A variable name is required!").trim().toLowerCase().replace(/[._]/g, "");
         const body = getString(args, state, 1, "An action body is required!");
         const exported = getBoolean(args, state, 2);
+        const variable = getBoolean(args, state, 3);
 
         objectCheck(state, id);
         objectVarCheck(state, id, name);
@@ -225,7 +226,7 @@ export const setValActionSelect: TemplateObject = {
         const semimutVar = semimut.name(true);
 
         const oldSemimut = semimut.get();
-        semimut.increment();
+        semimut.increment(variable);
         const semimutName = semimut.name();
 
         if(!semimut.isInline()) state.graphgame.actions[semimutVar] = semimut.get();
@@ -233,10 +234,10 @@ export const setValActionSelect: TemplateObject = {
         semimut.decrement();
         state.graphgame.toIncrement = semimut;
 
-        return `${exported ? "export" : "inline"} function ${semimutName}() {
+        return `${exported ? "export" : "inline"} ${variable ? "const" : "function"} ${semimutName}${variable ? " = " : "()"} {
             const ${name} = ${oldSemimut};
             ${body}
-        }
+        }${variable ? ";" : ""}
         reIncrement!();`;
     }
 };

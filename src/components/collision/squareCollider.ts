@@ -72,7 +72,7 @@ setValAction!("square_collider", "base.transform.collision_x", {
             state = g_raphgame_square_collider_helper1(state, collision_value, 0);
         });
     }
-}, -300, true);
+}, -300, true, true);
 
 setValAction!("square_collider", "base.transform.collision_y", {
     state = 0;
@@ -104,7 +104,7 @@ setValAction!("square_collider", "base.transform.collision_y", {
             state = g_raphgame_square_collider_helper1(state, collision_value, 0);
         });
     }
-}, -300, true);
+}, -300, true, true);
 
 setValAction!("square_collider", "base.transform.collision_id", {
     //The specific collision coordinate doesn't matter here, as any collision will result in both x and y having non-zero values.
@@ -141,7 +141,7 @@ setValAction!("square_collider", "base.transform.collision_id", {
             state = g_raphgame_square_collider_helper1(state, collision_val, -1);
         });
     }
-}, -300, true);
+}, -300, true, true);
 
 finalizeBehavior!("square_collider");
 `;
