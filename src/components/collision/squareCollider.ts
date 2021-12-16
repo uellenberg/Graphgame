@@ -38,6 +38,18 @@ helper!("square_collider", {
             state = n_ewval;
         }
     }
+    
+    export function g_raphgame_square_collider_helper2(x_1, y_1, s_x1, s_y1, x_2, y_2, s_x2, s_y2, i_d) {
+        state = -1;
+        
+        //Quickly determine if they collide.
+        //https://gamedev.stackexchange.com/a/587
+        if(abs(x_1 - x_2) * 2 < s_x1 + s_x2 &&
+           abs(y_1 - y_2) * 2 < s_y1 + s_y2
+        ) {
+            state = i_d;
+        }
+    }
 });
 
 setValArgs!("square_collider", "only_collided", 0, 0);
@@ -131,9 +143,7 @@ setValAction!("square_collider", "base.transform.collision_id", {
                     const scaley1 = getValSelect!("transform.scaley");
                     const cornery1 = getValSelect!("transform.y");
                     
-                    if(g_raphgame_square_collider_helper(cornery, cornery1, scaley, scaley1, cornerx, cornerx1, scalex, scalex1) != 0) {
-                        state = selectedID!();
-                    }
+                    state = g_raphgame_square_collider_helper2(cornery, cornery1, scaley, scaley1, cornerx, cornerx1, scalex, scalex1, selectedID!());
                 }
             };
             
