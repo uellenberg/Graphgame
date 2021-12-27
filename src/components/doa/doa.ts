@@ -4,37 +4,43 @@ export default `
 createBehavior!("doa");
 
 helper!("doa", {
-    export function g_raphgame_doa_helper(o_bjectid, i_dx) {
-        //Value, idx.
-        state = [0, 0];
-    
-        //Go through each mount point to try to find one.
-        selectBehavior!("mount_point", {
-            state = g_raphgame_doa_helper1(state, i_dx, getValSelect!("mount_point.visible"), selectedID!());
+    inline const g_raphgame_doa_visible_array = selectBehavior!("mount_point", {
+        state = getValSelect!("mount_point.visible", true);
+    }, true);
+
+    export function g_raphgame_doa_filter(a_rray) {
+        //Create an array of each index.
+        const indexes = range(1, a_rray.length);
+        
+        //Filter the array to only selected mount points.
+        const filtered = indexes.filter(m_pidx => {
+            state = g_raphgame_doa_visible_array[m_pidx];
         });
         
-        state = state[1];
+        //Map the new array to the value in the input array.
+        state = filtered.map(m_pidx1 => {
+            state = a_rray[m_pidx1];
+        });
     }
     
-    export function g_raphgame_doa_helper1(c_urval, i_dx, v_isible, i_d) {
-        state = c_urval;
-        
-        //Make sure that we are visible.
-        if(v_isible) {
-            //Check if it's out index. If it is, return, otherwise increment the index.
-            if(c_urval[2] == i_dx) {
-                state = [i_d, c_urval[2]+1];
-            } else {
-                state = [c_urval[1], c_urval[2]+1];
-            }
-        }
-    }
+    export const g_raphgame_doa_x_array = g_raphgame_doa_filter(selectBehavior!("mount_point", {
+        state = getValSelect!("transform.x");
+    }, true));
+    
+    export const g_raphgame_doa_y_array = g_raphgame_doa_filter(selectBehavior!("mount_point", {
+        state = getValSelect!("transform.y");
+    }, true));
+    
+    export const g_raphgame_doa_xs_array = g_raphgame_doa_filter(selectBehavior!("mount_point", {
+        state = getValSelect!("transform.scale_x");
+    }, true));
+    
+    export const g_raphgame_doa_ys_array = g_raphgame_doa_filter(selectBehavior!("mount_point", {
+        state = getValSelect!("transform.scale_y");
+    }, true));
 });
 
 setValArgs!("doa", "layer", 0);
-
-setVal!("doa", "selected", -1);
-setMut!("doa", "selected");
 
 setVal!("doa", "base.transform.x", 0);
 setMut!("doa", "base.transform.x", 0);
@@ -55,7 +61,7 @@ setInline!("doa", "idx");
 setValAction!("doa", "idx", {
     //Increment by each value that is less than the id and is on the correct layer.
 
-    state = 0;
+    state = 1;
     selectBehavior!("doa", {
         state = state + {
             if(selectedID!() < objectID!() && getValSelect!("doa.layer") == getVal!("doa", "layer")) {
@@ -67,68 +73,44 @@ setValAction!("doa", "idx", {
     });
 });
 
-setValAction!("doa", "selected", {
-    state = g_raphgame_doa_helper(objectID!(), getVal!("doa", "idx"));
-});
-
 setValAction!("doa", "base.transform.x", {
     state = 0;
 
     //Get the id.
-    const id = getVal!("doa", "selected", true);
+    const id = getVal!("doa", "idx");
     
     //Find the object.
-    selectBehavior!("mount_point", {
-        //If it's this object, set the state.
-        if(selectedID!() == id) {
-            state = getValSelect!("transform.x");
-        }
-    });
+    state = g_raphgame_doa_x_array[id];
 });
 
 setValAction!("doa", "base.transform.y", {
     state = 0;
 
     //Get the id.
-    const id = getVal!("doa", "selected", true);
+    const id = getVal!("doa", "idx");
     
     //Find the object.
-    selectBehavior!("mount_point", {
-        //If it's this object, set the state.
-        if(selectedID!() == id) {
-            state = getValSelect!("transform.y");
-        }
-    });
+    state = g_raphgame_doa_y_array[id];
 });
 
 setValAction!("doa", "base.transform.scale_x", {
     state = 0;
 
     //Get the id.
-    const id = getVal!("doa", "selected", true);
+    const id = getVal!("doa", "idx");
     
     //Find the object.
-    selectBehavior!("mount_point", {
-        //If it's this object, set the state.
-        if(selectedID!() == id) {
-            state = getValSelect!("transform.scale_x");
-        }
-    });
+    state = g_raphgame_doa_xs_array[id];
 });
 
 setValAction!("doa", "base.transform.scale_y", {
     state = 0;
 
     //Get the id.
-    const id = getVal!("doa", "selected", true);
+    const id = getVal!("doa", "idx");
     
     //Find the object.
-    selectBehavior!("mount_point", {
-        //If it's this object, set the state.
-        if(selectedID!() == id) {
-            state = getValSelect!("transform.scale_y");
-        }
-    });
+    state = g_raphgame_doa_ys_array[id];
 });
 
 finalizeBehavior!("doa");
