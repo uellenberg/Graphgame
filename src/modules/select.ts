@@ -42,25 +42,47 @@ export const selectedID: TemplateObject = {
 
 /**
  * Selects every object and uses the specified body on each.
- * Usage: selectAll!(body: string);
+ * Usage: selectAll!(body: string, array?: boolean);
  */
 export const selectAll: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
-        outerInnerCheck(context);
 
         const body = getString(args, state, 0, "A body is required!");
+        const array = getBoolean(args, state, 1);
+
+        if(array) {
+            expressionCheck(context);
+        } else {
+            outerInnerCheck(context);
+        }
 
         const func = (state: TemplateState) => {
             const output: string[] = [];
 
+            if(array) output.push("[");
+
             //Sort in ascending order.
             for (let id of Object.keys(state.graphgame.objects).map(id => parseInt(id)).sort((a, b) => a-b)) {
+                if(array) output.push("{");
+
                 output.push("selectID!(" + id + ");");
                 output.push(body);
+
+                if(array) output.push("},");
             }
 
-            output.push("selectID!();");
+            if(array) {
+                //If it's an array, we add a comma to the end of each entry.
+                //To get it into the correct format, we need to remove the
+                //comma from the end of the last entry. We also need to clear
+                //the selected ID.
+                output[output.length-1] = "selectID!();}";
+
+                output.push("]");
+            } else {
+                output.push("selectID!();");
+            }
 
             return output.join("\n");
         };
@@ -72,28 +94,50 @@ export const selectAll: TemplateObject = {
 
 /**
  * Selects every object that has a specific behavior and uses the specified body on each.
- * Usage: selectBehavior!(behavior: string, body: string);
+ * Usage: selectBehavior!(behavior: string, body: string, array?: boolean);
  */
 export const selectBehavior: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
-        outerInnerCheck(context);
 
         const behavior = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
         const body = getString(args, state, 1, "A body is required!");
+        const array = getBoolean(args, state, 2);
+
+        if(array) {
+            expressionCheck(context);
+        } else {
+            outerInnerCheck(context);
+        }
 
         const func = (state: TemplateState) => {
             const output: string[] = [];
+
+            if(array) output.push("[");
 
             //Sort in ascending order.
             for (let id of Object.keys(state.graphgame.objects).map(id => parseInt(id)).sort((a, b) => a-b)) {
                 if(!state.graphgame.objects[id].behaviors.includes(behavior)) continue;
 
+                if(array) output.push("{");
+
                 output.push("selectID!(" + id + ");");
                 output.push(body);
+
+                if(array) output.push("},");
             }
 
-            output.push("selectID!();");
+            if(array) {
+                //If it's an array, we add a comma to the end of each entry.
+                //To get it into the correct format, we need to remove the
+                //comma from the end of the last entry. We also need to clear
+                //the selected ID.
+                output[output.length-1] = "selectID!();}";
+
+                output.push("]");
+            } else {
+                output.push("selectID!();");
+            }
 
             return output.join("\n");
         };
