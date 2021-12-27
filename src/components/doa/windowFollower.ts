@@ -14,34 +14,34 @@ setValAction!("window_follower", "offset_x", {
     selectBehavior!("window", {
         state = getValSelect!("transform.x", true);
     });
-}, -399);
+}, -390);
 
 setValAction!("window_follower", "offset_y", {
     state = 0;
     selectBehavior!("window", {
         state = getValSelect!("transform.y", true);
     });
-}, -399);
+}, -390);
 
 //Move the current position to be based on the offsets during collisions and renders.
 
 setValAction!("window_follower", "base.transform.x", {
     state = x - getVal!("window_follower", "offset_x");
-}, -399);
+}, -390);
 
 setValAction!("window_follower", "base.transform.y", {
     state = y - getVal!("window_follower", "offset_y");
-}, -399);
+}, -390);
 
 //At the end of the frame, move it back to the original position.
 
 setValAction!("window_follower", "base.transform.x", {
     state = x + getVal!("window_follower", "offset_x");
-}, -99);
+}, -90);
 
 setValAction!("window_follower", "base.transform.y", {
     state = y + getVal!("window_follower", "offset_y");
-}, -99);
+}, -90);
 
 finalizeBehavior!("window_follower");
 `;

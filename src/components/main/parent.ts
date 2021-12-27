@@ -18,7 +18,7 @@ setValAction!("parent", "offset_x", {
             state = getValSelect!("transform.x", true);
         }
     });
-}, -399);
+}, -390);
 
 setValAction!("parent", "offset_y", {
     state = 0;
@@ -27,27 +27,27 @@ setValAction!("parent", "offset_y", {
             state = getValSelect!("transform.y", true);
         }
     });
-}, -399);
+}, -390);
 
 //Move the current position to be based on the offsets during collisions and renders.
 
 setValAction!("parent", "base.transform.x", {
     state = x + getVal!("parent", "offset_x");
-}, -399);
+}, -390);
 
 setValAction!("parent", "base.transform.y", {
     state = y + getVal!("parent", "offset_y");
-}, -399);
+}, -390);
 
 //At the end of the frame, move it back to the original position.
 
 setValAction!("parent", "base.transform.x", {
     state = x - getVal!("parent", "offset_x");
-}, -99);
+}, -90);
 
 setValAction!("parent", "base.transform.y", {
     state = y - getVal!("parent", "offset_y");
-}, -99);
+}, -90);
 
 finalizeBehavior!("parent");
 `;
