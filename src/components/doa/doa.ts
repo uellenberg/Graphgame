@@ -5,7 +5,7 @@ createBehavior!("doa");
 
 helper!("doa", {
     inline const g_raphgame_doa_visible_array = selectBehavior!("mount_point", {
-        state = getValSelect!("mount_point.visible", true);
+        state = getValSelect!("mount_point.visible");
     }, true);
 
     export function g_raphgame_doa_filter(a_rray) {
@@ -38,7 +38,7 @@ helper!("doa", {
     export const g_raphgame_doa_ys_array = g_raphgame_doa_filter(selectBehavior!("mount_point", {
         state = getValSelect!("transform.scale_y");
     }, true));
-});
+}, -500);
 
 setValArgs!("doa", "layer", 0);
 

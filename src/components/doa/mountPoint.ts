@@ -25,7 +25,7 @@ setValArgs!("mount_point", "base.transform.scale_x", 3, 1);
 setValArgs!("mount_point", "base.transform.scale_y", 4, 1);
 
 setVal!("mount_point", "visible", 0);
-setMut!("mount_point", "visible");
+setInline!("mount_point", "visible");
 
 setValAction!("mount_point", "visible", {
     state = 0;
@@ -69,7 +69,7 @@ setValAction!("mount_point", "visible", {
     
     //Check if it is visible.
     state = g_raphgame_mount_point_helper(x1, y1, sx1, sy1, x2, y2, sx2, sy2);
-});
+}, -600);
 
 finalizeBehavior!("mount_point");
 
