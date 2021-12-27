@@ -297,6 +297,10 @@ export const getBehaviorArgs: TemplateObject = {
     }
 };
 
+/**
+ * Allows creating helper methods at certain priorities, and which are only output if the behavior they are attached to is used.
+ * Usage: helper!(name: string, body: ActionBody, priority?: number);
+ */
 export const helper: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
@@ -304,10 +308,11 @@ export const helper: TemplateObject = {
 
         const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
         const body = getString(args, state, 1, "An action body is required!");
+        const priority = getNum(args, state, 2) ?? -10000;
 
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].addHelper(body);
+        state.graphgame.behaviors[name].addHelper(body, priority);
 
         return "";
     }
