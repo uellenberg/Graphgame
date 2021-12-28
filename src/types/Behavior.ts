@@ -1,3 +1,5 @@
+import {getFullVariableName} from "../util";
+
 export class Behavior {
     private readonly name: string;
     private parts: ((id: number, idx: number) => string)[] = [];
@@ -5,8 +7,14 @@ export class Behavior {
     private helpers: Record<number, string[]> = {};
     private finalized: boolean = false;
 
+    private nextId: number = 1;
+
     public constructor(name: string) {
         this.name = name;
+        //Increment and store the id for each gameobject that the behavior is added to.
+        this.parts.push((id: number) => `selectID!(${id});
+        setValSelect!("${name}.id", ${this.nextId++});
+        selectID!();`);
     }
     
     /**
