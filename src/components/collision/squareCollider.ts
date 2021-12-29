@@ -28,35 +28,15 @@ helper!("square_collider", {
     
         //Make sure that we are colliding.
         if(g_raphgame_square_collider_is_collided(x_1, y_1, s_x1, s_y1, x_2, y_2, s_x2, s_y2)) {
+            //1 if the condition is true, and -1 if it is false.
+            const x_scale_mul = (x_1 > x_2)*2 - 1;
+            const y_scale_mul = (y_1 > y_2)*2 - 1;
+        
             //Calculate x collision.
-            const col_x = {
-                const left = x_1 - s_x1/2;
-                const right = x_1 + s_x1/2;
-                    
-                const left1 = x_2 - s_x2/2;
-                const right1 = x_2 + s_x2/2;
-            
-                if(x_1 > x_2) {
-                    state = right1 - left;
-                } else {
-                    state = left1 - right;
-                }
-            };
+            const col_x = x_2 - x_1 + x_scale_mul*(s_x1/2 + s_x2/2);
             
             //Calculate y collision.
-            const col_y = {
-                const bottom = y_1 - s_y1/2;
-                const top = y_1 + s_y1/2;
-                    
-                const bottom1 = y_2 - s_y2/2;
-                const top1 = y_2 + s_y2/2;
-            
-                if(y_1 > y_2) {
-                    state = top1 - bottom;
-                } else {
-                    state = bottom1 - top;
-                }
-            };
+            const col_y = y_2 - y_1 + y_scale_mul*(s_y1/2 + s_y2/2);
             
             //Put everything into an array.
             state = [i_d, col_x, col_y];
