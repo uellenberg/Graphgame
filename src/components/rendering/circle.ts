@@ -1,6 +1,7 @@
 export default `
 createBehavior!("circle");
 
+//TODO: Implement rotation.
 behaviorCustom!("circle", {
     graph { {
         const p1 = x-getVal!("circle", "base.transform.x");
