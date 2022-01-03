@@ -50,6 +50,7 @@ export const useBehavior: TemplateObject = {
         behaviorCheck(state, name);
 
         state.graphgame.behaviors[name].compilePost(id, state.graphgame.objects[id].behaviorPostActions, `useBehaviorPost!(${id}, \"${name}\"${args.length > 2 ? ", " + args.slice(2).join(", ") : ""});`);
+        state.graphgame.behaviors[name].compileDisplay(state.graphgame.objects[id].displayProperties);
 
         state.graphgame.objects[id].behaviors.push(name);
 

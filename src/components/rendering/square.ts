@@ -8,6 +8,8 @@ helper!("square", {
 });
 
 behaviorCustom!("square", {
+    getDisplay!();
+
     polygon({
         const x = getVal!("square", "base.transform.x");
         const y = getVal!("square", "base.transform.y");

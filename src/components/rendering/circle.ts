@@ -3,6 +3,8 @@ createBehavior!("circle");
 
 //TODO: Implement rotation.
 behaviorCustom!("circle", {
+    getDisplay!();
+
     graph { {
         const p1 = x-getVal!("circle", "base.transform.x");
         const p2 = y-getVal!("circle", "base.transform.y");

@@ -1,6 +1,7 @@
 import {TemplateObject} from "logimat";
 import {TemplateState} from "../types/TemplateState";
 import {
+    behaviorCheck,
     ensureState,
     expressionCheck, getAnyAsString, getBoolean,
     getNum,
@@ -356,5 +357,27 @@ export const noRegisterSetValActionSelect: TemplateObject = {
                 state = ${oldSemimut};
             }
         }`;
+    }
+};
+
+/**
+ * Gets the display properties for the current objects, and inserts them in place of this template.
+ * Usage: getDisplay!();
+ */
+export const getDisplay: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        const id = state.graphgame.currentObjectId;
+        const properties = state.graphgame.objects[id].displayProperties;
+
+        let output: string[] = [];
+
+        for(const priority of Object.keys(properties).map(priority => parseInt(priority)).sort((a, b) => a-b)) {
+            output.push(...properties[priority]);
+        }
+
+        return output.join("\n");
     }
 };

@@ -277,6 +277,27 @@ export const behaviorCustom: TemplateObject = {
 };
 
 /**
+ * Allows modifying the display properties of any object that this is attached to.
+ * Usage: helper!(name: string, body: ActionBody, priority?: number);
+ */
+export const setDisplay: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
+        const body = getString(args, state, 1, "An action body is required!");
+        const priority = getNum(args, state, 2) ?? 0;
+
+        behaviorCheck(state, name);
+
+        state.graphgame.behaviors[name].addDisplay(body, priority);
+
+        return "";
+    }
+};
+
+/**
  * Gets an argument that was passed to the behavior when it was added to the GameObject.
  * Usage getBehaviorArgs!(arg: number);
  */

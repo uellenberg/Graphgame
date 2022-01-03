@@ -4,7 +4,7 @@ import {
     behaviorGraph,
     createBehavior, finalizeBehavior, getBehaviorArgs,
     getVal, helper,
-    noRegisterSetValAction, objectID, setInline,
+    noRegisterSetValAction, objectID, setDisplay, setInline,
     setMut,
     setVal,
     setValAction,
@@ -12,6 +12,7 @@ import {
 } from "./modules/component";
 import {createObject, setObjectVal, useBehavior, useBehaviorPost} from "./modules/object";
 import {
+    getDisplay,
     getValSelect, noRegisterSetValActionSelect, reIncrement,
     selectAll,
     selectBehavior, selectedID,
@@ -41,6 +42,7 @@ export const templates: TemplatesObject = {
     noRegisterSetValAction,
     behaviorGraph,
     behaviorCustom,
+    setDisplay,
     getBehaviorArgs,
     finalizeBehavior,
     objectID,
@@ -62,6 +64,7 @@ export const templates: TemplatesObject = {
     setValActionSelect,
     noRegisterSetValActionSelect,
     reIncrement,
+    getDisplay,
     //Prefab
     createPrefab,
     useBehaviorPrefab,

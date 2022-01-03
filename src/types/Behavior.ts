@@ -5,6 +5,7 @@ export class Behavior {
     private parts: ((id: number, idx: number) => string)[] = [];
     private postParts: Record<number, ((id: number, idx: number) => string)[]> = {};
     private helpers: Record<number, string[]> = {};
+    private displays: Record<number, string[]> = {};
     private finalized: boolean = false;
 
     private nextId: number = 1;
@@ -43,6 +44,16 @@ export class Behavior {
     }
 
     /**
+     * Adds a display property to this behavior.
+     * @param val {string} - is the display property.
+     * @param priority {number} - is the priority of the display property.
+     */
+    public addDisplay(val: string, priority: number) : void {
+        if(!this.displays.hasOwnProperty(priority)) this.displays[priority] = [];
+        this.displays[priority].push(val);
+    }
+
+    /**
      * Mark the behavior as finalized.
      */
     public finalize() : void {
@@ -75,6 +86,15 @@ export class Behavior {
             if(!actions.hasOwnProperty(key)) actions[key] = [];
             actions[key].push(prefix);
             actions[key].push(...this.postParts[key].map((part, idx) => part(id, idx)));
+        }
+    }
+
+    public compileDisplay(display: Record<number, string[]>) : void {
+        if(!this.finalized) throw new Error("A behavior must be finalized before it can be used!");
+
+        for(const priority in this.displays) {
+            if(!display.hasOwnProperty(priority)) display[priority] = [];
+            display[priority].push(...this.displays[priority]);
         }
     }
 }

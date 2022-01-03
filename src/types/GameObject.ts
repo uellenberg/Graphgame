@@ -13,6 +13,11 @@ export class GameObject {
      */
     public behaviorPostActions: Record<number, string[]> = [];
 
+    /**
+     * A record of all the display properties for this object.
+     */
+    public displayProperties: Record<number, string[]> = [];
+
     public constructor(id: number) {
         this.id = id;
     }
