@@ -5,6 +5,8 @@ setMut!("point", "base.transform.x");
 setMut!("point", "base.transform.y");
 
 behaviorCustom!("point", {
+    getDisplay!();
+
     point (getVal!("point", "base.transform.x"), getVal!("point", "base.transform.y"));
 }, -400);
 
