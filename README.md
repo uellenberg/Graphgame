@@ -2,15 +2,10 @@
 Graphgame is a game engine for Desmos. It has an object system based on Unity, where objects have behaviors that control what they do. It makes it easy to write and apply behaviors to objects and interact with other objects. Below is a quick overview of Graphgame's foundation.
 
 ## Foundation
+The [foundation document](FOUNDATION.md) explains certain concepts that Graphgame uses (such as objects and behaviors) in detail.
 
-### Behaviors
-Behaviors control the behavior of an object. Essentially, they modify object's variables and provide renderers for these objects.
-
-### Objects
-Objects are things that exist in the game. The player is an object, and every part of the world is an object as well. Each object in the world might have a collider component attached to them, and the player might have a collider component as well as a collision resolver component.
-
-### Prefabs
-Prefabs are object templates. They are collections of behaviors and modifications to the initial variables of objects behaviors.
+## API
+The API reference is available [here](API.md).
 
 ## Usage
 
@@ -27,12 +22,6 @@ To use Graphgame, you should first take a look at a few of its examples, which s
 One important way that Graphgame projects are structured is through a main file (called `main.lm`). This main file is responsible for importing and initializing Graphgame, as well as importing other files.
 
 ## Graphgame studio
-
-## Foundation
-Make sure to read the [foundation document](FOUNDATION.md), which explains certain concepts that Graphgame uses (such as objects and behaviors) in detail.
-
-## API
-The API reference is available [here](API.md).
 
 ## Examples
 Here is a basic example of how you might use Graphgame. Below is a ball that will move upwards every frame, and will go back to zero if it reaches the top of the screen:
