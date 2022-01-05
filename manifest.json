@@ -1,0 +1,30 @@
+{
+  "name": "Graphgame Studio",
+  "short_name": "Graphgame",
+  "description" : "An IDE for Graphgame, a game engine for writing games and animations in Desmos.",
+  "theme_color": "#181717",
+  "background_color": "#181717",
+  "display": "standalone",
+  "orientation": "landscape",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/icons/icon-180x180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "splash_pages": null
+}
