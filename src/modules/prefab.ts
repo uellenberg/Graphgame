@@ -102,7 +102,7 @@ export const setPrefabVal: TemplateObject = {
 };
 
 /**
- * Creates a new object from a prefab.
+ * Creates a new object from a prefab. Supply -1 for the object ID to use the next available object ID.
  * Usage: usePrefab!(id: number, prefab: string);
  */
 export const usePrefab: TemplateObject = {

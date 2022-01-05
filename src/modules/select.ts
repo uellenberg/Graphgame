@@ -43,7 +43,7 @@ export const selectedID: TemplateObject = {
 
 /**
  * Selects every object and uses the specified body on each.
- * Usage: selectAll!(body: string, array?: boolean);
+ * Usage: selectAll!(body: Body, array?: boolean);
  */
 export const selectAll: TemplateObject = {
     function: (args, state: TemplateState, context) => {
@@ -95,7 +95,7 @@ export const selectAll: TemplateObject = {
 
 /**
  * Selects every object that has a specific behavior and uses the specified body on each.
- * Usage: selectBehavior!(behavior: string, body: string, array?: boolean);
+ * Usage: selectBehavior!(behavior: string, body: Body, array?: boolean);
  */
 export const selectBehavior: TemplateObject = {
     function: (args, state: TemplateState, context) => {
@@ -200,7 +200,7 @@ export const setInlineSelect: TemplateObject = {
 
 /**
  * Get the value of the current object's variable. A boolean can be supplied to get the currently saved value instead of the current value.
- * Usage: getValSelect!(variableName: string, saved?: boolean)
+ * Usage: getValSelect!(variableName: string, saved?: boolean);
  */
 export const getValSelect: TemplateObject = {
     function: (args, state: TemplateState, context) => {
@@ -249,7 +249,7 @@ export const setValSelect: TemplateObject = {
 
 /**
  * Set the value of the current object's variable on update (during runtime). This must be used after a variable is marked as mutable.
- * Usage: setValActionSelect!(variableName: string, body: ActionBody);
+ * Usage: setValActionSelect!(variableName: string, body: Body);
  */
 export const setValActionSelect: TemplateObject = {
     function: (args, state: TemplateState, context) => {
@@ -302,8 +302,8 @@ export const reIncrement: TemplateObject = {
 };
 
 /**
- * Create an action that sets the value of the current object's variable (during runtime). This must be ran manually. This must be used after a variable is marked as mutable.
- * Usage: noRegisterSetValActionSelect!(variableName: string, body: ActionBody, actionName: string);
+ * Create an action that sets the value of the current object's variable (during runtime). This must be run manually (or as the click property of an object). This must be used after a variable is marked as mutable.
+ * Usage: noRegisterSetValActionSelect!(variableName: string, body: Body, actionName?: string);
  */
 export const noRegisterSetValActionSelect: TemplateObject = {
     function: (args, state: TemplateState, context) => {

@@ -80,7 +80,7 @@ export const setInline: TemplateObject = {
 
 /**
  * Get the value of a behavior's variable. A boolean can be supplied to get the currently saved value instead of the current value.
- * Usage: getVal!(name: string, variableName: string, saved?: boolean)
+ * Usage: getVal!(name: string, variableName: string, saved?: boolean);
  */
 export const getVal: TemplateObject = {
     function: (args, state: TemplateState, context) => {
@@ -127,8 +127,8 @@ export const setVal: TemplateObject = {
 };
 
 /**
- * Set the value of a behavior's variable (during compilation) using an argument that was passed to the behavior when it was added to the GameObject. This must be used before a variable is marked as mutable.
- * Usage: setValArgs!(name: string, variableName: string, arg: number);
+ * Set the value of a behavior's variable (during compilation) using a zero-based argument that was passed to the behavior when it was added to the GameObject. This must be used before a variable is marked as mutable.
+ * Usage: setValArgs!(name: string, variableName: string, arg: number, defaultVal?: number);
  */
 export const setValArgs: TemplateObject = {
     function: (args, state: TemplateState, context) => {
@@ -165,7 +165,7 @@ export const setValArgs: TemplateObject = {
 
 /**
  * Set the value of a behavior's variable on update (during runtime). This must be used after a variable is marked as mutable.
- * Usage: setValAction!(name: string, variableName: string, body: ActionBody);
+ * Usage: setValAction!(name: string, variableName: string, body: Body, priority?: number = 0, exported?: boolean = false, variable?: boolean = false);
  */
 export const setValAction: TemplateObject = {
     function: (args, state: TemplateState, context) => {
@@ -190,14 +190,13 @@ export const setValAction: TemplateObject = {
 };
 
 /**
- * Create an action that sets the value of a behavior's variable (during runtime). This must be ran manually. This must be used after a variable is marked as mutable.
- * Usage: noRegisterSetValAction!(name: string, variableName: string, body: ActionBody, actionName: string);
+ * Create an action that sets the value of a behavior's variable (during runtime). This must be run manually (or as the click property of an object). This must be used after a variable is marked as mutable.
+ * Usage: noRegisterSetValAction!(name: string, variableName: string, body: Body, actionName?: string, priority?: number = 0);
  */
 export const noRegisterSetValAction: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
         outerCheck(context);
-
 
         const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
         const varName = getString(args, state, 1, "A variable name is required!").trim().toLowerCase();
@@ -218,7 +217,7 @@ export const noRegisterSetValAction: TemplateObject = {
 /**
  * Create a graph of this object.
  * If only one body is defined, the graph will use 1=body1, and body1=body2 otherwise.
- * Usage: behaviorGraph!(name: string, body1: ActionBody, operator?: string, body2?: ActionBody);
+ * Usage: behaviorGraph!(name: string, body1: Body, operator?: string, body2?: ActionBody);
  */
 export const behaviorGraph: TemplateObject = {
     function: (args, state: TemplateState, context) => {
@@ -252,8 +251,8 @@ export const behaviorGraph: TemplateObject = {
 };
 
 /**
- * Create custom declarations on the behavior. This is ideal for graphs, polygons, points, etc, but should not be used for named declarations.
- * Usage: behaviorCustom!(name: string, body: ActionBody);
+ * Create custom declarations on the behavior. This is ideal for graphs, polygons, points, etc, but should not be used for named declarations ((functions, consts, etc).
+ * Usage: behaviorCustom!(name: string, body: Body, priority?: number = 0);
  */
 export const behaviorCustom: TemplateObject = {
     function: (args, state: TemplateState, context) => {
@@ -278,7 +277,7 @@ export const behaviorCustom: TemplateObject = {
 
 /**
  * Allows modifying the display properties of any object that this is attached to.
- * Usage: helper!(name: string, body: ActionBody, priority?: number);
+ * Usage: setDisplay!(name: string, body: Body, priority?: number = 0);
  */
 export const setDisplay: TemplateObject = {
     function: (args, state: TemplateState, context) => {
@@ -287,7 +286,7 @@ export const setDisplay: TemplateObject = {
 
         const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
         const body = getString(args, state, 1, "An action body is required!");
-        const priority = getNum(args, state, 2) ?? 0;
+        const priority = getNum(args, state, 2) || 0;
 
         behaviorCheck(state, name);
 
@@ -298,8 +297,8 @@ export const setDisplay: TemplateObject = {
 };
 
 /**
- * Gets an argument that was passed to the behavior when it was added to the GameObject.
- * Usage getBehaviorArgs!(arg: number);
+ * Gets a zero-based argument that was passed to the behavior when it was added to the GameObject.
+ * Usage: getBehaviorArgs!(arg: number);
  */
 export const getBehaviorArgs: TemplateObject = {
     function: (args, state: TemplateState, context) => {
@@ -320,7 +319,7 @@ export const getBehaviorArgs: TemplateObject = {
 
 /**
  * Allows creating helper methods at certain priorities, and which are only output if the behavior they are attached to is used.
- * Usage: helper!(name: string, body: ActionBody, priority?: number);
+ * Usage: helper!(name: string, body: Body, priority?: number = 0);
  */
 export const helper: TemplateObject = {
     function: (args, state: TemplateState, context) => {
