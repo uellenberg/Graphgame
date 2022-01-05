@@ -28,3 +28,14 @@ In many templates, variables must be referenced by a variable name. Variable nam
 In order to update a variable, it must first be set to a value (with `setVal`), then set to either mutable (exported) or inline (inlined), using `setMut` or `setInline` respectively. Next, a template such as `setValAction` must be used. These templates allow you to update a variable every frame, and allow you to access the current value of the variable. There are also options such as `exported` (which turns your specific update into a method, which can save space in some cases) and `variable` (which turns your specific update into a variable, which can save space and stop it from being recalculated in some cases).
 
 In addition to updating variables, you can also get variables using a template like `getVal` to get the value of a variable.
+
+## Display
+Display is a feature of Graphgame that allows Graphgame's output to have a specific style, defined in Graphgame (such as making an object a certain color). NOTICE: This feature only works when used in conjunction with post-processor, such as Graphgame Studio.
+
+To use display, use the `setDisplay` template. The renderer that you are using must be using the `getDisplay` template before anything it renders (all of Graphgame's built-in components do this). The body of the display will contain a series of display statments, such as:
+```
+display color = c_1;
+```
+*(where `c_1` is a defined color)*
+
+The possible options for display are: `color` (color variable), `stroke` (number, 0-1), `thickness` (number), `fill` (number, 0-1), `click` (action name), `label` (template string), `drag` (`x`, `y`, or `xy`), and `hidden` (boolean).

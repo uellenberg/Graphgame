@@ -254,5 +254,5 @@ noRegisterSetValActionSelect!(variableName: string, body: Body, actionName?: str
 Gets the display properties for the current objects, and inserts them in place of this template.
 
 ```
-getDisplay!();getDisplay!();
+getDisplay!();
 ```
