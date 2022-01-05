@@ -1,5 +1,5 @@
 # Foundation
-This document describes the principles behind Graphgame. After reading this, it is recommended that you check out the [API Reference](API.md).
+This document describes the principles behind Graphgame. After reading this, it is recommended that you check out the [API Reference](TEMPLATES.md).
 
 Graphgame is based on Unity, and carries over some of the same concepts that exist there.
 

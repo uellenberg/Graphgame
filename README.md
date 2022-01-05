@@ -5,7 +5,7 @@ Graphgame is a game engine for Desmos. It has an object system based on Unity, w
 The [foundation document](FOUNDATION.md) explains certain concepts that Graphgame uses (such as objects and behaviors) in detail.
 
 ## API
-The API reference is available [here](API.md).
+The API reference is available [here](TEMPLATES.md).
 
 ## Usage
 
