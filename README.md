@@ -28,6 +28,12 @@ One important way that Graphgame projects are structured is through a main file 
 
 ## Graphgame studio
 
+## Foundation
+Make sure to read the [foundation document](FOUNDATION.md), which explains certain concepts that Graphgame uses (such as objects and behaviors) in detail.
+
+## API
+The API reference is available [here](API.md).
+
 ## Examples
 Here is a basic example of how you might use Graphgame. Below is a ball that will move upwards every frame, and will go back to zero if it reaches the top of the screen:
 ```
@@ -80,9 +86,3 @@ useBehavior!(0, "circle");
 
 //That's it. Now, if we compile it, we'll see a ball moving upwards until it hits the top, and going back to 0.
 ```
-
-## Foundation
-Make sure to read the [foundation document](FOUNDATION.md), which explains certain concepts that Graphgame uses (such as objects and behaviors) in detail.
-
-## API
-The API reference is available [here](API.md).
