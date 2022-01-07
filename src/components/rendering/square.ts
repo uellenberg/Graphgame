@@ -1,21 +1,21 @@
 export default `
 createBehavior!("square");
 
-helper!("square", {
+helper!({
     export function g_raphgame_helper_square_rotate(a, b, r) {
         state = a*cos(r) + b*sin(r);
     }
 });
 
-behaviorCustom!("square", {
+behaviorCustom!({
     getDisplay!();
 
     polygon({
-        const x = getVal!("square", "base.transform.x");
-        const y = getVal!("square", "base.transform.y");
-        const x_scale = getVal!("square", "base.transform.scale_x");
-        const y_scale = getVal!("square", "base.transform.scale_y");
-        const rotation = getVal!("square", "base.transform.rotation");
+        const x = getVal!("base.transform.x");
+        const y = getVal!("base.transform.y");
+        const x_scale = getVal!("base.transform.scale_x");
+        const y_scale = getVal!("base.transform.scale_y");
+        const rotation = getVal!("base.transform.rotation");
     
         state = (x, y) + [(-1/2, -1/2), (1/2, -1/2), (1/2, 1/2), (-1/2, 1/2)].map(s_point => {
             const new_x = x_scale*s_point.x;
@@ -29,5 +29,5 @@ behaviorCustom!("square", {
     });
 }, -100);
 
-finalizeBehavior!("square");
+finalizeBehavior!();
 `;

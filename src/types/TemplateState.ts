@@ -23,6 +23,7 @@ export interface TemplateState {
         currentObjectId: number,
         postInit: boolean,
         prefabs: ((id: number, args: TemplateArgs) => string)[],
-        toIncrement: SemiMutable
+        toIncrement: SemiMutable,
+        currentBehavior: string
     }
 }

@@ -1,14 +1,14 @@
 export default `
 createBehavior!("point");
 
-setMut!("point", "base.transform.x");
-setMut!("point", "base.transform.y");
+setMut!("base.transform.x");
+setMut!("base.transform.y");
 
-behaviorCustom!("point", {
+behaviorCustom!({
     getDisplay!();
 
-    point (getVal!("point", "base.transform.x"), getVal!("point", "base.transform.y"));
+    point (getVal!("base.transform.x"), getVal!("base.transform.y"));
 }, -400);
 
-finalizeBehavior!("point");
+finalizeBehavior!();
 `;

@@ -1,29 +1,29 @@
 export default `
 createBehavior!("parent");
 
-setValArgs!("parent", "id", 0);
+setValArgs!("id", 0);
 
-setVal!("parent", "offset_x", 0);
-setVal!("parent", "offset_y", 0);
+setVal!("offset_x", 0);
+setVal!("offset_y", 0);
 
-setInline!("parent", "offset_x");
-setInline!("parent", "offset_y");
+setInline!("offset_x");
+setInline!("offset_y");
 
 //Set the offsets to the current window position.
 
-setValAction!("parent", "offset_x", {
+setValAction!("offset_x", {
     state = 0;
     selectAll!({
-        if(selectedID!() == getVal!("parent", "id")) {
+        if(selectedID!() == getVal!("id")) {
             state = getValSelect!("transform.x", true);
         }
     });
 }, -390);
 
-setValAction!("parent", "offset_y", {
+setValAction!("offset_y", {
     state = 0;
     selectAll!({
-        if(selectedID!() == getVal!("parent", "id")) {
+        if(selectedID!() == getVal!("id")) {
             state = getValSelect!("transform.y", true);
         }
     });
@@ -31,23 +31,23 @@ setValAction!("parent", "offset_y", {
 
 //Move the current position to be based on the offsets during collisions and renders.
 
-setValAction!("parent", "base.transform.x", {
-    state = x + getVal!("parent", "offset_x");
+setValAction!("base.transform.x", {
+    state = x + getVal!("offset_x");
 }, -390);
 
-setValAction!("parent", "base.transform.y", {
-    state = y + getVal!("parent", "offset_y");
+setValAction!("base.transform.y", {
+    state = y + getVal!("offset_y");
 }, -390);
 
 //At the end of the frame, move it back to the original position.
 
-setValAction!("parent", "base.transform.x", {
-    state = x - getVal!("parent", "offset_x");
+setValAction!("base.transform.x", {
+    state = x - getVal!("offset_x");
 }, -90);
 
-setValAction!("parent", "base.transform.y", {
-    state = y - getVal!("parent", "offset_y");
+setValAction!("base.transform.y", {
+    state = y - getVal!("offset_y");
 }, -90);
 
-finalizeBehavior!("parent");
+finalizeBehavior!();
 `;

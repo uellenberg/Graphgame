@@ -3,13 +3,13 @@ export default `
 
 createBehavior!("window");
 
-setValArgs!("window", "base.transform.scale_x", 0, 1);
-setValArgs!("window", "base.transform.scale_y", 1, 1);
+setValArgs!("base.transform.scale_x", 0, 1);
+setValArgs!("base.transform.scale_y", 1, 1);
 
-setVal!("window", "base.transform.x", 0);
-setVal!("window", "base.transform.y", 0);
+setVal!("base.transform.x", 0);
+setVal!("base.transform.y", 0);
 
-finalizeBehavior!("window");
+finalizeBehavior!();
 
 //Prefab
 

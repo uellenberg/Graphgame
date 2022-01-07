@@ -1,17 +1,17 @@
-import {TemplateArgs, TemplateContext, TemplateObject} from "logimat";
-import {GameObject} from "../types/GameObject";
-import {SemiMutable} from "../types/SemiMutable";
+import {TemplateObject} from "logimat";
 import {TemplateState} from "../types/TemplateState";
 import {
-    ensureState,
-    outerCheck,
-    expressionCheck,
     behaviorCheck,
-    objectVarCheck,
-    getSemiMut,
+    ensureState,
+    expressionCheck,
+    getBoolean,
+    getFullVariableName,
     getNum,
+    getSemiMut,
+    getShortVariableName,
     getString,
-    getFullVariableName, getShortVariableName, objectCheck, getAnyAsString, getBoolean
+    objectVarCheck,
+    outerCheck, outerInnerCheck
 } from "../util";
 import {Behavior} from "../types/Behavior";
 
@@ -30,21 +30,23 @@ export const createBehavior: TemplateObject = {
 
         state.graphgame.behaviors[name] = new Behavior(name);
 
+        state.graphgame.currentBehavior = name;
+
         return "";
     }
 };
 
 /**
  * Marks a behavior's variable as mutable (changable after compilation).
- * Usage: setMut!(name: string, variableName: string);
+ * Usage: setMut!(variableName: string);
  */
 export const setMut: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
         outerCheck(context);
 
-        const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
-        const varName = getString(args, state, 1, "A variable name is required!").trim().toLowerCase();
+        const name = state.graphgame.currentBehavior;
+        const varName = getString(args, state, 0, "A variable name is required!").trim().toLowerCase();
 
         behaviorCheck(state, name);
 
@@ -58,15 +60,15 @@ export const setMut: TemplateObject = {
 
 /**
  * Marks a behavior's variable as mutable (changable after compilation), but inlines it instead of exporting it.
- * Usage: setInline!(name: string, variableName: string);
+ * Usage: setInline!(variableName: string);
  */
 export const setInline: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
         outerCheck(context);
 
-        const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
-        const varName = getString(args, state, 1, "A variable name is required!").trim().toLowerCase();
+        const name = state.graphgame.currentBehavior;
+        const varName = getString(args, state, 0, "A variable name is required!").trim().toLowerCase();
 
         behaviorCheck(state, name);
 
@@ -80,16 +82,16 @@ export const setInline: TemplateObject = {
 
 /**
  * Get the value of a behavior's variable. A boolean can be supplied to get the currently saved value instead of the current value.
- * Usage: getVal!(name: string, variableName: string, saved?: boolean);
+ * Usage: getVal!(variableName: string, saved?: boolean);
  */
 export const getVal: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
         expressionCheck(context);
 
-        const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
-        const varName = getString(args, state, 1, "A variable name is required!").trim().toLowerCase();
-        const saved = getBoolean(args, state, 2);
+        const name = state.graphgame.currentBehavior;
+        const varName = getString(args, state, 0, "A variable name is required!").trim().toLowerCase();
+        const saved = getBoolean(args, state, 1);
 
         const fullName = getFullVariableName(varName, name);
 
@@ -105,19 +107,19 @@ export const getVal: TemplateObject = {
 
 /**
  * Set the value of a behavior's variable (during compilation). This must be used before a variable is marked as mutable.
- * Usage: setVal!(name: string, variableName: string, val: number);
+ * Usage: setVal!(variableName: string, val: number);
  */
 export const setVal: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
         outerCheck(context);
 
-        const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
-        const varName = getString(args, state, 1, "A variable name is required!").trim().toLowerCase();
-        const val = getNum(args, state, 2, "A value is required!");
+        const name = state.graphgame.currentBehavior;
+        const varName = getString(args, state, 0, "A variable name is required!").trim().toLowerCase();
+        const val = getNum(args, state, 1, "A value is required!");
 
         behaviorCheck(state, name);
-
+        
         state.graphgame.behaviors[name].add((id: number) => `selectID!(${id});
         setValSelect!("${getFullVariableName(varName, name)}", ${val});
         selectID!();`);
@@ -128,17 +130,17 @@ export const setVal: TemplateObject = {
 
 /**
  * Set the value of a behavior's variable (during compilation) using a zero-based argument that was passed to the behavior when it was added to the GameObject. This must be used before a variable is marked as mutable.
- * Usage: setValArgs!(name: string, variableName: string, arg: number, defaultVal?: number);
+ * Usage: setValArgs!(variableName: string, arg: number, defaultVal?: number);
  */
 export const setValArgs: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
         outerCheck(context);
 
-        const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
-        const varName = getString(args, state, 1, "A variable name is required!").trim().toLowerCase();
-        const idx = getNum(args, state, 2, "An argument index is required!");
-        const defaultVal = getNum(args, state, 3);
+        const name = state.graphgame.currentBehavior;
+        const varName = getString(args, state, 0, "A variable name is required!").trim().toLowerCase();
+        const idx = getNum(args, state, 1, "An argument index is required!");
+        const defaultVal = getNum(args, state, 2);
 
         behaviorCheck(state, name);
 
@@ -165,24 +167,24 @@ export const setValArgs: TemplateObject = {
 
 /**
  * Set the value of a behavior's variable on update (during runtime). This must be used after a variable is marked as mutable.
- * Usage: setValAction!(name: string, variableName: string, body: Body, priority?: number = 0, exported?: boolean = false, variable?: boolean = false);
+ * Usage: setValAction!(variableName: string, body: Body, priority?: number = 0, exported?: boolean = false, variable?: boolean = false);
  */
 export const setValAction: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
         outerCheck(context);
 
-        const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
-        const varName = getString(args, state, 1, "A variable name is required!").trim().toLowerCase();
-        const body = getString(args, state, 2, "An action body is required!");
-        const priority = getNum(args, state, 3) || 0;
-        const exported = getBoolean(args, state, 4);
-        const variable = getBoolean(args, state, 5);
+        const name = state.graphgame.currentBehavior;
+        const varName = getString(args, state, 0, "A variable name is required!").trim().toLowerCase();
+        const body = getString(args, state, 1, "An action body is required!");
+        const priority = getNum(args, state, 2) || 0;
+        const exported = getBoolean(args, state, 3);
+        const variable = getBoolean(args, state, 4);
 
         behaviorCheck(state, name);
 
         state.graphgame.behaviors[name].addPost((id: number) => `selectID!(${id});
-        setValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};${body}}, ${exported ? "true" : "false"}, ${variable ? "true" : "false"});
+        setValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};setBehavior!("${name}");${body}setBehavior!();}, ${exported ? "true" : "false"}, ${variable ? "true" : "false"});
         selectID!();`, priority);
 
         return "";
@@ -191,23 +193,23 @@ export const setValAction: TemplateObject = {
 
 /**
  * Create an action that sets the value of a behavior's variable (during runtime). This must be run manually (or as the click property of an object). This must be used after a variable is marked as mutable.
- * Usage: noRegisterSetValAction!(name: string, variableName: string, body: Body, actionName?: string, priority?: number = 0);
+ * Usage: noRegisterSetValAction!(variableName: string, body: Body, actionName?: string, priority?: number = 0);
  */
 export const noRegisterSetValAction: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
         outerCheck(context);
 
-        const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
-        const varName = getString(args, state, 1, "A variable name is required!").trim().toLowerCase();
-        const body = getString(args, state, 2, "An action body is required!");
-        const actionName = getString(args, state, 3)?.trim().toLowerCase();
-        const priority = getNum(args, state, 4) || 0;
+        const name = state.graphgame.currentBehavior;
+        const varName = getString(args, state, 0, "A variable name is required!").trim().toLowerCase();
+        const body = getString(args, state, 1, "An action body is required!");
+        const actionName = getString(args, state, 2)?.trim().toLowerCase();
+        const priority = getNum(args, state, 3) || 0;
 
         behaviorCheck(state, name);
 
         state.graphgame.behaviors[name].addPost((id: number) => `selectID!(${id});
-        noRegisterSetValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};${body}}${actionName ? ", \"" + actionName + "\"" : ""});
+        noRegisterSetValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};setBehavior!("${name}");${body}setBehavior!();}${actionName ? ", \"" + actionName + "\"" : ""});
         selectID!();`, priority);
 
         return "";
@@ -217,23 +219,24 @@ export const noRegisterSetValAction: TemplateObject = {
 /**
  * Create a graph of this object.
  * If only one body is defined, the graph will use 1=body1, and body1=body2 otherwise.
- * Usage: behaviorGraph!(name: string, body1: Body, operator?: string, body2?: ActionBody);
+ * Usage: behaviorGraph!(body1: Body, operator?: string, body2?: ActionBody);
  */
 export const behaviorGraph: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
         outerCheck(context);
 
-        const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
-        const body1 = getString(args, state, 1, "An action body is required!");
-        const operator = getString(args, state, 2);
-        const body2 = getString(args, state, 3);
-        const priority = getNum(args, state, 4) || 0;
+        const name = state.graphgame.currentBehavior;
+        const body1 = getString(args, state, 0, "An action body is required!");
+        const operator = getString(args, state, 1);
+        const body2 = getString(args, state, 2);
+        const priority = getNum(args, state, 3) || 0;
 
         behaviorCheck(state, name);
 
         state.graphgame.behaviors[name].addPost((id: number, idx: number) => {
             return `selectID!(${id});
+            setBehavior!("${name}");
             
             inline function g_raphgamepost${name}a${id}a${idx}a1(x, y) {
                 ${body2 ? body1 : "state = 1;"}
@@ -243,6 +246,7 @@ export const behaviorGraph: TemplateObject = {
             }
             graph { g_raphgamepost${name}a${id}a${idx}a1(x, y) } ${operator || "="} { g_raphgamepost${name}a${id}a${idx}a2(x, y) };
             
+            setBehavior!();
             selectID!();`;
         }, priority);
 
@@ -252,22 +256,24 @@ export const behaviorGraph: TemplateObject = {
 
 /**
  * Create custom declarations on the behavior. This is ideal for graphs, polygons, points, etc, but should not be used for named declarations ((functions, consts, etc).
- * Usage: behaviorCustom!(name: string, body: Body, priority?: number = 0);
+ * Usage: behaviorCustom!(body: Body, priority?: number = 0);
  */
 export const behaviorCustom: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
         outerCheck(context);
 
-        const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
-        const body = getString(args, state, 1, "A body is required!");
-        const priority = getNum(args, state, 2) || 0;
+        const name = state.graphgame.currentBehavior;
+        const body = getString(args, state, 0, "A body is required!");
+        const priority = getNum(args, state, 1) || 0;
 
         behaviorCheck(state, name);
 
         state.graphgame.behaviors[name].addPost(id => {
             return `selectID!(${id});
+            setBehavior!("${name}");
             ${body}
+            setBehavior!();
             selectID!();`;
         }, priority);
 
@@ -277,16 +283,16 @@ export const behaviorCustom: TemplateObject = {
 
 /**
  * Allows modifying the display properties of any object that this is attached to.
- * Usage: setDisplay!(name: string, body: Body, priority?: number = 0);
+ * Usage: setDisplay!(body: Body, priority?: number = 0);
  */
 export const setDisplay: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
         outerCheck(context);
 
-        const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
-        const body = getString(args, state, 1, "An action body is required!");
-        const priority = getNum(args, state, 2) || 0;
+        const name = state.graphgame.currentBehavior;
+        const body = getString(args, state, 0, "An action body is required!");
+        const priority = getNum(args, state, 1) || 0;
 
         behaviorCheck(state, name);
 
@@ -319,16 +325,16 @@ export const getBehaviorArgs: TemplateObject = {
 
 /**
  * Allows creating helper methods at certain priorities, and which are only output if the behavior they are attached to is used.
- * Usage: helper!(name: string, body: Body, priority?: number = 0);
+ * Usage: helper!(body: Body, priority?: number = 0);
  */
 export const helper: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
         outerCheck(context);
 
-        const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
-        const body = getString(args, state, 1, "An action body is required!");
-        const priority = getNum(args, state, 2) ?? -10000;
+        const name = state.graphgame.currentBehavior;
+        const body = getString(args, state, 0, "An action body is required!");
+        const priority = getNum(args, state, 1) ?? -10000;
 
         behaviorCheck(state, name);
 
@@ -340,15 +346,15 @@ export const helper: TemplateObject = {
 
 /**
  * Finalize the behavior. This must be the last template called on the behavior.
- * Usage: finalizeBehavior!(name: string);
+ * Usage: finalizeBehavior!();
  */
 export const finalizeBehavior: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
         outerCheck(context);
-        
-        const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
-        
+
+        const name = state.graphgame.currentBehavior;
+
         behaviorCheck(state, name);
 
         state.graphgame.behaviors[name].finalize();
@@ -367,5 +373,19 @@ export const objectID: TemplateObject = {
         expressionCheck(context);
 
         return state.graphgame.lastObjectBehaviorId.toString();
+    }
+};
+
+/**
+ * For internal use only.
+ */
+export const setBehavior: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerInnerCheck(context);
+
+        state.graphgame.currentBehavior = getString(args, state, 0) || "";
+
+        return "";
     }
 };

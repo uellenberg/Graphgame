@@ -2,7 +2,7 @@ export default `
 createBehavior!("square_collider");
 
 //Create helpers
-helper!("square_collider", {    
+helper!({    
     export function g_raphgame_square_collider_update(c_urval, n_ewval) {
         if(c_urval[1] != -1) {
             state = c_urval;
@@ -44,24 +44,24 @@ helper!("square_collider", {
     }
 });
 
-setValArgs!("square_collider", "only_collided", 0, 0);
+setValArgs!("only_collided", 0, 0);
 
 //Calculate the collision values.
-setVal!("square_collider", "data", 0);
-setInline!("square_collider", "data");
+setVal!("data", 0);
+setInline!("data");
 
 //True, true means that this update will be exported as a function which will be called instead of being inlined when used,
 //and the second true means that the function will be a variable instead of a method, for a small performance boost.
-setValAction!("square_collider", "data", {
+setValAction!("data", {
     state = [-1, 0, 0];
     
     //Make sure that we actually need to calculate collisions for this collider.
-    if(!getVal!("square_collider", "only_collided")) {
-        const scalex = getVal!("square_collider", "base.transform.scalex");
-        const cornerx = getVal!("square_collider", "base.transform.x");
+    if(!getVal!("only_collided")) {
+        const scalex = getVal!("base.transform.scalex");
+        const cornerx = getVal!("base.transform.x");
     
-        const scaley = getVal!("square_collider", "base.transform.scaley");
-        const cornery = getVal!("square_collider", "base.transform.y");
+        const scaley = getVal!("base.transform.scaley");
+        const cornery = getVal!("base.transform.y");
     
         const id = objectID!();
         
@@ -91,17 +91,17 @@ setValAction!("square_collider", "data", {
 }, -300, true, true);
 
 //Provide helpers to get the specific values from the collision data.
-setValAction!("square_collider", "base.transform.collision_id", {
-    state = getVal!("square_collider", "data")[1];
+setValAction!("base.transform.collision_id", {
+    state = getVal!("data")[1];
 }, -300, false);
 
-setValAction!("square_collider", "base.transform.collision_x", {
-    state = getVal!("square_collider", "data")[2];
+setValAction!("base.transform.collision_x", {
+    state = getVal!("data")[2];
 }, -300, false);
 
-setValAction!("square_collider", "base.transform.collision_y", {
-    state = getVal!("square_collider", "data")[3];
+setValAction!("base.transform.collision_y", {
+    state = getVal!("data")[3];
 }, -300, false);
 
-finalizeBehavior!("square_collider");
+finalizeBehavior!();
 `;

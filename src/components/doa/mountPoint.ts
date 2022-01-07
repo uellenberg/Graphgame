@@ -4,7 +4,7 @@ export default `
 createBehavior!("mount_point");
 
 //Helper function
-helper!("mount_point", {
+helper!({
     export function g_raphgame_mount_point_helper(x_1, y_1, s_x1, s_y1, x_2, y_2, s_x2, s_y2) {
         state = 0;
         
@@ -18,16 +18,16 @@ helper!("mount_point", {
     }
 });
 
-setValArgs!("mount_point", "layer", 0);
-setValArgs!("mount_point", "base.transform.x", 1, 0);
-setValArgs!("mount_point", "base.transform.y", 2, 0);
-setValArgs!("mount_point", "base.transform.scale_x", 3, 1);
-setValArgs!("mount_point", "base.transform.scale_y", 4, 1);
+setValArgs!("layer", 0);
+setValArgs!("base.transform.x", 1, 0);
+setValArgs!("base.transform.y", 2, 0);
+setValArgs!("base.transform.scale_x", 3, 1);
+setValArgs!("base.transform.scale_y", 4, 1);
 
-setVal!("mount_point", "visible", 0);
-setInline!("mount_point", "visible");
+setVal!("visible", 0);
+setInline!("visible");
 
-setValAction!("mount_point", "visible", {
+setValAction!("visible", {
     state = 0;
     
     //Get all of the values for the window.
@@ -62,16 +62,16 @@ setValAction!("mount_point", "visible", {
     
     //Get the values for this mount point.
     
-    const x2 = getVal!("mount_point", "base.transform.x");
-    const y2 = getVal!("mount_point", "base.transform.y");
-    const sx2 = getVal!("mount_point", "base.transform.scale_x");
-    const sy2 = getVal!("mount_point", "base.transform.scale_y");
+    const x2 = getVal!("base.transform.x");
+    const y2 = getVal!("base.transform.y");
+    const sx2 = getVal!("base.transform.scale_x");
+    const sy2 = getVal!("base.transform.scale_y");
     
     //Check if it is visible.
     state = g_raphgame_mount_point_helper(x1, y1, sx1, sy1, x2, y2, sx2, sy2);
 }, -600);
 
-finalizeBehavior!("mount_point");
+finalizeBehavior!();
 
 //Prefab
 

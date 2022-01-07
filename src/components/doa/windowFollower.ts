@@ -1,22 +1,22 @@
 export default `
 createBehavior!("window_follower");
 
-setVal!("window_follower", "offset_x", 0);
-setVal!("window_follower", "offset_y", 0);
+setVal!("offset_x", 0);
+setVal!("offset_y", 0);
 
-setInline!("window_follower", "offset_x");
-setInline!("window_follower", "offset_y");
+setInline!("offset_x");
+setInline!("offset_y");
 
 //Set the offsets to the current window position.
 
-setValAction!("window_follower", "offset_x", {
+setValAction!("offset_x", {
     state = 0;
     selectBehavior!("window", {
         state = getValSelect!("transform.x", true);
     });
 }, -390);
 
-setValAction!("window_follower", "offset_y", {
+setValAction!("offset_y", {
     state = 0;
     selectBehavior!("window", {
         state = getValSelect!("transform.y", true);
@@ -25,23 +25,23 @@ setValAction!("window_follower", "offset_y", {
 
 //Move the current position to be based on the offsets during collisions and renders.
 
-setValAction!("window_follower", "base.transform.x", {
-    state = x - getVal!("window_follower", "offset_x");
+setValAction!("base.transform.x", {
+    state = x - getVal!("offset_x");
 }, -390);
 
-setValAction!("window_follower", "base.transform.y", {
-    state = y - getVal!("window_follower", "offset_y");
+setValAction!("base.transform.y", {
+    state = y - getVal!("offset_y");
 }, -390);
 
 //At the end of the frame, move it back to the original position.
 
-setValAction!("window_follower", "base.transform.x", {
-    state = x + getVal!("window_follower", "offset_x");
+setValAction!("base.transform.x", {
+    state = x + getVal!("offset_x");
 }, -90);
 
-setValAction!("window_follower", "base.transform.y", {
-    state = y + getVal!("window_follower", "offset_y");
+setValAction!("base.transform.y", {
+    state = y + getVal!("offset_y");
 }, -90);
 
-finalizeBehavior!("window_follower");
+finalizeBehavior!();
 `;
