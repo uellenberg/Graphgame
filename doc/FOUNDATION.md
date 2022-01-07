@@ -38,4 +38,4 @@ display color = c_1;
 ```
 *(where `c_1` is a defined color)*
 
-The possible options for display are: `color` (color variable), `stroke` (number, 0-1), `thickness` (number), `fill` (number, 0-1), `click` (action name), `label` (template string), `drag` (`x`, `y`, or `xy`), and `hidden` (boolean).
+To see more information about displays, go [here](DISPLAY.md).
