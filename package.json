@@ -1,7 +1,7 @@
 {
   "name": "graphgame",
   "version": "1.0.5",
-  "description": "",
+  "description": "Graphgame game is a game engine for Desmos using Logimat templates.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -23,10 +23,11 @@
   "files": [
     "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "docs"
   ],
   "dependencies": {
-    "logimat": "^1.0.18"
+    "logimat": "^1.0.22"
   },
   "devDependencies": {
     "typescript": "^4.4.4"
