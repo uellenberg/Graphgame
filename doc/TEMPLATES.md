@@ -19,40 +19,52 @@ registerAction!(actionName: string);
 
 ### createObject
 Creates a new object.
+
+`definition` - is a body containing the object's definition, comprised of the below templates.
 ```
-createObject!(id: number);
+createObject!(definition: Body);
 ```
 
 ### useBehavior
 Add a behavior to an object.
 ```
-useBehavior!(objectId: number, behaviorName: string);
+useBehavior!(behaviorName: string);
 ```
 
 ### setObjectVal
 Set the value of an object's variable (during compilation). This must be used before a variable is marked as mutable.
 ```
-setObjectVal!(objectId: number, variableName: string, val: number);
+setObjectVal!(variableName: string, val: number);
 ```
 
 ## Component
 
 ### createBehavior
 Creates a new behavior.
+
+`definition` - is a body containing the behavior's definition, comprised of the below templates.
 ```
-createBehavior!(name: string);
+createBehavior!(name: string, definition: Body);
+```
+
+### extendBehavior
+Extends a behavior. The supplied definition will be added to the behavior's current definition.
+
+`definition` - is a body containing the behavior's definition, comprised of the below templates.
+```
+extendBehavior!(name: string, definition: Body);
 ```
 
 ### setMut
 Marks a behavior's variable as mutable (changable after compilation).
 ```
-setMut!(name: string, variableName: string);
+setMut!(variableName: string);
 ```
 
 ### setInline
 Marks a behavior's variable as mutable (changable after compilation), but inlines it instead of exporting it.
 ```
-setInline!(name: string, variableName: string);
+setInline!(variableName: string);
 ```
 
 ### getVal
@@ -60,19 +72,19 @@ Get the value of a behavior's variable. A boolean can be supplied to get the cur
 
 `saved` - is whether to use the currently stored (saved) variable or the one that has been updated but not yet saved.
 ```
-getVal!(name: string, variableName: string, saved?: boolean);
+getVal!(variableName: string, saved?: boolean);
 ```
 
 ### setVal
 Set the value of a behavior's variable (during compilation). This must be used before a variable is marked as mutable.
 ```
-setVal!(name: string, variableName: string, val: number);
+setVal!(variableName: string, val: number);
 ```
 
 ### setValArgs
 Set the value of a behavior's variable (during compilation) using a zero-based argument that was passed to the behavior when it was added to the GameObject. This must be used before a variable is marked as mutable.
 ```
-setValArgs!(name: string, variableName: string, arg: number, defaultVal?: number);
+setValArgs!(variableName: string, arg: number, defaultVal?: number);
 ```
 
 ### setValAction
@@ -80,7 +92,7 @@ Set the value of a behavior's variable on update (during runtime). This must be 
 
 `body` - is the body of the function that will be run to update the variable. This function has access to the name of the variable that is updating without using getVal.
 ```
-setValAction!(name: string, variableName: string, body: Body, priority?: number = 0, exported?: boolean = false, variable?: boolean = false);
+setValAction!(variableName: string, body: Body, priority?: number = 0, exported?: boolean = false, variable?: boolean = false);
 ```
 
 ### noRegisterSetValAction
@@ -88,7 +100,7 @@ Create an action that sets the value of a behavior's variable (during runtime). 
 
 `body` - is the body of the function that will be run to update the variable. This function has access to the name of the variable that is updating without using getVal.
 ```
-noRegisterSetValAction!(name: string, variableName: string, body: Body, actionName?: string, priority?: number = 0);
+noRegisterSetValAction!(variableName: string, body: Body, actionName?: string, priority?: number = 0);
 ```
 
 ### behaviorCustom
@@ -96,7 +108,7 @@ Create custom declarations on the behavior. This is ideal for graphs, polygons, 
 
 `body` - is a body that contains outer declarations (polygon, graph, etc). These outer declarations can use getVal, and will be created for every object that the behavior exists on.
 ```
-behaviorCustom!(name: string, body: Body, priority?: number = 0);
+behaviorCustom!(body: Body, priority?: number = 0);
 ```
 
 ### setDisplay
@@ -104,7 +116,7 @@ Allows modifying the display properties of any object that this is attached to.
 
 `body` - is a body that contains the display properties that will be applied to each renderer that is attached to the object that this behavior is attached to.
 ```
-setDisplay!(name: string, body: Body, priority?: number = 0);
+setDisplay!(body: Body, priority?: number = 0);
 ```
 
 ### getBehaviorArgs
@@ -119,19 +131,11 @@ Allows creating helper methods at certain priorities, and which are only output 
 
 `body` - is a body that contains helper methods or constants (or any other outer declaration). These will only be exported once and will only be exported if the behavior is used.
 ```
-helper!(name: string, body: Body, priority?: number = 0);
-```
-
-
-### finalizeBehavior
-Finalize the behavior. This must be the last template called on the behavior.
-
-```
-finalizeBehavior!(name: string);
+helper!(body: Body, priority?: number = 0);
 ```
 
 ### objectID
-Gets the ID of the object that this behavior is currently attached to. If possible, it is recommended to use the id of the object's transform instead.
+Gets the ID of the object that this behavior is currently attached to.
 
 ```
 objectID!();
@@ -142,17 +146,25 @@ objectID!();
 ### createPrefab
 Creates a new prefab.
 
+`definition` - is a body containing the prefab's definition, comprised of the below templates.
 ```
-createPrefab!(name: string);
+createPrefab!(name: string, definition: Body);
 ```
 
+### extendPrefab
+Extends a prefab. The supplied definition will be added to the prefab's current definition.
+
+`definition` - is a body containing the prefab's definition, comprised of the below templates.
+```
+extendPrefab!(name: string, definition: Body);
+```
 
 ### useBehaviorPrefab
 Add a behavior to a prefab. Any additional arguments will be passed to the behavior. 
 To use prefab arguments, wrap the number in quotes, which will now indicate the index of the prefab argument.
 
 ```
-useBehavior!(prefab: string, behaviorName: string);
+useBehavior!(behaviorName: string);
 ```
 
 ### setPrefabVal
@@ -160,15 +172,16 @@ Set the value of an object's variable (during compilation). This must be used be
 To use prefab arguments, wrap the number in quotes, which will now indicate the index of the prefab argument.
 
 ```
-setPrefabVal!(prefab: string, variableName: string, val: number | string);
+setPrefabVal!(variableName: string, val: number | string);
 ```
 
 
 ### usePrefab
-Creates a new object from a prefab. Supply -1 for the object ID to use the next available object ID.
+Creates a new object from a prefab. Any additional arguments will be passed to the prefab.
 
+`definition` - is a body containing the new object's definition, comprised of the object templates.
 ```
-usePrefab!(id: number, prefab: string);
+usePrefab!(prefab: string, body?: Body);
 ```
 
 ## Select

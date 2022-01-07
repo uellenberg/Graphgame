@@ -35,43 +35,40 @@ initialize!();
 inline const max_y = 20;
 
 //First, we need a behavior to move the ball. We'll call it "mover".
-createBehavior!("mover");
-
-//Next, we need to actually move the ball. To do that, we first need to set the balls y-value to mutable, which means that it can be modified.
-//The first argument is our behavior, and the second is the variable. We need to use the y variable on this object's transform component, so we
-//use "base" to refer to this object, then "base.transform" to get the transform component, and finally "base.transform.y" to get the y variable.
-setMut!("mover", "base.transform.y");
-
-//Next, we need to actually move it. We use setValAction to do this. We use setValAction to set a variable to something each frame, as opposed to setVal, which sets the object's default value.
-//The "{}" is called an action body. It contains code statements.
-setValAction!("mover", "base.transform.y", {
-    //First, add 1 to the current y value.
-    //We can access the variable we're updating like this. Other variables need to be accessed with getVal.
-    const new_y = y + 1;
+createBehavior!("mover", {
+    //Next, we need to actually move the ball. To do that, we first need to set the balls y-value to mutable, which means that it can be modified.
+    //The first argument is the variable. We need to use the y variable on this object's transform component, so we
+    //use "base" to refer to this object, then "base.transform" to get the transform component, and finally "base.transform.y" to get the y variable.
+    setMut!("base.transform.y");
     
-    //Next, we'll check if it's above our max y.
-    //If it is, we'll set the state to 0, otherwise we'll set it to the new y value.
-    //The state is like our return value. In Logimat, we can't early return, so we set the return value throughout the code. At the end of the function, whatever the state is will be the result of the function.
-    //At each branch of an if statement (if, else if, else) the state must be set. Additionally, if an if has no else, the state must be set at some point before the if is used.
-    if(new_y > max_y) {
-        state = 0;
-    } else {
-        state = new_y;
-    }
+    //Next, we need to actually move it. We use setValAction to do this. We use setValAction to set a variable to something each frame, as opposed to setVal, which sets the object's starting value.
+    //The "{}" is called an action body. It contains code statements.
+    setValAction!("base.transform.y", {
+        //First, add 1 to the current y value.
+        //We can access the variable we're updating like this. Other variables need to be accessed with getVal.
+        const new_y = y + 1;
+        
+        //Next, we'll check if it's above our max y.
+        //If it is, we'll set the state to 0, otherwise we'll set it to the new y value.
+        //The state is like our return value. In Logimat, we can't early return, so we set the return value throughout the code. At the end of the function, whatever the state is will be the result of the function.
+        //At each branch of an if statement (if, else if, else) the state must be set. Additionally, if an if has no else, the state must be set at some point before the if is used.
+        if(new_y > max_y) {
+            state = 0;
+        } else {
+            state = new_y;
+        }
+    });
 });
 
-//Finally, we need to finalize the behavior.
-finalizeBehavior!("mover");
-
 //Now that we have our behavior, we can create an object.
-//We'll first create an object with ID 0.
-createObject!(0);
-
-//Next, we'll attach the mover behavior to it to make it move.
-useBehavior!(0, "mover");
-
-//Finally, we'll add a circle renderer to it so that it displays.
-useBehavior!(0, "circle");
+//We'll first create an object.
+createObject!({
+    //Next, we'll attach the mover behavior to it to make it move.
+    useBehavior!("mover");
+    
+    //Finally, we'll add a circle renderer to it so that it displays.
+    useBehavior!("circle");
+});
 
 //That's it. Now, if we compile it, we'll see a ball moving upwards until it hits the top, and going back to 0.
 ```
