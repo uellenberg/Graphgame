@@ -6,7 +6,6 @@ export class Behavior {
     private postParts: Record<number, ((id: number, idx: number) => string)[]> = {};
     private helpers: Record<number, string[]> = {};
     private displays: Record<number, string[]> = {};
-    private finalized: boolean = false;
 
     private nextId: number = 1;
 
@@ -54,17 +53,9 @@ export class Behavior {
     }
 
     /**
-     * Mark the behavior as finalized.
-     */
-    public finalize() : void {
-        this.finalized = true;
-    }
-
-    /**
      * Compiles the behavior for a specific object.
      */
     public compile(id: number) : string {
-        if(!this.finalized) throw new Error("A behavior must be finalized before it can be used!");
         return this.parts.map((part, idx) => part(id, idx)).join("\n");
     }
 
@@ -72,8 +63,6 @@ export class Behavior {
      * Compiles the post behavior for a specific object.
      */
     public compilePost(id: number, actions: Record<number, string[]>, prefix: string) : void {
-        if(!this.finalized) throw new Error("A behavior must be finalized before it can be used!");
-
         for(const priority in this.helpers) {
             if(!actions.hasOwnProperty(priority)) actions[priority] = [];
             actions[priority].push(...this.helpers[priority]);
@@ -90,8 +79,6 @@ export class Behavior {
     }
 
     public compileDisplay(display: Record<number, string[]>) : void {
-        if(!this.finalized) throw new Error("A behavior must be finalized before it can be used!");
-
         for(const priority in this.displays) {
             if(!display.hasOwnProperty(priority)) display[priority] = [];
             display[priority].push(...this.displays[priority]);

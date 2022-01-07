@@ -17,7 +17,7 @@ import {Behavior} from "../types/Behavior";
 
 /**
  * Creates a new behavior.
- * Usage: createBehavior!(name: string);
+ * Usage: createBehavior!(name: string, body: Body);
  */
 export const createBehavior: TemplateObject = {
     function: (args, state: TemplateState, context) => {
@@ -25,14 +25,35 @@ export const createBehavior: TemplateObject = {
         outerCheck(context);
 
         const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
+        const body = getString(args, state, 1, "A behavior definition is required!");
 
-        if(state.graphgame.objects.hasOwnProperty(name)) throw new Error("A behavior with the name \"" + name + "\" already exists!");
+        if(state.graphgame.behaviors.hasOwnProperty(name)) throw new Error("A behavior with the name \"" + name + "\" already exists!");
 
         state.graphgame.behaviors[name] = new Behavior(name);
 
         state.graphgame.currentBehavior = name;
 
-        return "";
+        return body;
+    }
+};
+
+/**
+ * Add to an already existing behavior.
+ * Usage: extendBehavior!(name: string, body: Body);
+ */
+export const extendBehavior: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
+        const body = getString(args, state, 1, "A behavior definition is required!");
+
+        if(!state.graphgame.behaviors.hasOwnProperty(name)) throw new Error("A behavior with the name \"" + name + "\" does not exist!");
+
+        state.graphgame.currentBehavior = name;
+
+        return body;
     }
 };
 
@@ -339,25 +360,6 @@ export const helper: TemplateObject = {
         behaviorCheck(state, name);
 
         state.graphgame.behaviors[name].addHelper(body, priority);
-
-        return "";
-    }
-};
-
-/**
- * Finalize the behavior. This must be the last template called on the behavior.
- * Usage: finalizeBehavior!();
- */
-export const finalizeBehavior: TemplateObject = {
-    function: (args, state: TemplateState, context) => {
-        ensureState(state);
-        outerCheck(context);
-
-        const name = state.graphgame.currentBehavior;
-
-        behaviorCheck(state, name);
-
-        state.graphgame.behaviors[name].finalize();
 
         return "";
     }

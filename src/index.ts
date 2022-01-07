@@ -2,7 +2,7 @@ import {finalize, finalize1, finalize2, initialize, registerAction} from "./modu
 import {
     behaviorCustom,
     behaviorGraph,
-    createBehavior, finalizeBehavior, getBehaviorArgs,
+    createBehavior, extendBehavior, getBehaviorArgs,
     getVal, helper,
     noRegisterSetValAction, objectID, setBehavior, setDisplay, setInline,
     setMut,
@@ -10,7 +10,7 @@ import {
     setValAction,
     setValArgs
 } from "./modules/component";
-import {createObject, setObjectVal, useBehavior, useBehaviorPost} from "./modules/object";
+import {createObject, setObject, setObjectVal, useBehavior, useBehaviorPost} from "./modules/object";
 import {
     getDisplay,
     getValSelect, noRegisterSetValActionSelect, reIncrement,
@@ -22,7 +22,7 @@ import {
     setValSelect
 } from "./modules/select";
 import {TemplatesObject} from "logimat";
-import {createPrefab, setPrefabVal, useBehaviorPrefab, usePrefab} from "./modules/prefab";
+import {createPrefab, extendPrefab, setPrefab, setPrefabVal, useBehaviorPrefab, usePrefab} from "./modules/prefab";
 
 export const templates: TemplatesObject = {
     //Main
@@ -33,6 +33,7 @@ export const templates: TemplatesObject = {
     finalize2,
     //Component
     createBehavior,
+    extendBehavior,
     setMut,
     setInline,
     getVal,
@@ -44,7 +45,6 @@ export const templates: TemplatesObject = {
     behaviorCustom,
     setDisplay,
     getBehaviorArgs,
-    finalizeBehavior,
     objectID,
     helper,
     setBehavior,
@@ -53,6 +53,7 @@ export const templates: TemplatesObject = {
     useBehavior,
     useBehaviorPost,
     setObjectVal,
+    setObject,
     //Select
     selectID,
     selectedID,
@@ -68,9 +69,11 @@ export const templates: TemplatesObject = {
     getDisplay,
     //Prefab
     createPrefab,
+    extendPrefab,
     useBehaviorPrefab,
     setPrefabVal,
-    usePrefab
+    usePrefab,
+    setPrefab
 };
 
 export const postTemplates: string = "finalize!();";

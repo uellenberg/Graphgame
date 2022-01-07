@@ -8,54 +8,55 @@ import {
     expressionCheck,
     getNum,
     getSemiMut,
-    getString, handleObjectID,
+    getString,
     objectCheck,
     objectVarCheck,
-    outerCheck
+    outerCheck, outerInnerCheck
 } from "../util";
 
 /**
  * Creates a new object.
- * Usage: createObject!(id: number);
+ * Usage: createObject!(body: Body);
  */
 export const createObject: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
         outerCheck(context);
 
-        const id = handleObjectID(getNum(args, state, 0, "An object ID is required!"), state);
-
-        if(state.graphgame.objects.hasOwnProperty(id)) throw new Error("An object with the ID \"" + id + "\" already exists!");
-        if(id < 0) throw new Error("Objects cannot have an ID less than zero.");
+        //Store the next ID, then increment it.
+        const id = state.graphgame.nextObjectId++;
+        const body = getString(args, state, 0, "An object definition is required!");
 
         state.graphgame.objects[id] = new GameObject(id);
 
-        return `useBehavior!(${id}, "transform");`;
+        state.graphgame.currentObject = id;
+
+        return `useBehavior!("transform");${body}setObject!();`;
     }
 };
 
 /**
  * Add a behavior to an object.
- * Usage: useBehavior!(objectId: number, behaviorName: string);
+ * Usage: useBehavior!(behaviorName: string);
  */
 export const useBehavior: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
         outerCheck(context);
 
-        const id = getNum(args, state, 0, "An object ID is required!");
-        const name = getString(args, state, 1, "A behavior name is required!").trim().toLowerCase();
+        const id = state.graphgame.currentObject;
+        const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
 
         objectCheck(state, id);
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].compilePost(id, state.graphgame.objects[id].behaviorPostActions, `useBehaviorPost!(${id}, \"${name}\"${args.length > 2 ? ", " + args.slice(2).join(", ") : ""});`);
+        state.graphgame.behaviors[name].compilePost(id, state.graphgame.objects[id].behaviorPostActions, `useBehaviorPost!(${id}, \"${name}\"${args.length > 2 ? ", " + args.slice(1).join(", ") : ""});`);
         state.graphgame.behaviors[name].compileDisplay(state.graphgame.objects[id].displayProperties);
 
         state.graphgame.objects[id].behaviors.push(name);
 
         state.graphgame.lastObjectBehaviorId = id;
-        state.graphgame.lastObjectBehaviorArgs = args.slice(2);
+        state.graphgame.lastObjectBehaviorArgs = args.slice(1);
 
         return state.graphgame.behaviors[name].compile(id);
     }
@@ -84,16 +85,16 @@ export const useBehaviorPost: TemplateObject = {
 
 /**
  * Set the value of an object's variable (during compilation). This must be used before a variable is marked as mutable.
- * Usage: setObjectVal!(objectId: number, variableName: string, val: number);
+ * Usage: setObjectVal!(variableName: string, val: number);
  */
 export const setObjectVal: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
         outerCheck(context);
 
-        const id = getNum(args, state, 0, "An object ID is required!");
-        const name = getString(args, state, 1, "A variable name is required!").trim().toLowerCase().replace(/[._]/g, "");
-        const val = getNum(args, state, 2, "A value is required!");
+        const id = state.graphgame.currentObject;
+        const name = getString(args, state, 0, "A variable name is required!").trim().toLowerCase().replace(/[._]/g, "");
+        const val = getNum(args, state, 1, "A value is required!");
 
         objectCheck(state, id);
 
@@ -103,6 +104,20 @@ export const setObjectVal: TemplateObject = {
             //The error message is included in here.
             getSemiMut(state, id, name).set(val);
         }
+
+        return "";
+    }
+};
+
+/**
+ * For internal use only.
+ */
+export const setObject: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerInnerCheck(context);
+
+        state.graphgame.currentObject = getNum(args, state, 0) || 0;
 
         return "";
     }

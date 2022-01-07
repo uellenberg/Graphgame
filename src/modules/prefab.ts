@@ -7,8 +7,7 @@ import {
     getString,
     outerCheck,
     getAnyAsString,
-    getNumOrString,
-    handleObjectID
+    getNumOrString, outerInnerCheck
 } from "../util";
 import {GameObject} from "../types/GameObject";
 
@@ -22,31 +21,54 @@ export const createPrefab: TemplateObject = {
         outerCheck(context);
 
         const name = getString(args, state, 0, "A prefab name is required!");
+        const body = getString(args, state, 1, "A prefab definition is required!");
 
         if(state.graphgame.prefabs.hasOwnProperty(name)) throw new Error("A prefab with the name \"" + name + "\" already exists!");
 
         state.graphgame.prefabs[name] = [];
 
-        return "";
+        state.graphgame.currentPrefab = name;
+
+        return body + "setPrefab!();";
+    }
+};
+
+/**
+ * Add to an already existing prefab.
+ * Usage: extendPrefab!(name: string, body: Body);
+ */
+export const extendPrefab: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        const name = getString(args, state, 0, "A prefab name is required!");
+        const body = getString(args, state, 1, "A prefab definition is required!");
+
+        if(!state.graphgame.prefabs.hasOwnProperty(name)) throw new Error("A prefab with the name \"" + name + "\" does not exist!");
+
+        state.graphgame.currentPrefab = name;
+
+        return body;
     }
 };
 
 /**
  * Add a behavior to a prefab. Any additional arguments will be passed to the behavior. To use
  * prefab arguments, wrap the number in quotes, which will now indicate the index of the prefab argument.
- * Usage: useBehavior!(prefab: string, behaviorName: string);
+ * Usage: useBehavior!(behaviorName: string);
  */
 export const useBehaviorPrefab: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
         outerCheck(context);
 
-        const name = getString(args, state, 0, "A prefab name is required!");
-        const behaviorName = getString(args, state, 1, "A behavior name is required!");
+        const name = state.graphgame.currentPrefab;
+        const behaviorName = getString(args, state, 0, "A behavior name is required!");
 
         prefabCheck(state, name);
 
-        const behaviorArgs = args.slice(2);
+        const behaviorArgs = args.slice(1);
 
         state.graphgame.prefabs[name].push((id: number, args: TemplateArgs) => {
             const newBehaviorArgs = behaviorArgs.map(arg => {
@@ -59,7 +81,7 @@ export const useBehaviorPrefab: TemplateObject = {
                 return args[idx];
             });
 
-            return `useBehavior!(${id}, "${behaviorName}"${newBehaviorArgs.length > 0 ? ", " + newBehaviorArgs.join(", ") : ""});`;
+            return `useBehavior!("${behaviorName}"${newBehaviorArgs.length > 0 ? ", " + newBehaviorArgs.join(", ") : ""});`;
         });
 
         return "";
@@ -69,16 +91,16 @@ export const useBehaviorPrefab: TemplateObject = {
 /**
  * Set the value of an object's variable (during compilation). This must be used before a variable is marked as mutable.
  * To use prefab arguments, wrap the number in quotes, which will now indicate the index of the prefab argument.
- * Usage: setPrefabVal!(prefab: string, variableName: string, val: number | string);
+ * Usage: setPrefabVal!(variableName: string, val: number | string);
  */
 export const setPrefabVal: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
         outerCheck(context);
 
-        const name = getString(args, state, 0, "A prefab name is required!");
-        const variableName = getString(args, state, 1, "A variable name is required!");
-        const val = getNumOrString(args, state, 2, "A value is required!");
+        const name = state.graphgame.currentPrefab;
+        const variableName = getString(args, state, 0, "A variable name is required!");
+        const val = getNumOrString(args, state, 1, "A value is required!");
 
         prefabCheck(state, name);
 
@@ -102,31 +124,48 @@ export const setPrefabVal: TemplateObject = {
 };
 
 /**
- * Creates a new object from a prefab. Supply -1 for the object ID to use the next available object ID.
- * Usage: usePrefab!(id: number, prefab: string);
+ * Creates a new object from a prefab.
+ * Usage: usePrefab!(prefab: string, body?: Body);
  */
 export const usePrefab: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
         outerCheck(context);
 
-        const id = handleObjectID(getNum(args, state, 0, "An object ID is required!"), state);
-        const name = getString(args, state, 1, "A prefab name is required!");
+        const name = getString(args, state, 0, "A prefab name is required!");
+        const body = getString(args, state, 1) || "";
 
         const prefabArgs = args.slice(2);
 
         prefabCheck(state, name);
-        if(state.graphgame.objects.hasOwnProperty(id)) throw new Error("An object with the ID \"" + id + "\" already exists!");
-        if(id < 0) throw new Error("Objects cannot have an ID less than zero.");
+
+        //Store the next ID, then increment it.
+        const id = state.graphgame.nextObjectId++;
 
         state.graphgame.objects[id] = new GameObject(id);
 
-        const output: string[] = [`useBehavior!(${id}, "transform");`];
+        state.graphgame.currentObject = id;
+
+        const output: string[] = [`useBehavior!("transform");`];
 
         for(const func of state.graphgame.prefabs[name]) {
             output.push(func(id, prefabArgs));
         }
 
-        return output.join("\n");
+        return output.join("\n") + body;
+    }
+};
+
+/**
+ * For internal use only.
+ */
+export const setPrefab: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerInnerCheck(context);
+
+        state.graphgame.currentPrefab = getString(args, state, 0) || "";
+
+        return "";
     }
 };
