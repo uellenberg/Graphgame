@@ -103,7 +103,7 @@ export const setObjectVal: TemplateObject = {
         objectCheck(state, id);
 
         if(!state.graphgame.objects[id].hasOwnProperty(name)) {
-            state.graphgame.objects[id][name] = new SemiMutable(name, id, val);
+            state.graphgame.objects[id][name] = new SemiMutable(name, id, val, state);
         } else {
             //The error message is included in here.
             getSemiMut(state, id, name).set(val);

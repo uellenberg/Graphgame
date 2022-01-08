@@ -27,6 +27,7 @@ export interface TemplateState {
         currentBehavior: string,
         currentPrefab: string,
         currentObject: number,
-        nextObjectId: number
+        nextObjectId: number,
+        nextVariableId: number
     }
 }

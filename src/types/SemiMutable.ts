@@ -1,3 +1,5 @@
+import {TemplateState} from "./TemplateState";
+
 export class SemiMutable {
     private readonly varName: string;
     private readonly id: number;
@@ -6,6 +8,7 @@ export class SemiMutable {
     private inlined: boolean = false;
     private incrementID: number = 0;
     private variableIDs: number[] = [];
+    public readonly exportID: number;
 
     /**
      * Creates a SemiMutable, which stores an immutable value until it is made mutable.
@@ -14,11 +17,14 @@ export class SemiMutable {
      * @param varName {string} - is the variable name of this variable.
      * @param id {number} - is the ID of the GameObject that this is attached to.
      * @param val {number} - is the default value.
+     * @param state {TemplateState} - is the current state.
      */
-    public constructor(varName: string, id: number, val: number) {
+    public constructor(varName: string, id: number, val: number, state: TemplateState) {
         this.varName = varName;
         this.id = id;
         this.val = val;
+
+        this.exportID = state.graphgame.nextVariableId++;
     }
 
     /**
@@ -73,7 +79,9 @@ export class SemiMutable {
      */
     public name(noIncrement: boolean = false, offset: number = 0): string {
         if(!this.mutable) throw new Error("mut() must be called before the name can be accessed.");
-        return "g_raphgameobject" + this.id + this.varName + (noIncrement ? "" : Math.max(0, this.incrementID+offset) || "");
+
+        const incrementVal = Math.max(0, this.incrementID+offset);
+        return "g_v" + this.exportID + (noIncrement ? "" : (incrementVal ? "n" + incrementVal : ""));
     }
 
     /**
