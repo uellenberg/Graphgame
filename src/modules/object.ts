@@ -5,7 +5,7 @@ import {TemplateState} from "../types/TemplateState";
 import {
     behaviorCheck,
     ensureState,
-    expressionCheck,
+    expressionCheck, getBlock,
     getNum,
     getSemiMut,
     getString,
@@ -25,7 +25,7 @@ export const createObject: TemplateObject = {
 
         //Store the next ID, then increment it.
         const id = state.graphgame.nextObjectId++;
-        const body = getString(args, state, 0, "An object definition is required!");
+        const body = getBlock(args, state, 0, "An object definition is required!");
 
         state.graphgame.objects[id] = new GameObject(id);
 

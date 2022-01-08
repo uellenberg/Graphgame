@@ -3,7 +3,7 @@ import {TemplateState} from "../types/TemplateState";
 import {
     behaviorCheck,
     ensureState,
-    expressionCheck, getAnyAsString, getBoolean,
+    expressionCheck, getAnyAsString, getBlock, getBoolean,
     getNum,
     getSemiMut,
     getString,
@@ -49,7 +49,7 @@ export const selectAll: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
 
-        const body = getString(args, state, 0, "A body is required!");
+        const body = getBlock(args, state, 0, "A body is required!");
         const array = getBoolean(args, state, 1);
 
         if(array) {
@@ -102,7 +102,7 @@ export const selectBehavior: TemplateObject = {
         ensureState(state);
 
         const behavior = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
-        const body = getString(args, state, 1, "A body is required!");
+        const body = getBlock(args, state, 1, "A body is required!");
         const array = getBoolean(args, state, 2);
 
         if(array) {
@@ -258,7 +258,7 @@ export const setValActionSelect: TemplateObject = {
 
         const id = state.graphgame.currentObjectId;
         const name = getString(args, state, 0, "A variable name is required!").trim().toLowerCase().replace(/[._]/g, "");
-        const body = getString(args, state, 1, "An action body is required!");
+        const body = getBlock(args, state, 1, "An action body is required!");
         const exported = getBoolean(args, state, 2);
         const variable = getBoolean(args, state, 3);
 
@@ -312,7 +312,7 @@ export const noRegisterSetValActionSelect: TemplateObject = {
 
         const id = state.graphgame.currentObjectId;
         const name = getString(args, state, 0, "A variable name is required!").trim().toLowerCase().replace(/[._]/g, "");
-        const body = getString(args, state, 1, "An action body is required!");
+        const body = getBlock(args, state, 1, "An action body is required!");
         const actionName = getString(args, state, 2)?.trim().toLowerCase();
 
         objectCheck(state, id);

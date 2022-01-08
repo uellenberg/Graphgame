@@ -7,7 +7,7 @@ import {
     getString,
     outerCheck,
     getAnyAsString,
-    getNumOrString, outerInnerCheck
+    getNumOrString, outerInnerCheck, getBlock
 } from "../util";
 import {GameObject} from "../types/GameObject";
 
@@ -21,7 +21,7 @@ export const createPrefab: TemplateObject = {
         outerCheck(context);
 
         const name = getString(args, state, 0, "A prefab name is required!");
-        const body = getString(args, state, 1, "A prefab definition is required!");
+        const body = getBlock(args, state, 1, "A prefab definition is required!");
 
         if(state.graphgame.prefabs.hasOwnProperty(name)) throw new Error("A prefab with the name \"" + name + "\" already exists!");
 
@@ -43,7 +43,7 @@ export const extendPrefab: TemplateObject = {
         outerCheck(context);
 
         const name = getString(args, state, 0, "A prefab name is required!");
-        const body = getString(args, state, 1, "A prefab definition is required!");
+        const body = getBlock(args, state, 1, "A prefab definition is required!");
 
         if(!state.graphgame.prefabs.hasOwnProperty(name)) throw new Error("A prefab with the name \"" + name + "\" does not exist!");
 
@@ -133,7 +133,7 @@ export const usePrefab: TemplateObject = {
         outerCheck(context);
 
         const name = getString(args, state, 0, "A prefab name is required!");
-        const body = getString(args, state, 1) || "";
+        const body = getBlock(args, state, 1) || "";
 
         const prefabArgs = args.slice(2);
 

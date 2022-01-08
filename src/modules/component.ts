@@ -3,7 +3,7 @@ import {TemplateState} from "../types/TemplateState";
 import {
     behaviorCheck,
     ensureState,
-    expressionCheck,
+    expressionCheck, getBlock,
     getBoolean,
     getFullVariableName,
     getNum,
@@ -25,7 +25,7 @@ export const createBehavior: TemplateObject = {
         outerCheck(context);
 
         const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
-        const body = getString(args, state, 1, "A behavior definition is required!");
+        const body = getBlock(args, state, 1, "A behavior definition is required!");
 
         if(state.graphgame.behaviors.hasOwnProperty(name)) throw new Error("A behavior with the name \"" + name + "\" already exists!");
 
@@ -47,7 +47,7 @@ export const extendBehavior: TemplateObject = {
         outerCheck(context);
 
         const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
-        const body = getString(args, state, 1, "A behavior definition is required!");
+        const body = getBlock(args, state, 1, "A behavior definition is required!");
 
         if(!state.graphgame.behaviors.hasOwnProperty(name)) throw new Error("A behavior with the name \"" + name + "\" does not exist!");
 
@@ -197,7 +197,7 @@ export const setValAction: TemplateObject = {
 
         const name = state.graphgame.currentBehavior;
         const varName = getString(args, state, 0, "A variable name is required!").trim().toLowerCase();
-        const body = getString(args, state, 1, "An action body is required!");
+        const body = getBlock(args, state, 1, "An action body is required!");
         const priority = getNum(args, state, 2) || 0;
         const exported = getBoolean(args, state, 3);
         const variable = getBoolean(args, state, 4);
@@ -223,7 +223,7 @@ export const noRegisterSetValAction: TemplateObject = {
 
         const name = state.graphgame.currentBehavior;
         const varName = getString(args, state, 0, "A variable name is required!").trim().toLowerCase();
-        const body = getString(args, state, 1, "An action body is required!");
+        const body = getBlock(args, state, 1, "An action body is required!");
         const actionName = getString(args, state, 2)?.trim().toLowerCase();
         const priority = getNum(args, state, 3) || 0;
 
@@ -248,9 +248,9 @@ export const behaviorGraph: TemplateObject = {
         outerCheck(context);
 
         const name = state.graphgame.currentBehavior;
-        const body1 = getString(args, state, 0, "An action body is required!");
+        const body1 = getBlock(args, state, 0, "An action body is required!");
         const operator = getString(args, state, 1);
-        const body2 = getString(args, state, 2);
+        const body2 = getBlock(args, state, 2);
         const priority = getNum(args, state, 3) || 0;
 
         behaviorCheck(state, name);
@@ -285,7 +285,7 @@ export const behaviorCustom: TemplateObject = {
         outerCheck(context);
 
         const name = state.graphgame.currentBehavior;
-        const body = getString(args, state, 0, "A body is required!");
+        const body = getBlock(args, state, 0, "A body is required!");
         const priority = getNum(args, state, 1) || 0;
 
         behaviorCheck(state, name);
@@ -312,7 +312,7 @@ export const setDisplay: TemplateObject = {
         outerCheck(context);
 
         const name = state.graphgame.currentBehavior;
-        const body = getString(args, state, 0, "An action body is required!");
+        const body = getBlock(args, state, 0, "An action body is required!");
         const priority = getNum(args, state, 1) || 0;
 
         behaviorCheck(state, name);
@@ -354,7 +354,7 @@ export const helper: TemplateObject = {
         outerCheck(context);
 
         const name = state.graphgame.currentBehavior;
-        const body = getString(args, state, 0, "An action body is required!");
+        const body = getBlock(args, state, 0, "An action body is required!");
         const priority = getNum(args, state, 1) ?? -10000;
 
         behaviorCheck(state, name);

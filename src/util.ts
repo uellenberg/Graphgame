@@ -50,7 +50,7 @@ export const prefabCheck = (state: TemplateState, name: string) : void => {
 //Arg checks
 
 export const getNum = (args: TemplateArgs, state: TemplateState, idx: number, error: string = null) : number => {
-    if(args.length < idx+1 || typeof(args[idx]) !== "number" || isNaN(<number>args[idx])) {
+    if(args.length < idx+1 || args[idx] == null || typeof(args[idx]) !== "number" || isNaN(<number>args[idx])) {
         if(error) throw new Error(error);
         else return null;
     }
@@ -58,7 +58,7 @@ export const getNum = (args: TemplateArgs, state: TemplateState, idx: number, er
 };
 
 export const getBoolean = (args: TemplateArgs, state: TemplateState, idx: number, error: string = null) : boolean => {
-    if(args.length < idx+1 || typeof(args[idx]) !== "boolean") {
+    if(args.length < idx+1 || args[idx] == null || typeof(args[idx]) !== "boolean") {
         if(error) throw new Error(error);
         else return false;
     }
@@ -66,7 +66,7 @@ export const getBoolean = (args: TemplateArgs, state: TemplateState, idx: number
 };
 
 export const getString = (args: TemplateArgs, state: TemplateState, idx: number, error: string = null) : string => {
-    if(args.length < idx+1 || typeof(args[idx]) !== "string" || args[idx] == null) {
+    if(args.length < idx+1 || args[idx] == null || typeof(args[idx]) !== "string") {
         if(error) throw new Error(error);
         else return null;
     }
@@ -87,6 +87,14 @@ export const getNumOrString = (args: TemplateArgs, state: TemplateState, idx: nu
         else return null;
     }
     return <string | number>args[idx];
+};
+
+export const getBlock = (args: TemplateArgs, state: TemplateState, idx: number, error: string = null) : string => {
+    if(args.length < idx+1 || args[idx] == null || typeof(args[idx]) !== "object" || !args[idx]["block"]) {
+        if(error) throw new Error(error);
+        else return null;
+    }
+    return <string>args[idx]["value"];
 };
 
 //Dot access helper
