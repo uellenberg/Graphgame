@@ -50,7 +50,11 @@ export const useBehavior: TemplateObject = {
         objectCheck(state, id);
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].compilePost(id, state.graphgame.objects[id].behaviorPostActions, `useBehaviorPost!(${id}, \"${name}\"${args.length > 2 ? ", " + args.slice(1).join(", ") : ""});`);
+        state.graphgame.behaviors[name].compilePost(id, state.graphgame.objects[id].behaviorPostActions, `useBehaviorPost!(${id}, \"${name}\"${args.length > 2 ? ", " + args.slice(1).map(val => {
+            if(typeof(val) === "string") return `"${val}"`;
+            else if(typeof(val) === "object" && val["block"]) return "{" + val["value"] + "}";
+            else return val.toString();
+        }).join(", ") : ""});`);
         state.graphgame.behaviors[name].compileDisplay(state.graphgame.objects[id].displayProperties);
 
         state.graphgame.objects[id].behaviors.push(name);

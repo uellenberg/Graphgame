@@ -175,6 +175,7 @@ export const setValArgs: TemplateObject = {
             }
 
             if(typeof(val) === "string") val = `"${val}"`;
+            else if(typeof(val) === "object" && val["block"]) val = val["value"];
             else val = val.toString();
 
             return `selectID!(${id});
@@ -330,7 +331,6 @@ export const setDisplay: TemplateObject = {
 export const getBehaviorArgs: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
-        expressionCheck(context);
 
         const idx = getNum(args, state, 0, "An argument index is required!");
 
@@ -338,6 +338,7 @@ export const getBehaviorArgs: TemplateObject = {
 
         let val = state.graphgame.lastObjectBehaviorArgs[idx];
         if(typeof(val) === "string") val = `"${val}"`;
+        else if(typeof(val) === "object" && val["block"]) val = val["value"];
         else val = val.toString();
 
         return val;

@@ -27,6 +27,12 @@ Renders a rectangle.
 ### Circle (`circle`)
 Renders a ellipse.
 
+## Rendering (effects)
+Special rendering effects that should be used in conjunction with an actual renderer.
+
+### Square outline (`square_outline`).
+Creates an outline around a square/rectangle. The first argument is a block containing display properties for the outline, and the second is the thickness of the outline.
+
 ## DOA
 DOA (Dynamic Object Allocation) is a system that helps with the creation of platformer games. It dynamically allocates objects from an object pool once they come into view of the window, so that in a large world, only a few objects really exist.
 

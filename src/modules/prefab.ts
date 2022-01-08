@@ -72,13 +72,15 @@ export const useBehaviorPrefab: TemplateObject = {
 
         state.graphgame.prefabs[name].push((id: number, args: TemplateArgs) => {
             const newBehaviorArgs = behaviorArgs.map(arg => {
-                if(typeof(arg) !== "string") return arg;
+                if(typeof(arg) === "string") {
+                    const idx = parseInt(arg);
+                    if(isNaN(idx)) throw new Error("Prefab \"" + name + "\" requested to use the argument at index \"" + arg + "\", but it is not an integer!");
+                    if(args.length <= idx) throw new Error("The prefab \"" + name + "\" requires at least " + (idx+1) + " arguments, but only " + args.length + " were provided.");
 
-                const idx = parseInt(arg);
-                if(isNaN(idx)) throw new Error("Prefab \"" + name + "\" requested to use the argument at index \"" + arg + "\", but it is not an integer!");
-                if(args.length <= idx) throw new Error("The prefab \"" + name + "\" requires at least " + (idx+1) + " arguments, but only " + args.length + " were provided.");
-
-                return args[idx];
+                    return args[idx];
+                } else if(typeof(arg) === "object" && arg["block"]) {
+                    return "{" + arg["value"] + "}";
+                } else return arg;
             });
 
             return `useBehavior!("${behaviorName}"${newBehaviorArgs.length > 0 ? ", " + newBehaviorArgs.join(", ") : ""});`;

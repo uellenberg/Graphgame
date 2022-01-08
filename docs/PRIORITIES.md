@@ -9,5 +9,6 @@ Priorities provide a way for certain code to run before others, allowing better 
 | -390     | Parent             |
 | -300     | Collider           |
 | -200     | Collision Resolver |
+| -150     | Renderer (effects) |
 | -100     | Renderer           |
 | 0        | Base layer         |
