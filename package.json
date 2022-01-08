@@ -27,7 +27,7 @@
     "docs"
   ],
   "dependencies": {
-    "logimat": "^1.0.22"
+    "logimat": "^1.0.23"
   },
   "devDependencies": {
     "typescript": "^4.4.4"
