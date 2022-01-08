@@ -101,10 +101,10 @@ export const finalize2: TemplateObject = {
         for (const name in state.graphgame.actions) {
             const val = state.graphgame.actions[name];
 
-            output.push(`action ${name + "update"} = ${name} {
+            output.push(`action ${name + "u"} = ${name} {
                 state = ${val};
             }`);
-            state.graphgame.finalActions.push(name + "update");
+            state.graphgame.finalActions.push(name + "u");
         }
 
         if(state.graphgame.finalActions.length > 0) output.push("actions m_ain = " + state.graphgame.finalActions.join(", ") + ";");

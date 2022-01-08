@@ -3,17 +3,17 @@ export default `
 
 createBehavior!("doa", {
     helper!({
-        inline const g_raphgame_doa_visible_array = selectBehavior!("mount_point", {
+        inline const g_doa_v = selectBehavior!("mount_point", {
             state = getValSelect!("mount_point.visible");
         }, true);
     
-        export function g_raphgame_doa_filter(a_rray) {
+        export function g_doa_f(a_rray) {
             //Create an array of each index.
             const indexes = range(1, a_rray.length);
             
             //Filter the array to only selected mount points.
             const filtered = indexes.filter(m_pidx => {
-                state = g_raphgame_doa_visible_array[m_pidx];
+                state = g_doa_v[m_pidx];
             });
             
             //Map the new array to the value in the input array.
@@ -22,19 +22,19 @@ createBehavior!("doa", {
             });
         }
         
-        export const g_raphgame_doa_x_array = g_raphgame_doa_filter(selectBehavior!("mount_point", {
+        export const g_doa_x = g_doa_f(selectBehavior!("mount_point", {
             state = getValSelect!("transform.x");
         }, true));
         
-        export const g_raphgame_doa_y_array = g_raphgame_doa_filter(selectBehavior!("mount_point", {
+        export const g_doa_y = g_doa_f(selectBehavior!("mount_point", {
             state = getValSelect!("transform.y");
         }, true));
         
-        export const g_raphgame_doa_xs_array = g_raphgame_doa_filter(selectBehavior!("mount_point", {
+        export const g_doa_xs = g_doa_f(selectBehavior!("mount_point", {
             state = getValSelect!("transform.scale_x");
         }, true));
         
-        export const g_raphgame_doa_ys_array = g_raphgame_doa_filter(selectBehavior!("mount_point", {
+        export const g_doa_ys = g_doa_f(selectBehavior!("mount_point", {
             state = getValSelect!("transform.scale_y");
         }, true));
     }, -500);
@@ -79,7 +79,7 @@ createBehavior!("doa", {
         const id = getVal!("idx");
         
         //Find the object.
-        state = g_raphgame_doa_x_array[id];
+        state = g_doa_x[id];
     }, -500);
     
     setValAction!("base.transform.y", {
@@ -89,7 +89,7 @@ createBehavior!("doa", {
         const id = getVal!("idx");
         
         //Find the object.
-        state = g_raphgame_doa_y_array[id];
+        state = g_doa_y[id];
     }, -500);
     
     setValAction!("base.transform.scale_x", {
@@ -99,7 +99,7 @@ createBehavior!("doa", {
         const id = getVal!("idx");
         
         //Find the object.
-        state = g_raphgame_doa_xs_array[id];
+        state = g_doa_xs[id];
     }, -500);
     
     setValAction!("base.transform.scale_y", {
@@ -109,7 +109,7 @@ createBehavior!("doa", {
         const id = getVal!("idx");
         
         //Find the object.
-        state = g_raphgame_doa_ys_array[id];
+        state = g_doa_ys[id];
     }, -500);
 });
 

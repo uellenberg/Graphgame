@@ -2,7 +2,7 @@ export default `
 createBehavior!("square_collider", {
     //Create helpers
     helper!({    
-        export function g_raphgame_square_collider_update(c_urval, n_ewval) {
+        export function g_scol_u(c_urval, n_ewval) {
             if(c_urval[1] != -1) {
                 state = c_urval;
             } else {
@@ -10,7 +10,7 @@ createBehavior!("square_collider", {
             }
         }
         
-        export function g_raphgame_square_collider_is_collided(x_1, y_1, s_x1, s_y1, x_2, y_2, s_x2, s_y2) {
+        export function g_scol_c(x_1, y_1, s_x1, s_y1, x_2, y_2, s_x2, s_y2) {
             state = 0;
             
             //Quickly determine if they collide.
@@ -22,11 +22,11 @@ createBehavior!("square_collider", {
             }
         }
         
-        export function g_raphgame_square_collider_get_data(x_1, y_1, s_x1, s_y1, x_2, y_2, s_x2, s_y2, i_d) {
+        export function g_scol_g(x_1, y_1, s_x1, s_y1, x_2, y_2, s_x2, s_y2, i_d) {
             state = [-1, 0, 0];
         
             //Make sure that we are colliding.
-            if(g_raphgame_square_collider_is_collided(x_1, y_1, s_x1, s_y1, x_2, y_2, s_x2, s_y2)) {
+            if(g_scol_c(x_1, y_1, s_x1, s_y1, x_2, y_2, s_x2, s_y2)) {
                 //1 if the condition is true, and -1 if it is false.
                 const x_scale_mul = (x_1 > x_2)*2 - 1;
                 const y_scale_mul = (y_1 > y_2)*2 - 1;
@@ -79,12 +79,12 @@ createBehavior!("square_collider", {
                         const cornery1 = getValSelect!("transform.y");
                         
                         //Get the value.
-                        state = g_raphgame_square_collider_get_data(cornerx, cornery, scalex, scaley, cornerx1, cornery1, scalex1, scaley1, selectedID!());
+                        state = g_scol_g(cornerx, cornery, scalex, scaley, cornerx1, cornery1, scalex1, scaley1, selectedID!());
                     }
                 };
                 
                 //Only update the current value to the new value if the old value has not been set.
-                state = g_raphgame_square_collider_update(state, collision_value);
+                state = g_scol_u(state, collision_value);
             });
         }
     }, -300, true, true);

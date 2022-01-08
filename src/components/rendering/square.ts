@@ -1,7 +1,7 @@
 export default `
 createBehavior!("square", {
     helper!({
-        export function g_raphgame_helper_square_rotate(a, b, r) {
+        export function g_sr_r(a, b, r) {
             state = a*cos(r) + b*sin(r);
         }
     });
@@ -20,8 +20,8 @@ createBehavior!("square", {
                 const new_x = x_scale*s_point.x;
                 const new_y = y_scale*s_point.y;
                 
-                const rotated_x = g_raphgame_helper_square_rotate(new_x, -new_y, rotation);
-                const rotated_y = g_raphgame_helper_square_rotate(new_y, new_x, rotation);
+                const rotated_x = g_sr_r(new_x, -new_y, rotation);
+                const rotated_y = g_sr_r(new_y, new_x, rotation);
                 
                 state = (rotated_x, rotated_y);
             });

@@ -4,7 +4,7 @@ export default `
 createBehavior!("mount_point", {
     //Helper function
     helper!({
-        export function g_raphgame_mount_point_helper(x_1, y_1, s_x1, s_y1, x_2, y_2, s_x2, s_y2) {
+        export function g_mp_h(x_1, y_1, s_x1, s_y1, x_2, y_2, s_x2, s_y2) {
             state = 0;
             
             //Quickly determine if they collide.
@@ -67,7 +67,7 @@ createBehavior!("mount_point", {
         const sy2 = getVal!("base.transform.scale_y");
         
         //Check if it is visible.
-        state = g_raphgame_mount_point_helper(x1, y1, sx1, sy1, x2, y2, sx2, sy2);
+        state = g_mp_h(x1, y1, sx1, sy1, x2, y2, sx2, sy2);
     }, -600);
 });
 
