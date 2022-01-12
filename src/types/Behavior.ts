@@ -65,6 +65,8 @@ export class Behavior {
     public compilePost(id: number, actions: Record<number, string[]>, prefix: string) : void {
         for(const priority in this.helpers) {
             if(!actions.hasOwnProperty(priority)) actions[priority] = [];
+
+            actions[priority].push(prefix);
             actions[priority].push(...this.helpers[priority]);
         }
 
@@ -73,6 +75,7 @@ export class Behavior {
 
         for(const key in this.postParts) {
             if(!actions.hasOwnProperty(key)) actions[key] = [];
+
             actions[key].push(prefix);
             actions[key].push(...this.postParts[key].map((part, idx) => part(id, idx)));
         }
