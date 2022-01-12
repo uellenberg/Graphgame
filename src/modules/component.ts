@@ -257,44 +257,6 @@ export const noRegisterSetValAction: TemplateObject = {
 };
 
 /**
- * Create a graph of this object.
- * If only one body is defined, the graph will use 1=body1, and body1=body2 otherwise.
- * Usage: behaviorGraph!(body1: Body, operator?: string, body2?: ActionBody);
- */
-export const behaviorGraph: TemplateObject = {
-    function: (args, state: TemplateState, context) => {
-        ensureState(state);
-        outerCheck(context);
-
-        const name = state.graphgame.currentBehavior;
-        const body1 = getBlock(args, state, 0, "An action body is required!");
-        const operator = getString(args, state, 1);
-        const body2 = getBlock(args, state, 2);
-        const priority = getNum(args, state, 3) || 0;
-
-        behaviorCheck(state, name);
-
-        state.graphgame.behaviors[name].addPost((id: number, idx: number) => {
-            return `selectID!(${id});
-            setBehavior!("${name}");
-            
-            inline function g_raphgamepost${name}a${id}a${idx}a1(x, y) {
-                ${body2 ? body1 : "state = 1;"}
-            }
-            inline function g_raphgamepost${name}a${id}a${idx}a2(x, y) {
-                ${body2 ? body2 : body1}
-            }
-            graph { g_raphgamepost${name}a${id}a${idx}a1(x, y) } ${operator || "="} { g_raphgamepost${name}a${id}a${idx}a2(x, y) };
-            
-            setBehavior!();
-            selectID!();`;
-        }, priority);
-
-        return "";
-    }
-};
-
-/**
  * Create custom declarations on the behavior. This is ideal for graphs, polygons, points, etc, but should not be used for named declarations ((functions, consts, etc).
  * Usage: behaviorCustom!(body: Body, priority?: number = 0);
  */
