@@ -71,9 +71,12 @@ export const setMut: TemplateObject = {
 
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].add((id: number) => `selectID!(${id});
+        const prefix = "setFile!(\"" + state.logimat.files[state.logimat.files.length-1] + "\");";
+        const suffix = "setFile!();";
+
+        state.graphgame.behaviors[name].add((id: number) => prefix + `selectID!(${id});
         setMutSelect!("${getFullVariableName(varName, name)}");
-        selectID!();`);
+        selectID!();` + suffix);
 
         return "";
     }
@@ -93,9 +96,12 @@ export const setInline: TemplateObject = {
 
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].add((id: number) => `selectID!(${id});
+        const prefix = "setFile!(\"" + state.logimat.files[state.logimat.files.length-1] + "\");";
+        const suffix = "setFile!();";
+
+        state.graphgame.behaviors[name].add((id: number) => prefix + `selectID!(${id});
         setInlineSelect!("${getFullVariableName(varName, name)}");
-        selectID!();`);
+        selectID!();` + suffix);
 
         return "";
     }
@@ -140,10 +146,13 @@ export const setVal: TemplateObject = {
         const val = getNum(args, state, 1, "A value is required!");
 
         behaviorCheck(state, name);
-        
-        state.graphgame.behaviors[name].add((id: number) => `selectID!(${id});
+
+        const prefix = "setFile!(\"" + state.logimat.files[state.logimat.files.length-1] + "\");";
+        const suffix = "setFile!();";
+
+        state.graphgame.behaviors[name].add((id: number) => prefix + `selectID!(${id});
         setValSelect!("${getFullVariableName(varName, name)}", ${val});
-        selectID!();`);
+        selectID!();` + suffix);
 
         return "";
     }
@@ -165,6 +174,9 @@ export const setValArgs: TemplateObject = {
 
         behaviorCheck(state, name);
 
+        const prefix = "setFile!(\"" + state.logimat.files[state.logimat.files.length-1] + "\");";
+        const suffix = "setFile!();";
+
         state.graphgame.behaviors[name].add((id: number) => {
             let val;
             if(state.graphgame.lastObjectBehaviorArgs.length <= idx) {
@@ -178,9 +190,9 @@ export const setValArgs: TemplateObject = {
             else if(typeof(val) === "object" && val["block"]) val = val["value"];
             else val = val.toString();
 
-            return `selectID!(${id});
+            return prefix + `selectID!(${id});
             setValSelect!("${getFullVariableName(varName, name)}", ${val});
-            selectID!();`;
+            selectID!();` + suffix;
         });
 
         return "";
@@ -205,9 +217,12 @@ export const setValAction: TemplateObject = {
 
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].addPost((id: number) => `selectID!(${id});
+        const prefix = "setFile!(\"" + state.logimat.files[state.logimat.files.length-1] + "\");";
+        const suffix = "setFile!();";
+
+        state.graphgame.behaviors[name].addPost((id: number) => prefix + `selectID!(${id});
         setValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};setBehavior!("${name}");${body}setBehavior!();}, ${exported ? "true" : "false"}, ${variable ? "true" : "false"});
-        selectID!();`, priority);
+        selectID!();` + suffix, priority);
 
         return "";
     }
@@ -230,9 +245,12 @@ export const noRegisterSetValAction: TemplateObject = {
 
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].addPost((id: number) => `selectID!(${id});
+        const prefix = "setFile!(\"" + state.logimat.files[state.logimat.files.length-1] + "\");";
+        const suffix = "setFile!();";
+
+        state.graphgame.behaviors[name].addPost((id: number) => prefix + `selectID!(${id});
         noRegisterSetValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};setBehavior!("${name}");${body}setBehavior!();}${actionName ? ", \"" + actionName + "\"" : ""});
-        selectID!();`, priority);
+        selectID!();` + suffix, priority);
 
         return "";
     }
@@ -291,12 +309,15 @@ export const behaviorCustom: TemplateObject = {
 
         behaviorCheck(state, name);
 
+        const prefix = "setFile!(\"" + state.logimat.files[state.logimat.files.length-1] + "\");";
+        const suffix = "setFile!();";
+
         state.graphgame.behaviors[name].addPost(id => {
-            return `selectID!(${id});
+            return prefix + `selectID!(${id});
             setBehavior!("${name}");
             ${body}
             setBehavior!();
-            selectID!();`;
+            selectID!();` + suffix;
         }, priority);
 
         return "";
@@ -318,7 +339,10 @@ export const setDisplay: TemplateObject = {
 
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].addDisplay(body, priority);
+        const prefix = "setFile!(\"" + state.logimat.files[state.logimat.files.length-1] + "\");";
+        const suffix = "setFile!();";
+
+        state.graphgame.behaviors[name].addDisplay(prefix + body + suffix, priority);
 
         return "";
     }
@@ -360,7 +384,10 @@ export const helper: TemplateObject = {
 
         behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].addHelper(body, priority);
+        const prefix = "setFile!(\"" + state.logimat.files[state.logimat.files.length-1] + "\");";
+        const suffix = "setFile!();";
+
+        state.graphgame.behaviors[name].addHelper(prefix + body + suffix, priority);
 
         return "";
     }

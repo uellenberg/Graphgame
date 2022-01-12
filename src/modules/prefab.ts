@@ -70,6 +70,9 @@ export const useBehaviorPrefab: TemplateObject = {
 
         const behaviorArgs = args.slice(1);
 
+        const prefix = "setFile!(\"" + state.logimat.files[state.logimat.files.length-1] + "\");";
+        const suffix = "setFile!();";
+
         state.graphgame.prefabs[name].push((id: number, args: TemplateArgs) => {
             const newBehaviorArgs = behaviorArgs.map(arg => {
                 if(typeof(arg) === "string") {
@@ -83,7 +86,7 @@ export const useBehaviorPrefab: TemplateObject = {
                 } else return arg;
             });
 
-            return `useBehavior!("${behaviorName}"${newBehaviorArgs.length > 0 ? ", " + newBehaviorArgs.join(", ") : ""});`;
+            return prefix + `useBehavior!("${behaviorName}"${newBehaviorArgs.length > 0 ? ", " + newBehaviorArgs.join(", ") : ""});` + suffix;
         });
 
         return "";
@@ -106,6 +109,9 @@ export const setPrefabVal: TemplateObject = {
 
         prefabCheck(state, name);
 
+        const prefix = "setFile!(\"" + state.logimat.files[state.logimat.files.length-1] + "\");";
+        const suffix = "setFile!();";
+
         state.graphgame.prefabs[name].push((id: number, args: TemplateArgs) => {
             let newVal: number;
 
@@ -118,7 +124,7 @@ export const setPrefabVal: TemplateObject = {
                 newVal = <number>args[idx];
             }
 
-            return `setObjectVal!(${id}, "${variableName}", ${newVal});`;
+            return prefix + `setObjectVal!(${id}, "${variableName}", ${newVal});` + suffix;
         });
 
         return "";

@@ -4,6 +4,9 @@ import {SemiMutable} from "./SemiMutable";
 import {TemplateArgs} from "logimat";
 
 export interface TemplateState {
+    logimat: {
+        files: string[]
+    };
     graphgame: {
         objects: {
             [key: number]: GameObject
@@ -29,5 +32,5 @@ export interface TemplateState {
         currentObject: number,
         nextObjectId: number,
         nextVariableId: number
-    }
+    };
 }
