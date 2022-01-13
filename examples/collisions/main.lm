@@ -1,0 +1,64 @@
+import templates from "graphgame";
+
+initialize!();
+
+/*
+This creates a simple scene with two objects that can be collided with and moved around. There's also a player object which bounces between the two colliders.
+*/
+
+//Create a collider prefab to simplify creating our colliders.
+createPrefab!("collider", {
+    //First, we'll set the y position to the first prefab argument.
+    setPrefabVal!("transform.y", "0");
+    //Next, we'll set the x-scale to 5.
+    setPrefabVal!("transform.scale_x", 5);
+
+    //Add the square and square_collider to make it visible and a collider.
+    useBehaviorPrefab!("square");
+    useBehaviorPrefab!("square_collider");
+
+    //Add a point to the object to allow users to move them around.
+    useBehaviorPrefab!("point");
+});
+
+//Create two collidables at y=-5 and y=5.
+usePrefab!("collider", null, -5);
+usePrefab!("collider", null, 5);
+
+//Create a player behavior to jump between the two colliders.
+createBehavior!("player", {
+    //First, set the y value to be mutable so that we can modify it.
+    setMut!("base.transform.y");
+
+    //Create a mul value to allow the player to change directions.
+    setVal!("mul", .1);
+    setMut!("mul");
+
+    //Update the mul.
+    setValAction!("mul", {
+        //If we're collided, reverse the mul to allow the object to bounce.
+        //Otherwise, don't change it.
+        if(getVal!("base.transform.collison_y") != 0) {
+            state = -mul;
+        } else {
+            state = mul;
+        }
+    });
+
+    //Update the y-value.
+    setValAction!("base.transform.y", {
+        //Add the mul to the current y value.
+        state = y + getVal!("mul");
+    });
+});
+
+//Create a player object.
+createObject!({
+    //Add a square renderer, a square collider, and a collision resolver to the player.
+    useBehavior!("square");
+    useBehavior!("square_collider");
+    useBehavior!("collision_resolver");
+
+    //Add the player behavior to make the object move.
+    useBehavior!("player");
+});
