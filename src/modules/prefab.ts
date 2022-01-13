@@ -124,7 +124,7 @@ export const setPrefabVal: TemplateObject = {
                 newVal = <number>args[idx];
             }
 
-            return prefix + `setObjectVal!(${id}, "${variableName}", ${newVal});` + suffix;
+            return prefix + `setObjectVal!("${variableName}", ${newVal});` + suffix;
         });
 
         return "";
