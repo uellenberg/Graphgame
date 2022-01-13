@@ -1,6 +1,6 @@
 {
   "name": "graphgame",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Graphgame game is a game engine for Desmos using Logimat templates.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
