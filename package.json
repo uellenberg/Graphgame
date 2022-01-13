@@ -24,7 +24,8 @@
     "dist",
     "README.md",
     "LICENSE",
-    "docs"
+    "docs",
+    "examples"
   ],
   "dependencies": {
     "logimat": "^1.0.24"
