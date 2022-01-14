@@ -44,24 +44,6 @@ export const finalize: TemplateObject = {
         ensureState(state);
         outerCheck(context);
 
-        const output: string[] = [];
-
-        for (const action of state.graphgame.selects) {
-            output.push(action(state));
-        }
-
-        return output.join("\n") + "\nfinalize1!();";
-    }
-};
-
-/**
- * For internal use only.
- */
-export const finalize1: TemplateObject = {
-    function: (args, state: TemplateState, context) => {
-        ensureState(state);
-        outerCheck(context);
-
         state.graphgame.postInit = true;
 
         const output: string[] = [];
@@ -84,14 +66,14 @@ export const finalize1: TemplateObject = {
             output.push(action(state));
         }
 
-        return output.join("\n") + "\nfinalize2!();";
+        return output.join("\n") + "\nfinalize1!();";
     }
 };
 
 /**
  * For internal use only.
  */
-export const finalize2: TemplateObject = {
+export const finalize1: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
         outerCheck(context);

@@ -1,4 +1,4 @@
-import {finalize, finalize1, finalize2, initialize, registerAction} from "./modules/main";
+import {finalize, finalize1, initialize, registerAction} from "./modules/main";
 import {
     behaviorCustom,
     createBehavior, extendBehavior, getBehaviorArgs,
@@ -29,7 +29,6 @@ export const templates: TemplatesObject = {
     registerAction,
     finalize,
     finalize1,
-    finalize2,
     //Component
     createBehavior,
     extendBehavior,
