@@ -47,24 +47,27 @@ export const useBehavior: TemplateObject = {
         const id = state.graphgame.currentObject;
         const name = getString(args, state, 0, "A behavior name is required!").trim().toLowerCase();
 
-        objectCheck(state, id);
-        behaviorCheck(state, name);
+        //We return a function to make sure the behavior is fully created/extended before using it.
+        return (state: TemplateState) => {
+            objectCheck(state, id);
+            behaviorCheck(state, name);
 
-        state.graphgame.behaviors[name].compilePost(id, state.graphgame.objects[id].behaviorPostActions, `useBehaviorPost!(${id}, \"${name}\"${args.length > 2 ? ", " + args.slice(1).map(val => {
-            if(typeof(val) === "string") return `"${val}"`;
-            else if(typeof(val) === "object" && val["block"]) return "{" + val["value"] + "}";
-            else return val.toString();
-        }).join(", ") : ""});`);
-        state.graphgame.behaviors[name].compileDisplay(state.graphgame.objects[id].displayProperties);
+            state.graphgame.behaviors[name].compilePost(id, state.graphgame.objects[id].behaviorPostActions, `useBehaviorPost!(${id}, \"${name}\"${args.length > 2 ? ", " + args.slice(1).map(val => {
+                if(typeof(val) === "string") return `"${val}"`;
+                else if(typeof(val) === "object" && val["block"]) return "{" + val["value"] + "}";
+                else return val.toString();
+            }).join(", ") : ""});`);
+            state.graphgame.behaviors[name].compileDisplay(state.graphgame.objects[id].displayProperties);
 
-        state.graphgame.objects[id].behaviors.push(name);
+            state.graphgame.objects[id].behaviors.push(name);
 
-        state.graphgame.lastObjectBehaviorId = id;
-        state.graphgame.lastObjectBehaviorArgs = args.slice(1);
+            state.graphgame.lastObjectBehaviorId = id;
+            state.graphgame.lastObjectBehaviorArgs = args.slice(1);
 
-        state.graphgame.behaviors[name].compile(id, state.graphgame.objects[id].behaviorActions);
+            state.graphgame.behaviors[name].compile(id, state.graphgame.objects[id].behaviorActions);
 
-        return "";
+            return "";
+        };
     }
 };
 

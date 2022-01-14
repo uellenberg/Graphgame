@@ -145,22 +145,25 @@ export const usePrefab: TemplateObject = {
 
         const prefabArgs = args.slice(2);
 
-        prefabCheck(state, name);
+        //We return a function to make sure the prefab is fully created/extended before using it.
+        return (state: TemplateState) => {
+            prefabCheck(state, name);
 
-        //Store the next ID, then increment it.
-        const id = state.graphgame.nextObjectId++;
+            //Store the next ID, then increment it.
+            const id = state.graphgame.nextObjectId++;
 
-        state.graphgame.objects[id] = new GameObject(id);
+            state.graphgame.objects[id] = new GameObject(id);
 
-        state.graphgame.currentObject = id;
+            state.graphgame.currentObject = id;
 
-        const output: string[] = [`useBehavior!("transform");`];
+            const output: string[] = [`useBehavior!("transform");`];
 
-        for(const func of state.graphgame.prefabs[name]) {
-            output.push(func(id, prefabArgs));
-        }
+            for(const func of state.graphgame.prefabs[name]) {
+                output.push(func(id, prefabArgs));
+            }
 
-        return output.join("\n") + body;
+            return output.join("\n") + body;
+        };
     }
 };
 
