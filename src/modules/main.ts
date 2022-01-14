@@ -44,6 +44,26 @@ export const finalize: TemplateObject = {
         ensureState(state);
         outerCheck(context);
 
+        const output: string[] = [];
+
+        for(const objectID in state.graphgame.objects) {
+            for(const layer in state.graphgame.objects[objectID].behaviorActions) {
+                output.push(...state.graphgame.objects[objectID].behaviorActions[layer]);
+            }
+        }
+
+        return output.join("\n") + "\nfinalize1!();";
+    }
+};
+
+/**
+ * For internal use only.
+ */
+export const finalize1: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
         state.graphgame.postInit = true;
 
         const output: string[] = [];
@@ -51,7 +71,7 @@ export const finalize: TemplateObject = {
         const priorityOutput: Record<number, string[]> = {};
 
         for(const objectID in state.graphgame.objects) {
-            for(const priority of Object.keys(state.graphgame.objects[objectID].behaviorPostActions)) {
+            for(const priority in state.graphgame.objects[objectID].behaviorPostActions) {
                 if(!priorityOutput.hasOwnProperty(priority)) priorityOutput[priority] = [];
                 priorityOutput[priority].push(...state.graphgame.objects[objectID].behaviorPostActions[priority]);
             }
@@ -66,14 +86,14 @@ export const finalize: TemplateObject = {
             output.push(action(state));
         }
 
-        return output.join("\n") + "\nfinalize1!();";
+        return output.join("\n") + "\nfinalize2!();";
     }
 };
 
 /**
  * For internal use only.
  */
-export const finalize1: TemplateObject = {
+export const finalize2: TemplateObject = {
     function: (args, state: TemplateState, context) => {
         ensureState(state);
         outerCheck(context);

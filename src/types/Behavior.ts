@@ -2,17 +2,20 @@ import {getFullVariableName} from "../util";
 
 export class Behavior {
     private readonly name: string;
-    private parts: ((id: number, idx: number) => string)[] = [];
+    //setVal, setInline, setMut
+    private parts: Record<0 | 1 | 2, ((id: number, idx: number) => string)[]> = [[], [], [], []];
     private postParts: Record<number, ((id: number, idx: number) => string)[]> = {};
     private helpers: Record<number, string[]> = {};
     private displays: Record<number, string[]> = {};
 
     private nextId: number = 1;
 
+    public muts: string[] = [];
+
     public constructor(name: string) {
         this.name = name;
         //Increment and store the id for each gameobject that the behavior is added to.
-        this.parts.push((id: number) => `selectID!(${id});
+        this.parts[0].push((id: number) => `selectID!(${id});
         setValSelect!("${name}.id", ${this.nextId++});
         selectID!();`);
     }
@@ -20,8 +23,8 @@ export class Behavior {
     /**
      * Add a new part to the behavior.
      */
-    public add(val: (id: number, idx: number) => string) : void {
-        this.parts.push(val);
+    public add(val: (id: number, idx: number) => string, layer: 0 | 1 | 2) : void {
+        this.parts[layer].push(val);
     }
 
     /**
@@ -55,8 +58,12 @@ export class Behavior {
     /**
      * Compiles the behavior for a specific object.
      */
-    public compile(id: number) : string {
-        return this.parts.map((part, idx) => part(id, idx)).join("\n");
+    public compile(id: number, values: Record<0 | 1 | 2, string[]>) {
+        for (const layer in this.parts) {
+            values[layer].push(this.parts[layer].map((part, idx) => part(id, idx)).join("\n"));
+        }
+
+        values[2].push(`handleMuts!(${id}, \"${this.name}\");`);
     }
 
     /**

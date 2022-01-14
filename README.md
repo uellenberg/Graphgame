@@ -36,12 +36,7 @@ inline const max_y = 20;
 
 //First, we need a behavior to move the ball. We'll call it "mover".
 createBehavior!("mover", {
-    //Next, we need to actually move the ball. To do that, we first need to set the balls y-value to mutable, which means that it can be modified.
-    //The first argument is the variable. We need to use the y variable on this object's transform component, so we
-    //use "base" to refer to this object, then "base.transform" to get the transform component, and finally "base.transform.y" to get the y variable.
-    setMut!("base.transform.y");
-    
-    //Next, we need to actually move it. We use setValAction to do this. We use setValAction to set a variable to something each frame, as opposed to setVal, which sets the object's starting value.
+    //Next, we need to actually move the ball. We use setValAction to do this. It sets a variable to something each frame, as opposed to setVal, which sets the object's starting value.
     //The "{}" is called an action body. It contains code statements.
     setValAction!("base.transform.y", {
         //First, add 1 to the current y value.

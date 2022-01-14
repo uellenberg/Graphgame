@@ -27,12 +27,8 @@ usePrefab!("collider", null, 5);
 
 //Create a player behavior to jump between the two colliders.
 createBehavior!("player", {
-    //First, set the y value to be mutable so that we can modify it.
-    setMut!("base.transform.y");
-
     //Create a mul value to allow the player to change directions.
     setVal!("mul", .1);
-    setMut!("mul");
 
     //Update the mul.
     setValAction!("mul", {

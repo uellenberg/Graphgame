@@ -76,7 +76,7 @@ export const setMut: TemplateObject = {
 
         state.graphgame.behaviors[name].add((id: number) => prefix + `selectID!(${id});
         setMutSelect!("${getFullVariableName(varName, name)}");
-        selectID!();` + suffix);
+        selectID!();` + suffix, 1);
 
         return "";
     }
@@ -101,7 +101,7 @@ export const setInline: TemplateObject = {
 
         state.graphgame.behaviors[name].add((id: number) => prefix + `selectID!(${id});
         setInlineSelect!("${getFullVariableName(varName, name)}");
-        selectID!();` + suffix);
+        selectID!();` + suffix, 1);
 
         return "";
     }
@@ -152,7 +152,7 @@ export const setVal: TemplateObject = {
 
         state.graphgame.behaviors[name].add((id: number) => prefix + `selectID!(${id});
         setValSelect!("${getFullVariableName(varName, name)}", ${val});
-        selectID!();` + suffix);
+        selectID!();` + suffix, 0);
 
         return "";
     }
@@ -193,7 +193,7 @@ export const setValArgs: TemplateObject = {
             return prefix + `selectID!(${id});
             setValSelect!("${getFullVariableName(varName, name)}", ${val});
             selectID!();` + suffix;
-        });
+        }, 0);
 
         return "";
     }
@@ -223,6 +223,7 @@ export const setValAction: TemplateObject = {
         state.graphgame.behaviors[name].addPost((id: number) => prefix + `selectID!(${id});
         setValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};setBehavior!("${name}");${body}setBehavior!();}, ${exported ? "true" : "false"}, ${variable ? "true" : "false"});
         selectID!();` + suffix, priority);
+        state.graphgame.behaviors[name].muts.push(getFullVariableName(varName, name));
 
         return "";
     }
@@ -251,6 +252,7 @@ export const noRegisterSetValAction: TemplateObject = {
         state.graphgame.behaviors[name].addPost((id: number) => prefix + `selectID!(${id});
         noRegisterSetValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};setBehavior!("${name}");${body}setBehavior!();}${actionName ? ", \"" + actionName + "\"" : ""});
         selectID!();` + suffix, priority);
+        state.graphgame.behaviors[name].muts.push(getFullVariableName(varName, name));
 
         return "";
     }
@@ -276,9 +278,7 @@ export const behaviorCustom: TemplateObject = {
 
         state.graphgame.behaviors[name].addPost(id => {
             return prefix + `selectID!(${id});
-            setBehavior!("${name}");
-            ${body}
-            setBehavior!();
+            selectCustom!({setBehavior!("${name}");${body}setBehavior!();});
             selectID!();` + suffix;
         }, priority);
 

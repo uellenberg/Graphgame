@@ -62,7 +62,9 @@ export const useBehavior: TemplateObject = {
         state.graphgame.lastObjectBehaviorId = id;
         state.graphgame.lastObjectBehaviorArgs = args.slice(1);
 
-        return state.graphgame.behaviors[name].compile(id);
+        state.graphgame.behaviors[name].compile(id, state.graphgame.objects[id].behaviorActions);
+
+        return "";
     }
 };
 
@@ -88,6 +90,35 @@ export const useBehaviorPost: TemplateObject = {
 };
 
 /**
+ * Internal use only.
+ */
+export const handleMuts: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        const id = getNum(args, state, 0, "An object ID is required!");
+        const name = getString(args, state, 1, "A behavior name is required!").trim().toLowerCase();
+
+        objectCheck(state, id);
+        behaviorCheck(state, name);
+
+        let muts: string[] = [];
+        for (const mut of state.graphgame.behaviors[name].muts) {
+            const semimut = getSemiMut(state, id, mut);
+            if(semimut.isMut()) continue;
+
+            const value = semimut.get();
+            semimut.mut();
+
+            muts.push("export const " + semimut.name() + " = " + value + ";");
+        }
+
+        return muts.join("\n");
+    }
+};
+
+/**
  * Set the value of an object's variable (during compilation). This must be used before a variable is marked as mutable.
  * Usage: setObjectVal!(variableName: string, val: number);
  */
@@ -102,12 +133,10 @@ export const setObjectVal: TemplateObject = {
 
         objectCheck(state, id);
 
-        if(!state.graphgame.objects[id].hasOwnProperty(name)) {
-            state.graphgame.objects[id][name] = new SemiMutable(name, id, val, state);
-        } else {
-            //The error message is included in here.
-            getSemiMut(state, id, name).set(val);
-        }
+        const prefix = "setFile!(\"" + state.logimat.files[state.logimat.files.length-1] + "\");";
+        const suffix = "setFile!();";
+
+        state.graphgame.objects[id].behaviorActions[0].push(prefix + `selectID!(${id});setValSelect!("${name}", ${val});selectID!();` + suffix);
 
         return "";
     }

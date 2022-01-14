@@ -1,8 +1,5 @@
 export default `
 createBehavior!("collision_resolver", {
-    setMut!("base.transform.x");
-    setMut!("base.transform.y");
-    
     //The reason that x is <= and y is < is that, if both are <=, then we can possibly put the object at a corner. This makes sure that it always goes on an edge.
     
     setValAction!("base.transform.x", {

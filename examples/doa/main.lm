@@ -46,8 +46,7 @@ usePrefab!("mount_point", null, 0, 26, -2, 3, 1);
 createBehavior!("window_mover", {
     //First, create a value to store our change in. This will be .1 when moving to the right, and -.1 when moving to the left.
     setVal!("val", .1);
-    setMut!("val");
-    
+
     //Next, update it.
     setValAction!("val", {
         //If the x is >= 20 or <= 0, reverse val.
@@ -59,9 +58,6 @@ createBehavior!("window_mover", {
             state = val;
         }
     });
-
-    //Next, set x to be mutable so that we can change it.
-    setMut!("base.transform.x");
     
     //Finally, update x every frame.
     setValAction!("base.transform.x", {

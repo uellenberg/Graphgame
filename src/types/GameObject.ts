@@ -8,6 +8,8 @@ export class GameObject {
      */
     public behaviors: string[] = [];
 
+    public behaviorActions: Record<0 | 1 | 2 | 3, string[]> = [[], [], [], []];
+
     /**
      * A record of every behavior-specific post action that needs to be output when this object compiles.
      */

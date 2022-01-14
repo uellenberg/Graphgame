@@ -1,22 +1,20 @@
-import {finalize, finalize1, initialize, registerAction} from "./modules/main";
+import {finalize, finalize1, finalize2, initialize, registerAction} from "./modules/main";
 import {
     behaviorCustom,
     createBehavior, extendBehavior, getBehaviorArgs,
     getVal, helper,
-    noRegisterSetValAction, objectID, setBehavior, setDisplay, setInline,
-    setMut,
+    noRegisterSetValAction, objectID, setBehavior, setDisplay, setInline, setMut,
     setVal,
     setValAction,
     setValArgs
 } from "./modules/component";
-import {createObject, setObject, setObjectVal, useBehavior, useBehaviorPost} from "./modules/object";
+import {createObject, handleMuts, setObject, setObjectVal, useBehavior, useBehaviorPost} from "./modules/object";
 import {
     getDisplay,
     getValSelect, noRegisterSetValActionSelect, reIncrement,
     selectAll,
-    selectBehavior, selectedID,
-    selectID, setInlineSelect,
-    setMutSelect,
+    selectBehavior, selectCustom, selectedID,
+    selectID, setInlineSelect, setMutSelect,
     setValActionSelect,
     setValSelect
 } from "./modules/select";
@@ -29,6 +27,7 @@ export const templates: TemplatesObject = {
     registerAction,
     finalize,
     finalize1,
+    finalize2,
     //Component
     createBehavior,
     extendBehavior,
@@ -51,6 +50,7 @@ export const templates: TemplatesObject = {
     useBehaviorPost,
     setObjectVal,
     setObject,
+    handleMuts,
     //Select
     selectID,
     selectedID,
@@ -64,6 +64,7 @@ export const templates: TemplatesObject = {
     noRegisterSetValActionSelect,
     reIncrement,
     getDisplay,
+    selectCustom,
     //Prefab
     createPrefab,
     extendPrefab,

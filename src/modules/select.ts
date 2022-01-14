@@ -266,7 +266,6 @@ export const setValActionSelect: TemplateObject = {
         objectVarCheck(state, id, name);
 
         const semimut = getSemiMut(state, id, name);
-        if(!semimut.isMut()) throw new Error("A variable must be marked as mutable before it can be used in an action!");
 
         const semimutVar = semimut.name(true);
 
@@ -319,7 +318,6 @@ export const noRegisterSetValActionSelect: TemplateObject = {
         objectVarCheck(state, id, name);
 
         const semimut = getSemiMut(state, id, name);
-        if(!semimut.isMut()) throw new Error("A variable must be marked as mutable before it can be used in an action!");
 
         //this_action => 1
         //nextName (update) => semimutName == 1 ? body : oldName.
@@ -344,7 +342,7 @@ export const noRegisterSetValActionSelect: TemplateObject = {
 
         return `export const ${indicatorName} = 0;
         action ${(actionName ? actionName + " = " : "") + indicatorName} {
-            state = 1;
+             state = 1;
         }
         action ${indicatorName + "set" + " = " + indicatorName} {
             state = 0;
@@ -379,5 +377,23 @@ export const getDisplay: TemplateObject = {
         }
 
         return output.join("\n");
+    }
+};
+
+/**
+ * Create custom declarations on the current object. This is ideal for graphs, polygons, points, etc, but should not be used for named declarations ((functions, consts, etc).
+ * Usage: selectCustom!(body: Body);
+ */
+export const selectCustom: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        const id = state.graphgame.currentObjectId;
+        const body = getBlock(args, state, 0, "A body is required!");
+
+        objectCheck(state, id);
+
+        return body;
     }
 };
