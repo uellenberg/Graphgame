@@ -22,6 +22,14 @@ To use Graphgame, you should first take a look at a few of its examples, which s
 One important way that Graphgame projects are structured is through a main file (called `main.lm`). This main file is responsible for importing and initializing Graphgame, as well as importing other files.
 
 ## Graphgame studio
+The recommended way to use Graphgame is through Graphgame Studio. Graphgame Studio is an online (although it can be installed as offline) IDE for Graphgame, and includes many useful features, such as a built-in Desmos viewer, basic Github integration, and a code editor. The main benefits to using it are:
+* A fully setup development environment.
+* A streamlined process for sending compiled output to Desmos.
+* Support for display options.
+* Syntax highlighting.
+* Faster compile times.
+
+Graphgame Studio is available at https://graphgame.js.org.
 
 ## Examples
 Here is a basic example of how you might use Graphgame. Below is a ball that will move upwards every frame, and will go back to zero if it reaches the top of the screen:
