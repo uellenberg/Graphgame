@@ -52,6 +52,8 @@ createBehavior!("square_collider", {
     //True, true means that this update will be exported as a function which will be called instead of being inlined when used,
     //and the second true means that the function will be a variable instead of a method, for a small performance boost.
     setValAction!("data", {
+        state = [-1, 0, 0];
+        
         //Make sure that we actually need to calculate collisions for this collider.
         if(!getVal!("only_collided")) {
             const scalex = getVal!("base.transform.scalex");
@@ -84,8 +86,6 @@ createBehavior!("square_collider", {
                 //Only update the current value to the new value if the old value has not been set.
                 g_scol_u(state, collision_value)
             });
-        } else {
-            [-1, 0, 0]
         }
     }, -300, true, true);
     
