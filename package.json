@@ -28,7 +28,7 @@
     "examples"
   ],
   "dependencies": {
-    "logimat": "^1.0.37"
+    "logimat": "^1.0.38"
   },
   "devDependencies": {
     "typescript": "^4.6.3"
