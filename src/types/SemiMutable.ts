@@ -3,7 +3,7 @@ import {TemplateState} from "./TemplateState";
 export class SemiMutable {
     private readonly varName: string;
     private readonly id: number;
-    private val: number;
+    private val: string;
     private mutable: boolean = false;
     private inlined: boolean = false;
     private incrementID: number = 0;
@@ -16,10 +16,10 @@ export class SemiMutable {
      * only be done from Desmos.
      * @param varName {string} - is the variable name of this variable.
      * @param id {number} - is the ID of the GameObject that this is attached to.
-     * @param val {number} - is the default value.
+     * @param val {string} - is the default value.
      * @param state {TemplateState} - is the current state.
      */
-    public constructor(varName: string, id: number, val: number, state: TemplateState) {
+    public constructor(varName: string, id: number, val: string, state: TemplateState) {
         this.varName = varName;
         this.id = id;
         this.val = val;
@@ -61,7 +61,7 @@ export class SemiMutable {
     /**
      * Sets the value.
      */
-    public set(val: number): void {
+    public set(val: string): void {
         if(this.mutable) throw new Error("A mutable variable can only be set from an action. Consider setting its value before making it mutable.");
         this.val = val;
     }

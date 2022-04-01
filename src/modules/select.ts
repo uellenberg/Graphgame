@@ -4,7 +4,7 @@ import {
     behaviorCheck,
     ensureState,
     expressionCheck, getAnyAsString, getBlock, getBoolean,
-    getNum,
+    getNum, getNumOrBlock,
     getSemiMut,
     getString,
     objectCheck,
@@ -232,7 +232,7 @@ export const setValSelect: TemplateObject = {
 
         const id = state.graphgame.currentObjectId;
         const name = getString(args, state, 0, "A variable name is required!").trim().toLowerCase().replace(/[._]/g, "");
-        const val = getNum(args, state, 1, "A value is required!");
+        const val = getNumOrBlock(args, state, 1, "A value is required!");
 
         objectCheck(state, id);
 

@@ -6,7 +6,7 @@ import {
     expressionCheck, getBlock,
     getBoolean,
     getFullVariableName,
-    getNum,
+    getNum, getNumOrBlock,
     getSemiMut,
     getShortVariableName,
     getString,
@@ -143,7 +143,7 @@ export const setVal: TemplateObject = {
 
         const name = state.graphgame.currentBehavior;
         const varName = getString(args, state, 0, "A variable name is required!").trim().toLowerCase();
-        const val = getNum(args, state, 1, "A value is required!");
+        const val = getNumOrBlock(args, state, 1, "A value is required!");
 
         behaviorCheck(state, name);
 

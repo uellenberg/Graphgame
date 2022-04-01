@@ -1,4 +1,4 @@
-import {TemplateArgs, TemplateContext} from "logimat";
+import {TemplateArgs, TemplateBlock, TemplateContext} from "logimat";
 import {TemplateState} from "./types/TemplateState";
 import {SemiMutable} from "./types/SemiMutable";
 
@@ -81,12 +81,13 @@ export const getAnyAsString = (args: TemplateArgs, state: TemplateState, idx: nu
     return args[idx].toString();
 };
 
-export const getNumOrString = (args: TemplateArgs, state: TemplateState, idx: number, error: string = null) : string | number => {
-    if(args.length < idx+1 || args[idx] == null || (typeof(args[idx]) != "string" && typeof(args[idx]) != "number")) {
+export const getNumOrStringOrBlock = (args: TemplateArgs, state: TemplateState, idx: number, error: string = null) : string | number | TemplateBlock => {
+    if(args.length < idx+1 || args[idx] == null || (typeof(args[idx]) != "string" && typeof(args[idx]) != "number" && (typeof(args[idx]) != "object" || !args[idx]["block"]))) {
         if(error) throw new Error(error);
         else return null;
     }
-    return <string | number>args[idx];
+
+    return <string | number | TemplateBlock>args[idx];
 };
 
 export const getBlock = (args: TemplateArgs, state: TemplateState, idx: number, error: string = null) : string => {
@@ -95,6 +96,16 @@ export const getBlock = (args: TemplateArgs, state: TemplateState, idx: number, 
         else return null;
     }
     return <string>args[idx]["value"];
+};
+
+export const getNumOrBlock = (args: TemplateArgs, state: TemplateState, idx: number, error: string = null) : string => {
+    if(args.length < idx+1 || args[idx] == null || ((typeof(args[idx]) != "object" || !args[idx]["block"]) && typeof(args[idx]) != "number")) {
+        if(error) throw new Error(error);
+        else return null;
+    }
+
+    if(typeof(args[idx]) === "number") return args[idx].toString();
+    return "{" + args[idx]["value"] + "}";
 };
 
 //Dot access helper

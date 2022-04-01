@@ -7,7 +7,7 @@ import {
     getString,
     outerCheck,
     getAnyAsString,
-    getNumOrString, outerInnerCheck, getBlock
+    outerInnerCheck, getBlock, getNumOrStringOrBlock
 } from "../util";
 import {GameObject} from "../types/GameObject";
 
@@ -105,7 +105,7 @@ export const setPrefabVal: TemplateObject = {
 
         const name = state.graphgame.currentPrefab;
         const variableName = getString(args, state, 0, "A variable name is required!");
-        const val = getNumOrString(args, state, 1, "A value is required!");
+        const val = getNumOrStringOrBlock(args, state, 1, "A value is required!");
 
         prefabCheck(state, name);
 
@@ -113,15 +113,16 @@ export const setPrefabVal: TemplateObject = {
         const suffix = "setFile!();";
 
         state.graphgame.prefabs[name].push((id: number, args: TemplateArgs) => {
-            let newVal: number;
+            let newVal: string;
 
-            if(typeof(val) !== "string") newVal = val;
+            if(typeof(val) === "number") newVal = val.toString();
+            else if(typeof(val) === "object") newVal = "{" + val.value + "}";
             else {
                 const idx = parseInt(val);
                 if (isNaN(idx)) throw new Error("Prefab \"" + name + "\" requested to use the argument at index \"" + val + "\", but it is not an integer!");
                 if (args.length <= idx) throw new Error("The prefab \"" + name + "\" requires at least " + (idx + 1) + " arguments, but only " + args.length + " were provided.");
 
-                newVal = <number>args[idx];
+                newVal = args[idx].toString();
             }
 
             return prefix + `setObjectVal!("${variableName}", ${newVal});` + suffix;
