@@ -56,9 +56,9 @@ createBehavior!("mover", {
         //The state is like our return value. In Logimat, we can't early return, so we set the return value throughout the code. At the end of the function, whatever the state is will be the result of the function.
         //At each branch of an if statement (if, else if, else) the state must be set. Additionally, if an if has no else, the state must be set at some point before the if is used.
         if(new_y > max_y) {
-            state = 0;
+            0
         } else {
-            state = new_y;
+            new_y
         }
     });
 });

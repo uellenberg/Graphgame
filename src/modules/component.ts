@@ -221,7 +221,7 @@ export const setValAction: TemplateObject = {
         const suffix = "setFile!();";
 
         state.graphgame.behaviors[name].addPost((id: number) => prefix + `selectID!(${id});
-        setValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};setBehavior!("${name}");${body}setBehavior!();}, ${exported ? "true" : "false"}, ${variable ? "true" : "false"});
+        setValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};setBehavior!("${name}");state = {${body}};setBehavior!();}, ${exported ? "true" : "false"}, ${variable ? "true" : "false"});
         selectID!();` + suffix, priority);
         state.graphgame.behaviors[name].muts.push(getFullVariableName(varName, name));
 
@@ -250,7 +250,7 @@ export const noRegisterSetValAction: TemplateObject = {
         const suffix = "setFile!();";
 
         state.graphgame.behaviors[name].addPost((id: number) => prefix + `selectID!(${id});
-        noRegisterSetValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};setBehavior!("${name}");${body}setBehavior!();}${actionName ? ", \"" + actionName + "\"" : ""});
+        noRegisterSetValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};setBehavior!("${name}");state = {${body}};setBehavior!();}${actionName ? ", \"" + actionName + "\"" : ""});
         selectID!();` + suffix, priority);
         state.graphgame.behaviors[name].muts.push(getFullVariableName(varName, name));
 

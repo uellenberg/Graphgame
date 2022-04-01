@@ -4,27 +4,25 @@ createBehavior!("square_collider", {
     helper!({    
         export function g_scol_u(c_urval, n_ewval) {
             if(c_urval[1] != -1) {
-                state = c_urval;
+                c_urval
             } else {
-                state = n_ewval;
+                n_ewval
             }
         }
         
         export function g_scol_c(x_1, y_1, s_x1, s_y1, x_2, y_2, s_x2, s_y2) {
-            state = 0;
-            
             //Quickly determine if they collide.
             //https://gamedev.stackexchange.com/a/587
             if(abs(x_1 - x_2) * 2 < s_x1 + s_x2 &&
                abs(y_1 - y_2) * 2 < s_y1 + s_y2
             ) {
-                state = 1;
+                1
+            } else {
+                0
             }
         }
         
         export function g_scol_g(x_1, y_1, s_x1, s_y1, x_2, y_2, s_x2, s_y2, i_d) {
-            state = [-1, 0, 0];
-        
             //Make sure that we are colliding.
             if(g_scol_c(x_1, y_1, s_x1, s_y1, x_2, y_2, s_x2, s_y2)) {
                 //1 if the condition is true, and -1 if it is false.
@@ -38,7 +36,9 @@ createBehavior!("square_collider", {
                 const col_y = y_2 - y_1 + y_scale_mul*(s_y1/2 + s_y2/2);
                 
                 //Put everything into an array.
-                state = [i_d, col_x, col_y];
+                [i_d, col_x, col_y]
+            } else {
+                [-1, 0, 0]
             }
         }
     });
@@ -52,8 +52,6 @@ createBehavior!("square_collider", {
     //True, true means that this update will be exported as a function which will be called instead of being inlined when used,
     //and the second true means that the function will be a variable instead of a method, for a small performance boost.
     setValAction!("data", {
-        state = [-1, 0, 0];
-        
         //Make sure that we actually need to calculate collisions for this collider.
         if(!getVal!("only_collided")) {
             const scalex = getVal!("base.transform.scalex");
@@ -68,8 +66,6 @@ createBehavior!("square_collider", {
             selectBehavior!("square_collider", {
                 //Calculate the collision values for it.
                 const collision_value = {
-                    state = [-1, 0, 0];
-                    
                     //Make sure that we aren't checking against ourselves.
                     if(selectedID!() != id) {
                         const scalex1 = getValSelect!("transform.scalex");
@@ -79,27 +75,31 @@ createBehavior!("square_collider", {
                         const cornery1 = getValSelect!("transform.y");
                         
                         //Get the value.
-                        state = g_scol_g(cornerx, cornery, scalex, scaley, cornerx1, cornery1, scalex1, scaley1, selectedID!());
+                        g_scol_g(cornerx, cornery, scalex, scaley, cornerx1, cornery1, scalex1, scaley1, selectedID!())
+                    } else {
+                        [-1, 0, 0]
                     }
                 };
                 
                 //Only update the current value to the new value if the old value has not been set.
-                state = g_scol_u(state, collision_value);
+                g_scol_u(state, collision_value)
             });
+        } else {
+            [-1, 0, 0]
         }
     }, -300, true, true);
     
     //Provide helpers to get the specific values from the collision data.
     setValAction!("base.transform.collision_id", {
-        state = getVal!("data")[1];
+        getVal!("data")[1]
     }, -300, false);
     
     setValAction!("base.transform.collision_x", {
-        state = getVal!("data")[2];
+        getVal!("data")[2]
     }, -300, false);
     
     setValAction!("base.transform.collision_y", {
-        state = getVal!("data")[3];
+        getVal!("data")[3]
     }, -300, false);
 });
 `;

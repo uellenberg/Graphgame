@@ -31,21 +31,21 @@ createBehavior!("parent", {
     //Move the current position to be based on the offsets during collisions and renders.
     
     setValAction!("base.transform.x", {
-        state = x + getVal!("offset_x");
+        x + getVal!("offset_x")
     }, -390);
     
     setValAction!("base.transform.y", {
-        state = y + getVal!("offset_y");
+        y + getVal!("offset_y")
     }, -390);
     
     //At the end of the frame, move it back to the original position.
     
     setValAction!("base.transform.x", {
-        state = x - getVal!("offset_x");
+        x - getVal!("offset_x")
     }, -90);
     
     setValAction!("base.transform.y", {
-        state = y - getVal!("offset_y");
+        y - getVal!("offset_y")
     }, -90);
 });
 `;

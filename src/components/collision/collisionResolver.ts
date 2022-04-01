@@ -4,17 +4,17 @@ createBehavior!("collision_resolver", {
     
     setValAction!("base.transform.x", {
         if(abs(getVal!("base.transform.collision_x")) <= abs(getVal!("base.transform.collision_y"))) {
-            state = x + getVal!("base.transform.collision_x");
+            x + getVal!("base.transform.collision_x")
         } else {
-            state = x;
+            x
         }
     }, -200);
     
     setValAction!("base.transform.y", {
         if(abs(getVal!("base.transform.collision_y")) < abs(getVal!("base.transform.collision_x"))) {
-            state = y + getVal!("base.transform.collision_y");
+            y + getVal!("base.transform.collision_y")
         } else {
-            state = y;
+            y
         }
     }, -200);
 });

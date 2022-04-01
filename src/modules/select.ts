@@ -68,7 +68,7 @@ export const selectAll: TemplateObject = {
                 if(array) output.push("{");
 
                 output.push("selectID!(" + id + ");");
-                output.push(body);
+                output.push("state = {" + body + "};");
 
                 if(array) output.push("},");
             }
@@ -123,7 +123,7 @@ export const selectBehavior: TemplateObject = {
                 if(array) output.push("{");
 
                 output.push("selectID!(" + id + ");");
-                output.push(body);
+                output.push("state = {" + body + "};");
 
                 if(array) output.push("},");
             }
@@ -342,17 +342,17 @@ export const noRegisterSetValActionSelect: TemplateObject = {
 
         return `export const ${indicatorName} = 0;
         action ${(actionName ? actionName + " = " : "") + indicatorName} {
-             state = 1;
+             1
         }
         action ${indicatorName + "set" + " = " + indicatorName} {
-            state = 0;
+            0
         }
         inline function ${semimutName}() {
             if(${indicatorName} == 1) {
                 const ${name} = ${oldSemimut};
                 ${body}
             } else {
-                state = ${oldSemimut};
+                ${oldSemimut}
             }
         }`;
     }
