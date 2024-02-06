@@ -88,7 +88,7 @@ setValArgs!(variableName: string, arg: number, defaultVal?: number);
 ```
 
 ### setValAction
-Set the value of a behavior's variable on update (during runtime). This must be used after a variable is marked as mutable.
+Set the value of a behavior's variable on update (during runtime). Running this will automatically mark a variable as mutable.
 
 `body` - is the body of the function that will be run to update the variable. This function has access to the name of the variable that is updating without using getVal.
 ```
@@ -96,7 +96,7 @@ setValAction!(variableName: string, body: Body, priority?: number = 0, exported?
 ```
 
 ### noRegisterSetValAction
-Create an action that sets the value of a behavior's variable (during runtime). This must be run manually (or as the click property of an object). This must be used after a variable is marked as mutable.
+Create an action that sets the value of a behavior's variable (during runtime). This must be run manually (or as the click property of an object). Running this will automatically mark a variable as mutable.
 
 `body` - is the body of the function that will be run to update the variable. This function has access to the name of the variable that is updating without using getVal.
 ```
@@ -248,7 +248,7 @@ setValSelect!(variableName: string, val: number);
 ```
 
 ### setValActionSelect
-Set the value of the current object's variable on update (during runtime). This must be used after a variable is marked as mutable.
+Set the value of the current object's variable on update (during runtime). Running this will automatically mark a variable as mutable.
 
 `body` - is the body of the function that will be run to update the variable. This function has access to the name of the variable that is updating without using getVal.
 ```
@@ -256,7 +256,7 @@ setValActionSelect!(variableName: string, body: Body);
 ```
 
 ### noRegisterSetValActionSelect
-Create an action that sets the value of the current object's variable (during runtime). This must be run manually (or as the click property of an object). This must be used after a variable is marked as mutable.
+Create an action that sets the value of the current object's variable (during runtime). This must be run manually (or as the click property of an object). Running this will automatically mark a variable as mutable.
 
 `body` - is the body of the function that will be run to update the variable. This function has access to the name of the variable that is updating without using getVal.
 ```
