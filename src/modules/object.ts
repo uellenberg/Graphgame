@@ -114,7 +114,10 @@ export const handleMuts: TemplateObject = {
             const value = semimut.get();
             semimut.mut();
 
-            muts.push("export const " + semimut.name() + " = " + value + ";");
+            muts.push(`${state.graphgame.globalDefaultDisplay || ""}
+            ${semimut.customDisplay || ""}
+            export const ${semimut.name()} = ${value};`
+            );
         }
 
         return muts.join("\n");

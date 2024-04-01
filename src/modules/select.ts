@@ -1,10 +1,12 @@
 import {TemplateObject} from "logimat";
 import {TemplateState} from "../types/TemplateState";
 import {
-    behaviorCheck,
     ensureState,
-    expressionCheck, getAnyAsString, getBlock, getBoolean,
-    getNum, getNumOrBlock,
+    expressionCheck,
+    getBlock,
+    getBoolean,
+    getNum,
+    getNumOrBlock,
     getSemiMut,
     getString,
     objectCheck,
@@ -169,7 +171,9 @@ export const setMutSelect: TemplateObject = {
         const value = semimut.get();
         semimut.mut();
 
-        return "export const " + semimut.name() + " = " + value + ";";
+        return `${state.graphgame.globalDefaultDisplay || ""}
+        ${semimut.customDisplay || ""}
+        export const ${semimut.name()} = ${value};`;
     }
 };
 
@@ -278,7 +282,21 @@ export const setValActionSelect: TemplateObject = {
         semimut.decrement();
         state.graphgame.toIncrement = semimut;
 
-        return `${exported ? "export" : "inline"} ${variable ? "const" : "function"} ${semimutName}${variable ? " = " : "()"} {
+        // TODO: Implement custom name.
+        const customName = state.graphgame.customName;
+        state.graphgame.customName = null;
+
+        const customDisplay = state.graphgame.customDisplay;
+        state.graphgame.customDisplay = null;
+
+        let prefix = "";
+        if(customDisplay && exported) {
+            prefix += customDisplay;
+        }
+
+        return `${exported ? state.graphgame.globalDefaultDisplay || "" : ""}
+        ${prefix}
+        ${exported ? "export" : "inline"} ${variable ? "const" : "function"} ${semimutName}${variable ? " = " : "()"} {
             const ${name} = ${oldSemimut};
             ${body}
         }${variable ? ";" : ""}
@@ -340,10 +358,28 @@ export const noRegisterSetValActionSelect: TemplateObject = {
 
         state.graphgame.finalActions.push(indicatorName + "set");
 
-        return `export const ${indicatorName} = 0;
+        // TODO: Implement custom name.
+        const customName = state.graphgame.customName;
+        state.graphgame.customName = null;
+
+        const customDisplay = state.graphgame.customDisplay;
+        state.graphgame.customDisplay = null;
+
+        let prefix = "";
+        if(customDisplay) {
+            prefix += customDisplay;
+        }
+
+        return `${state.graphgame.globalDefaultDisplay || ""}
+        ${prefix}
+        export const ${indicatorName} = 0;
+        ${state.graphgame.globalDefaultDisplay || ""}
+        ${prefix}
         action ${(actionName ? actionName + " = " : "") + indicatorName} {
              1
         }
+        ${state.graphgame.globalDefaultDisplay || ""}
+        ${prefix}
         action ${indicatorName + "set" + " = " + indicatorName} {
             0
         }
@@ -381,7 +417,7 @@ export const getDisplay: TemplateObject = {
 };
 
 /**
- * Create custom declarations on the current object. This is ideal for graphs, polygons, points, etc, but should not be used for named declarations ((functions, consts, etc).
+ * Create custom declarations on the current object. This is ideal for graphs, polygons, points, etc, but should not be used for named declarations (functions, consts, etc).
  * Usage: selectCustom!(body: Body);
  */
 export const selectCustom: TemplateObject = {
@@ -395,5 +431,37 @@ export const selectCustom: TemplateObject = {
         objectCheck(state, id);
 
         return body;
+    }
+};
+
+/**
+ * Sets the name of the next piece of generated code (variable or action)
+ * instead of using the built-in Graphgame naming scheme.
+ * This should only be used if you can guarantee that this name is unique.
+ * Usage: setItemNameSelect!(name: String);
+ */
+export const setItemNameSelect: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        state.graphgame.customName = getString(args, state, 0, "A name is required!");
+
+        return "";
+    }
+};
+
+/**
+ * Sets the display of the next piece of generated code (variable or action).
+ * Usage: setItemDisplaySelect!(display: Block);
+ */
+export const setItemDisplaySelect: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        state.graphgame.customDisplay = getBlock(args, state, 0, "A display is required!");
+
+        return "";
     }
 };

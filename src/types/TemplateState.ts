@@ -30,6 +30,9 @@ export interface TemplateState {
         currentPrefab: string,
         currentObject: number,
         nextObjectId: number,
-        nextVariableId: number
+        nextVariableId: number,
+        customName: string | null,
+        customDisplay: string | null,
+        globalDefaultDisplay: string | null,
     };
 }

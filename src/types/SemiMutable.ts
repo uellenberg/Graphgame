@@ -8,7 +8,9 @@ export class SemiMutable {
     private inlined: boolean = false;
     private incrementID: number = 0;
     private variableIDs: number[] = [];
-    public readonly exportID: number;
+    private readonly exportID: number;
+    private readonly customName: string | null;
+    public readonly customDisplay: string | null;
 
     /**
      * Creates a SemiMutable, which stores an immutable value until it is made mutable.
@@ -25,6 +27,16 @@ export class SemiMutable {
         this.val = val;
 
         this.exportID = state.graphgame.nextVariableId++;
+
+        if(state.graphgame.customName) {
+            this.customName = state.graphgame.customName;
+            state.graphgame.customName = null;
+        }
+
+        if(state.graphgame.customDisplay) {
+            this.customDisplay = state.graphgame.customDisplay;
+            state.graphgame.customDisplay = null;
+        }
     }
 
     /**
@@ -81,7 +93,7 @@ export class SemiMutable {
         if(!this.mutable) throw new Error("mut() must be called before the name can be accessed.");
 
         const incrementVal = Math.max(0, this.incrementID+offset);
-        return "g_v" + this.exportID + (noIncrement ? "" : (incrementVal ? "n" + incrementVal : ""));
+        return (this.customName ?? ("g_v" + this.exportID)) + (noIncrement ? "" : (incrementVal ? "n" + incrementVal : ""));
     }
 
     /**

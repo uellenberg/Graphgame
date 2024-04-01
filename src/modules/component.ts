@@ -150,7 +150,10 @@ export const setVal: TemplateObject = {
         const prefix = "setFile!(\"" + state.logimat.files[state.logimat.files.length-1] + "\");";
         const suffix = "setFile!();";
 
+        const itemPrefix = state.graphgame.behaviors[name].getItemPrefix();
+
         state.graphgame.behaviors[name].add((id: number) => prefix + `selectID!(${id});
+        ${itemPrefix}
         setValSelect!("${getFullVariableName(varName, name)}", ${val});
         selectID!();` + suffix, 0);
 
@@ -177,6 +180,8 @@ export const setValArgs: TemplateObject = {
         const prefix = "setFile!(\"" + state.logimat.files[state.logimat.files.length-1] + "\");";
         const suffix = "setFile!();";
 
+        const itemPrefix = state.graphgame.behaviors[name].getItemPrefix();
+
         state.graphgame.behaviors[name].add((id: number) => {
             let val;
             if(state.graphgame.lastObjectBehaviorArgs.length <= idx) {
@@ -191,6 +196,7 @@ export const setValArgs: TemplateObject = {
             else val = val.toString();
 
             return prefix + `selectID!(${id});
+            ${itemPrefix}
             setValSelect!("${getFullVariableName(varName, name)}", ${val});
             selectID!();` + suffix;
         }, 0);
@@ -220,7 +226,10 @@ export const setValAction: TemplateObject = {
         const prefix = "setFile!(\"" + state.logimat.files[state.logimat.files.length-1] + "\");";
         const suffix = "setFile!();";
 
+        const itemPrefix = state.graphgame.behaviors[name].getItemPrefix();
+
         state.graphgame.behaviors[name].addPost((id: number) => prefix + `selectID!(${id});
+        ${itemPrefix}
         setValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};setBehavior!("${name}");state = {${body}};setBehavior!();}, ${exported ? "true" : "false"}, ${variable ? "true" : "false"});
         selectID!();` + suffix, priority);
         state.graphgame.behaviors[name].muts.push(getFullVariableName(varName, name));
@@ -231,6 +240,7 @@ export const setValAction: TemplateObject = {
 
 /**
  * Create an action that sets the value of a behavior's variable (during runtime). This must be run manually (or as the click property of an object). This must be used after a variable is marked as mutable.
+ * This name must be unique (i.e., the behavior only exists on a single object).
  * Usage: noRegisterSetValAction!(variableName: string, body: Body, actionName?: string, priority?: number = 0);
  */
 export const noRegisterSetValAction: TemplateObject = {
@@ -249,7 +259,10 @@ export const noRegisterSetValAction: TemplateObject = {
         const prefix = "setFile!(\"" + state.logimat.files[state.logimat.files.length-1] + "\");";
         const suffix = "setFile!();";
 
+        const itemPrefix = state.graphgame.behaviors[name].getItemPrefix();
+
         state.graphgame.behaviors[name].addPost((id: number) => prefix + `selectID!(${id});
+        ${itemPrefix}
         noRegisterSetValActionSelect!("${getFullVariableName(varName, name)}", {const ${getShortVariableName(varName)} = ${getFullVariableName(varName, name)};setBehavior!("${name}");state = {${body}};setBehavior!();}${actionName ? ", \"" + actionName + "\"" : ""});
         selectID!();` + suffix, priority);
         state.graphgame.behaviors[name].muts.push(getFullVariableName(varName, name));
@@ -365,6 +378,70 @@ export const objectID: TemplateObject = {
         expressionCheck(context);
 
         return state.graphgame.lastObjectBehaviorId.toString();
+    }
+};
+
+/**
+ * Sets the name of the next piece of generated code (variable or action)
+ * instead of using the built-in Graphgame naming scheme.
+ * This should only be used if you can guarantee that this name is unique.
+ * In other words, this behavior is only attached to a single object.
+ * Usage: setItemName!(name: String);
+ */
+export const setItemName: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        const behavior = state.graphgame.currentBehavior;
+        const name = getString(args, state, 0, "A name is required!");
+
+        behaviorCheck(state, behavior);
+
+        state.graphgame.behaviors[state.graphgame.currentBehavior].setNextName(name);
+
+        return "";
+    }
+};
+
+/**
+ * Sets the display of the next piece of generated code (variable or action).
+ * Usage: setItemDisplay!(display: Block);
+ */
+export const setItemDisplay: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        const behavior = state.graphgame.currentBehavior;
+        const display = getBlock(args, state, 0, "A display is required!");
+
+        behaviorCheck(state, behavior);
+
+        state.graphgame.behaviors[state.graphgame.currentBehavior].setNextDisplay(display);
+
+        return "";
+    }
+};
+
+/**
+ * Sets the default display of every piece of generated code (variable or action)
+ * in the current behavior.
+ * Usage: setDefaultDisplay!(display: Block);
+ */
+export const setDefaultDisplay: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        const behavior = state.graphgame.currentBehavior;
+        const display = getBlock(args, state, 0, "A display is required!");
+
+        behaviorCheck(state, behavior);
+
+        state.graphgame.behaviors[state.graphgame.currentBehavior].setDefaultDisplay(display);
+
+        return "";
     }
 };
 

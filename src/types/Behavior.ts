@@ -7,6 +7,9 @@ export class Behavior {
     private postParts: Record<number, ((id: number, idx: number) => string)[]> = {};
     private helpers: Record<number, string[]> = {};
     private displays: Record<number, string[]> = {};
+    private nextName: string | null = null;
+    private defaultDisplay: string | null = null;
+    private nextDisplay: string | null = null;
 
     private nextId: number = 1;
 
@@ -19,7 +22,7 @@ export class Behavior {
         setValSelect!("${name}.id", ${this.nextId++});
         selectID!();`);
     }
-    
+
     /**
      * Add a new part to the behavior.
      */
@@ -90,5 +93,64 @@ export class Behavior {
             if(!display.hasOwnProperty(priority)) display[priority] = [];
             display[priority].push(...this.displays[priority]);
         }
+    }
+
+    public setDefaultDisplay(display: string) : void {
+        this.defaultDisplay = display;
+    }
+
+    public setNextDisplay(display: string) : void {
+        this.nextDisplay = display;
+    }
+
+    public setNextName(nextName: string) : void {
+        this.nextName = nextName;
+    }
+
+    public getDefaultDisplay() : string | null {
+        return this.defaultDisplay;
+    }
+
+    public popNextDisplay() : string | null {
+        const nextDisplay = this.nextDisplay;
+        this.nextDisplay = null;
+
+        return nextDisplay;
+    }
+
+    public popNextName() : string | null {
+        const nextName = this.nextName;
+        this.nextName = null;
+
+        return nextName;
+    }
+
+    /**
+     * Gets the commands that need to be prefixed to apply the custom name and display.
+     * If there aren't any set, then this will be an empty string.
+     */
+    public getItemPrefix() : string {
+        const defaultDisplay = this.getDefaultDisplay();
+        const nextDisplay = this.popNextDisplay();
+        const nextName = this.popNextName();
+
+        let out = "";
+        if(defaultDisplay || nextDisplay) {
+            out += "setItemDisplaySelect!({\n";
+            if(defaultDisplay) {
+                out += defaultDisplay + "\n";
+            }
+            if(nextDisplay) {
+                out += nextDisplay + "\n";
+            }
+
+            out += "});\n";
+        }
+
+        if(nextName) {
+            out += "setItemNameSelect!(\"" + nextName + "\");\n"
+        }
+
+        return out;
     }
 }

@@ -1,9 +1,20 @@
-import {finalize, finalize1, finalize2, initialize, registerAction} from "./modules/main";
+import {finalize, finalize1, finalize2, initialize, registerAction, setGlobalDefaultDisplay} from "./modules/main";
 import {
     behaviorCustom,
-    createBehavior, extendBehavior, getBehaviorArgs,
-    getVal, helper,
-    noRegisterSetValAction, objectID, setBehavior, setDisplay, setInline, setMut,
+    createBehavior,
+    extendBehavior,
+    getBehaviorArgs,
+    getVal,
+    helper,
+    noRegisterSetValAction,
+    objectID,
+    setBehavior,
+    setDefaultDisplay,
+    setDisplay,
+    setInline,
+    setItemDisplay,
+    setItemName,
+    setMut,
     setVal,
     setValAction,
     setValArgs
@@ -14,7 +25,7 @@ import {
     getValSelect, noRegisterSetValActionSelect, reIncrement,
     selectAll,
     selectBehavior, selectCustom, selectedID,
-    selectID, setInlineSelect, setMutSelect,
+    selectID, setInlineSelect, setItemDisplaySelect, setItemNameSelect, setMutSelect,
     setValActionSelect,
     setValSelect
 } from "./modules/select";
@@ -24,6 +35,7 @@ import {createPrefab, extendPrefab, setPrefab, setPrefabVal, useBehaviorPrefab, 
 export const templates: TemplatesObject = {
     //Main
     initialize,
+    setGlobalDefaultDisplay,
     registerAction,
     finalize,
     finalize1,
@@ -44,6 +56,9 @@ export const templates: TemplatesObject = {
     objectID,
     helper,
     setBehavior,
+    setItemName,
+    setItemDisplay,
+    setDefaultDisplay,
     //Object
     createObject,
     useBehavior,
@@ -65,6 +80,8 @@ export const templates: TemplatesObject = {
     reIncrement,
     getDisplay,
     selectCustom,
+    setItemNameSelect,
+    setItemDisplaySelect,
     //Prefab
     createPrefab,
     extendPrefab,

@@ -1,11 +1,6 @@
 import {TemplateObject} from "logimat";
 import {TemplateState} from "../types/TemplateState";
-import {ensureState, getString, outerCheck} from "../util";
-import transform from "../components/main/transform";
-import circle from "../components/rendering/circle";
-import square from "../components/rendering/square";
-import squareCollider from "../components/collision/squareCollider";
-import collisionResolver from "../components/collision/collisionResolver";
+import {ensureState, getBlock, getString, outerCheck} from "../util";
 import main from "../components/main";
 
 /**
@@ -17,6 +12,22 @@ export const initialize: TemplateObject = {
         outerCheck(context);
 
         return main;
+    }
+};
+
+/**
+ * Sets the display applied to every item emitted by Graphgame.
+ * This will be overridden by any other displays.
+ * Usage: setGlobalDefaultDisplay!(display: Block);
+ */
+export const setGlobalDefaultDisplay: TemplateObject = {
+    function: (args, state: TemplateState, context) => {
+        ensureState(state);
+        outerCheck(context);
+
+        state.graphgame.globalDefaultDisplay = getBlock(args, state, 0, "A display is required!");
+
+        return "";
     }
 };
 
@@ -103,13 +114,17 @@ export const finalize2: TemplateObject = {
         for (const name in state.graphgame.actions) {
             const val = state.graphgame.actions[name];
 
-            output.push(`action ${name + "u"} = ${name} {
+            output.push(`${state.graphgame.globalDefaultDisplay || ""}
+            action ${name + "u"} = ${name} {
                 state = ${val};
             }`);
             state.graphgame.finalActions.push(name + "u");
         }
 
-        if(state.graphgame.finalActions.length > 0) output.push("actions m_ain = " + state.graphgame.finalActions.join(", ") + ";");
+        if(state.graphgame.finalActions.length > 0) {
+            output.push(`${state.graphgame.globalDefaultDisplay || ""}
+            actions m_ain = ${state.graphgame.finalActions.join(", ")} ;`);
+        }
 
         return output.join("\n");
     }

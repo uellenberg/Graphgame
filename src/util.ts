@@ -3,7 +3,7 @@ import {TemplateState} from "./types/TemplateState";
 import {SemiMutable} from "./types/SemiMutable";
 
 export const ensureState = (state: TemplateState) => {
-    if (!state.hasOwnProperty("graphgame")) state.graphgame = { objects: {}, behaviors: {}, actions: {}, finalActions: [], finalized: false, lastObjectBehaviorId: null, lastObjectBehaviorArgs: null, postActions: [], currentObjectId: null, postInit: false, prefabs: [], toIncrement: null, currentBehavior: "", currentPrefab: "", currentObject: 0, nextObjectId: 1, nextVariableId: 1 };
+    if (!state.hasOwnProperty("graphgame")) state.graphgame = { objects: {}, behaviors: {}, actions: {}, finalActions: [], finalized: false, lastObjectBehaviorId: null, lastObjectBehaviorArgs: null, postActions: [], currentObjectId: null, postInit: false, prefabs: [], toIncrement: null, currentBehavior: "", currentPrefab: "", currentObject: 0, nextObjectId: 1, nextVariableId: 1, customName: null, customDisplay: null, globalDefaultDisplay: null };
     if(state.graphgame.finalized) throw new Error("Do not run any other templates after finalizing!");
 };
 
