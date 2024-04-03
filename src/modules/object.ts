@@ -5,7 +5,7 @@ import {TemplateState} from "../types/TemplateState";
 import {
     behaviorCheck,
     ensureState,
-    expressionCheck, getBlock,
+    expressionCheck, fixVariableName, getBlock,
     getNum,
     getSemiMut,
     getString,
@@ -134,7 +134,7 @@ export const setObjectVal: TemplateObject = {
         outerCheck(context);
 
         const id = state.graphgame.currentObject;
-        const name = getString(args, state, 0, "A variable name is required!").trim().replace(/[._]/g, "");
+        const name = fixVariableName(getString(args, state, 0, "A variable name is required!").trim());
         const val = getNum(args, state, 1, "A value is required!");
 
         objectCheck(state, id);

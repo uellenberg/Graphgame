@@ -2,7 +2,7 @@ import {TemplateObject} from "logimat";
 import {TemplateState} from "../types/TemplateState";
 import {
     ensureState,
-    expressionCheck,
+    expressionCheck, fixVariableName,
     getBlock,
     getBoolean,
     getNum,
@@ -160,7 +160,7 @@ export const setMutSelect: TemplateObject = {
         outerCheck(context);
 
         const id = state.graphgame.currentObjectId;
-        const name = getString(args, state, 0, "A variable name is required!").trim().replace(/[._]/g, "");
+        const name = fixVariableName(getString(args, state, 0, "A variable name is required!").trim());
 
         objectCheck(state, id);
         objectVarCheck(state, id, name);
@@ -187,7 +187,7 @@ export const setInlineSelect: TemplateObject = {
         outerCheck(context);
 
         const id = state.graphgame.currentObjectId;
-        const name = getString(args, state, 0, "A variable name is required!").trim().replace(/[._]/g, "");
+        const name = fixVariableName(getString(args, state, 0, "A variable name is required!").trim());
 
         objectCheck(state, id);
         objectVarCheck(state, id, name);
@@ -212,7 +212,7 @@ export const getValSelect: TemplateObject = {
         expressionCheck(context);
 
         const id = state.graphgame.currentObjectId;
-        const name = getString(args, state, 0, "A variable name is required!").trim().replace(/[._]/g, "");
+        const name = fixVariableName(getString(args, state, 0, "A variable name is required!").trim());
         const saved = getBoolean(args, state, 1);
 
         objectCheck(state, id);
@@ -235,7 +235,7 @@ export const setValSelect: TemplateObject = {
         outerCheck(context);
 
         const id = state.graphgame.currentObjectId;
-        const name = getString(args, state, 0, "A variable name is required!").trim().replace(/[._]/g, "");
+        const name = fixVariableName(getString(args, state, 0, "A variable name is required!").trim());
         const val = getNumOrBlock(args, state, 1, "A value is required!");
 
         objectCheck(state, id);
@@ -261,7 +261,7 @@ export const setValActionSelect: TemplateObject = {
         outerCheck(context);
 
         const id = state.graphgame.currentObjectId;
-        const name = getString(args, state, 0, "A variable name is required!").trim().replace(/[._]/g, "");
+        const name = fixVariableName(getString(args, state, 0, "A variable name is required!").trim());
         const body = getBlock(args, state, 1, "An action body is required!");
         const exported = getBoolean(args, state, 2);
         const variable = getBoolean(args, state, 3);
@@ -328,7 +328,7 @@ export const noRegisterSetValActionSelect: TemplateObject = {
         outerCheck(context);
 
         const id = state.graphgame.currentObjectId;
-        const name = getString(args, state, 0, "A variable name is required!").trim().replace(/[._]/g, "");
+        const name = fixVariableName(getString(args, state, 0, "A variable name is required!").trim());
         const body = getBlock(args, state, 1, "An action body is required!");
         const actionName = getString(args, state, 2)?.trim();
 

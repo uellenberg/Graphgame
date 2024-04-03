@@ -110,6 +110,15 @@ export const getNumOrBlock = (args: TemplateArgs, state: TemplateState, idx: num
 
 //Dot access helper
 
-export const getFullVariableName = (varName: string, behaviorName: string) => (varName.startsWith("base.") ? varName.substring(5) : behaviorName + varName).replace(/[._]/g, "");
+export const getFullVariableName = (varName: string, behaviorName: string) => fixVariableName(varName.startsWith("base.") ? varName.substring(5) : behaviorName + varName);
+
+/** Removes "." and "_" from a variable name and makes the behavior part lowercase. */
+export const fixVariableName = (varName: string) => {
+    const nameParts = varName.replace(/_/g, "").split(".");
+    // The name is already processed (or doesn't have a behavior part), so no need to do anything.
+    if(nameParts.length === 1) return nameParts[0];
+
+    return nameParts.map((val, idx) => idx === 0 ? val.toLowerCase() : val).join("")
+};
 
 export const getShortVariableName = (varName: string) => varName.split(".").pop();
