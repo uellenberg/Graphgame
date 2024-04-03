@@ -134,7 +134,7 @@ export const setObjectVal: TemplateObject = {
         outerCheck(context);
 
         const id = state.graphgame.currentObject;
-        const name = getString(args, state, 0, "A variable name is required!").trim().toLowerCase().replace(/[._]/g, "");
+        const name = getString(args, state, 0, "A variable name is required!").trim().replace(/[._]/g, "");
         const val = getNum(args, state, 1, "A value is required!");
 
         objectCheck(state, id);

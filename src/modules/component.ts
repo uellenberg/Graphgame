@@ -67,7 +67,7 @@ export const setMut: TemplateObject = {
         outerCheck(context);
 
         const name = state.graphgame.currentBehavior;
-        const varName = getString(args, state, 0, "A variable name is required!").trim().toLowerCase();
+        const varName = getString(args, state, 0, "A variable name is required!").trim();
 
         behaviorCheck(state, name);
 
@@ -92,7 +92,7 @@ export const setInline: TemplateObject = {
         outerCheck(context);
 
         const name = state.graphgame.currentBehavior;
-        const varName = getString(args, state, 0, "A variable name is required!").trim().toLowerCase();
+        const varName = getString(args, state, 0, "A variable name is required!").trim();
 
         behaviorCheck(state, name);
 
@@ -117,7 +117,7 @@ export const getVal: TemplateObject = {
         expressionCheck(context);
 
         const name = state.graphgame.currentBehavior;
-        const varName = getString(args, state, 0, "A variable name is required!").trim().toLowerCase();
+        const varName = getString(args, state, 0, "A variable name is required!").trim();
         const saved = getBoolean(args, state, 1);
 
         const fullName = getFullVariableName(varName, name);
@@ -142,7 +142,7 @@ export const setVal: TemplateObject = {
         outerCheck(context);
 
         const name = state.graphgame.currentBehavior;
-        const varName = getString(args, state, 0, "A variable name is required!").trim().toLowerCase();
+        const varName = getString(args, state, 0, "A variable name is required!").trim();
         const val = getNumOrBlock(args, state, 1, "A value is required!");
 
         behaviorCheck(state, name);
@@ -171,7 +171,7 @@ export const setValArgs: TemplateObject = {
         outerCheck(context);
 
         const name = state.graphgame.currentBehavior;
-        const varName = getString(args, state, 0, "A variable name is required!").trim().toLowerCase();
+        const varName = getString(args, state, 0, "A variable name is required!").trim();
         const idx = getNum(args, state, 1, "An argument index is required!");
         const defaultVal = getNum(args, state, 2);
 
@@ -215,7 +215,7 @@ export const setValAction: TemplateObject = {
         outerCheck(context);
 
         const name = state.graphgame.currentBehavior;
-        const varName = getString(args, state, 0, "A variable name is required!").trim().toLowerCase();
+        const varName = getString(args, state, 0, "A variable name is required!").trim();
         const body = getBlock(args, state, 1, "An action body is required!");
         const priority = getNum(args, state, 2) || 0;
         const exported = getBoolean(args, state, 3);
@@ -249,9 +249,9 @@ export const noRegisterSetValAction: TemplateObject = {
         outerCheck(context);
 
         const name = state.graphgame.currentBehavior;
-        const varName = getString(args, state, 0, "A variable name is required!").trim().toLowerCase();
+        const varName = getString(args, state, 0, "A variable name is required!").trim();
         const body = getBlock(args, state, 1, "An action body is required!");
-        const actionName = getString(args, state, 2)?.trim().toLowerCase();
+        const actionName = getString(args, state, 2)?.trim();
         const priority = getNum(args, state, 3) || 0;
 
         behaviorCheck(state, name);
