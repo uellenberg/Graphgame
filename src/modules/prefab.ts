@@ -13,7 +13,7 @@ import {GameObject} from "../types/GameObject";
 
 /**
  * Creates a new prefab.
- * Usage: createPrefab!(name: string);
+ * Usage: createPrefab!(name: string, body?: Block);
  */
 export const createPrefab: TemplateObject = {
     function: (args, state: TemplateState, context) => {
@@ -21,7 +21,7 @@ export const createPrefab: TemplateObject = {
         outerCheck(context);
 
         const name = getString(args, state, 0, "A prefab name is required!");
-        const body = getBlock(args, state, 1, "A prefab definition is required!");
+        const body = getBlock(args, state, 1) || "";
 
         if(state.graphgame.prefabs.hasOwnProperty(name)) throw new Error("A prefab with the name \"" + name + "\" already exists!");
 
