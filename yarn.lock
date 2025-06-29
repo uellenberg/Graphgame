@@ -87,10 +87,10 @@ javascript-natural-sort@^0.7.1:
   resolved "https://registry.yarnpkg.com/javascript-natural-sort/-/javascript-natural-sort-0.7.1.tgz#f9e2303d4507f6d74355a73664d1440fb5a0ef59"
   integrity sha1-+eIwPUUH9tdDVac2ZNFED7Wg71k=
 
-logimat@^1.0.38:
-  version "1.0.38"
-  resolved "https://registry.yarnpkg.com/logimat/-/logimat-1.0.38.tgz#f510287c798a9b4b37578c25440ab14d7ae00a4e"
-  integrity sha512-IVvW2RV2A6UinyG/8+GUlDTKseNwvma8/th8ajpHmwCQ00+Z7W9FvMqLwDP5HEN5aRoiI0OoZsAWgXlafMQWmg==
+logimat@^1.0.46:
+  version "1.0.46"
+  resolved "https://registry.yarnpkg.com/logimat/-/logimat-1.0.46.tgz#d57e0925a15221e828a6370285909669c17e0086"
+  integrity sha512-xR01iS2AMCsyhKqiJTc9hiCzdyUsta1aBWgKW7F09xVF9cq1RW7KGTPQtZUc1t2g5YbCPgYFzL1Dg+/dZr4Wlw==
   dependencies:
     mathjs "^10.4.1"
     ohm-js "^16.3.2"
